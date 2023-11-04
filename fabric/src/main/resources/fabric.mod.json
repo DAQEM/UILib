@@ -15,7 +15,7 @@
   "icon": "assets/uilib/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "client": [
       "com.daqem.uilib.fabric.UILibFabric"
     ]
   },

@@ -1,4 +1,4 @@
-package com.daqem.uilib.mixin;
+package com.daqem.uilib.client.mixin;
 
 import net.minecraft.client.gui.screens.TitleScreen;
 import org.spongepowered.asm.mixin.Mixin;

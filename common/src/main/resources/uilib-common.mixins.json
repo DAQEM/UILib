@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.daqem.uilib.mixin",
+  "package": "com.daqem.uilib.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
