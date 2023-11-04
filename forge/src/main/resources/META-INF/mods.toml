@@ -1,33 +1,33 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "Apache-2.0"
 
 [[mods]]
-modId = "examplemod"
+modId = "uilib"
 version = "${version}"
-displayName = "Example Mod"
-authors = "Me!"
+displayName = "UI Lib"
+authors = "DAQEM"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+A user interface library for Minecarft modding.
 '''
 #logoFile = ""
 
-[[dependencies.examplemod]]
+[[dependencies.uilib]]
 modId = "forge"
 mandatory = true
 versionRange = "[47,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.uilib]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.uilib]]
 modId = "architectury"
 mandatory = true
 versionRange = "[9.1.12,)"

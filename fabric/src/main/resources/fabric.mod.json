@@ -1,27 +1,27 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "uilib",
   "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "UI Lib",
+  "description": "A user interface library for Minecraft modding.",
   "authors": [
-    "Me!"
+    "DAQEM"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://daqem.com/",
+    "sources": "https://github.com/DAQEM/UILib"
   },
-  "license": "Insert License Here",
-  "icon": "assets/examplemod/icon.png",
+  "license": "Apache-2.0",
+  "icon": "assets/uilib/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.examplemod.fabric.ExampleModFabric"
+      "com.daqem.uilib.fabric.UILibFabric"
     ]
   },
   "mixins": [
-    "examplemod.mixins.json",
-    "examplemod-common.mixins.json"
+    "uilib.mixins.json",
+    "uilib-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",
