@@ -41,7 +41,8 @@ public class TestScreen extends AbstractScreen {
                         text.setTextColor(0xFF0000);
                         text.setShadow(true);
                     }
-                    btn.setRotation(45);
+                    btn.setTexture(Textures.MINECRAFT_BUTTON_HOVERED);
+                    btn.setRotation(90);
                 });
         addComponents(closeButton, button2, button);
     }

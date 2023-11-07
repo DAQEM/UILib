@@ -7,9 +7,9 @@ import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
 import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
+import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Quaternionf;
 
 public abstract class AbstractComponent<T extends AbstractComponent<T>> implements IComponent<T> {
 
@@ -28,8 +28,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private @Nullable OnClickAction<T> onClickAction;
     private @Nullable OnHoverAction<T> onHoverAction;
 
-    @SuppressWarnings("unchecked")
-    private @Nullable T hoverState = (T) this.getClone();
+    private @Nullable T hoverState;
 
     private IColorManipulator colorManipulator = new ColorManipulator();
 
@@ -42,6 +41,9 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
         this.text = text;
         this.onClickAction = onClickAction;
         this.onHoverAction = onHoverAction;
+
+        //noinspection unchecked
+        this.hoverState = (T) this.getClone();
     }
 
     @Override
@@ -50,18 +52,27 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
 
     @Override
     public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(getX(), getY(), getZ());
-        guiGraphics.pose().scale(getScale(), getScale(), getScale());
-        guiGraphics.pose().rotateAround(new Quaternionf().rotateX(getRotation()), 0, 0, 1);
-        guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
-        if (isHovered(mouseX, mouseY) && hoverState != null) {
+
+        if (isHovered(mouseX, mouseY) && hoverState != null && hoverState.isVisible() && getOnHoverAction() != null) {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(hoverState.getX(), hoverState.getY(), hoverState.getZ());
+            guiGraphics.pose().scale(hoverState.getScale(), hoverState.getScale(), hoverState.getScale());
+            guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(hoverState.getRotation()), hoverState.getWidth() / 2.0f, hoverState.getHeight() / 2.0f, 0.0f);
+            guiGraphics.setColor(hoverState.getColorManipulator().getRed(), hoverState.getColorManipulator().getGreen(), hoverState.getColorManipulator().getBlue(), hoverState.getOpacity());
             hoverState.render(guiGraphics, mouseX, mouseY, partialTicks);
-        } else {
+            guiGraphics.setColor(1F, 1F, 1F, 1F);
+            guiGraphics.pose().popPose();
+        } else if (isVisible()) {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(getX(), getY(), getZ());
+            guiGraphics.pose().scale(getScale(), getScale(), getScale());
+            guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(getRotation()), getWidth() / 2.0f, getHeight() / 2.0f, 0.0f);
+            guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
             this.render(guiGraphics, mouseX, mouseY, partialTicks);
+            guiGraphics.setColor(1F, 1F, 1F, 1F);
+            guiGraphics.pose().popPose();
         }
-        guiGraphics.setColor(1F, 1F, 1F, 1F);
-        guiGraphics.pose().popPose();
+
     }
 
     @Override
@@ -194,24 +205,9 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
         this.colorManipulator = colorManipulator;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void preformOnClickAction() {
-        if (onClickAction != null) {
-            onClickAction.onClick((T) this);
-        }
-    }
-
     @Override
     public @Nullable OnClickAction<T> getOnClickAction() {
         return onClickAction;
-    }
-
-    @Override
-    public void preformOnHoverAction() {
-        if (onHoverAction != null) {
-            onHoverAction.onHover(hoverState);
-        }
     }
 
     @Override

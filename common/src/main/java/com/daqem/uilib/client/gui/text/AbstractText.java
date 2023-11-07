@@ -34,8 +34,7 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     private @Nullable OnClickAction<T> onClickAction;
     private @Nullable OnHoverAction<T> onHoverAction;
 
-    @SuppressWarnings("unchecked")
-    private @Nullable T hoverState = (T) this.getClone();
+    private @Nullable T hoverState;
 
     public AbstractText(Font font, Component text, int x, int y) {
         this(font, text, x, y, font.width(text), font.lineHeight);
@@ -48,6 +47,9 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
         this.y = y;
         this.width = width;
         this.height = height;
+
+        //noinspection unchecked
+        this.hoverState = (T) this.getClone();
     }
 
     @Override
@@ -248,7 +250,8 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     public @Nullable Object getClone() {
         try {
             T clone = (T) super.clone();
-            clone.setText(this.text.copy());
+            if (this.text != null)
+                clone.setText(this.text.copy());
             return clone;
         } catch (CloneNotSupportedException e) {
             return null;

@@ -20,12 +20,10 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     private @Nullable OnClickAction<T> onClickAction;
     private @Nullable OnHoverAction<T> onHoverAction;
 
-    @SuppressWarnings("unchecked")
-    private @Nullable T hoverState = (T) this.getClone();
+    private @Nullable T hoverState;
 
     public AbstractBackground(int width, int height) {
-        this.width = width;
-        this.height = height;
+        this(0, 0, width, height);
     }
 
     public AbstractBackground(int x, int y, int width, int height) {
@@ -33,6 +31,9 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
         this.y = y;
         this.width = width;
         this.height = height;
+
+        //noinspection unchecked
+        this.hoverState = (T) this.getClone();
     }
 
     @Override

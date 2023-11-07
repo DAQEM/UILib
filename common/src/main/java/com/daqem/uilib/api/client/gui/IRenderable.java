@@ -56,11 +56,10 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
         return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     default void preformOnHoverAction() {
         if (getOnHoverAction() != null) {
-            getOnHoverAction().onHover((T) this);
+            getOnHoverAction().onHover(getHoverState());
         }
     }
 
