@@ -10,10 +10,14 @@ public interface ITexture extends ICloneable {
     int getY();
     int getWidth();
     int getHeight();
+    int getFileWidth();
+    int getFileHeight();
 
     void setTextureLocation(ResourceLocation textureLocation);
     void setX(int x);
     void setY(int y);
     void setWidth(int width);
     void setHeight(int height);
+    void setFileWidth(int fileWidth);
+    void setFileHeight(int fileHeight);
 }

@@ -72,7 +72,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         }
-
     }
 
     @Override
