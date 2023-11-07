@@ -1,7 +1,14 @@
 package com.daqem.uilib.client;
 
 
+import com.daqem.uilib.client.event.EventKeyPressed;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 
 public class UILibClient {
@@ -9,7 +16,22 @@ public class UILibClient {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "uilib";
 
+    private static final String UI_LIB_CATEGORY = "key.categories.uilib";
+    public static final KeyMapping OPEN_TEST_MENU = new KeyMapping("key.uilib.open_test_menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, UI_LIB_CATEGORY);
+
     public static void init() {
-        LOGGER.info("Hello from UI Lib client!");
+        EventKeyPressed.registerEvent();
+    }
+
+    public static MutableComponent translatable(String resourceKey) {
+        return Component.translatable(MOD_ID + "." + resourceKey);
+    }
+
+    public static MutableComponent translatable(String resourceKey, Object... args) {
+        return Component.translatable(MOD_ID + "." + resourceKey, args);
+    }
+
+    public static ResourceLocation getId(String location) {
+        return new ResourceLocation(MOD_ID, location);
     }
 }
