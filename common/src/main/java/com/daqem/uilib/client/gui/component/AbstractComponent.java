@@ -1,5 +1,6 @@
 package com.daqem.uilib.client.gui.component;
 
+import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.color.IColorManipulator;
 import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.api.client.gui.component.action.OnClickAction;
@@ -9,10 +10,16 @@ import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractComponent<T extends AbstractComponent<T>> implements IComponent<T> {
 
+    private @Nullable IComponent<?> parent;
+    private List<IComponent<?>> children = new ArrayList<>();
     private ITexture texture;
     private int x;
     private int y;
@@ -24,6 +31,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private float opacity = 1;
     private float rotation = 0;
     private boolean visible = true;
+    private Screen screen;
 
     private @Nullable OnClickAction<T> onClickAction;
     private @Nullable OnHoverAction<T> onHoverAction;
@@ -48,6 +56,11 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
 
     @Override
     public void start() {
+        if (getText() != null) {
+            getText().start();
+        }
+
+        getChildren().forEach(IRenderable::start);
     }
 
     @Override
@@ -60,6 +73,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(hoverState.getRotation()), hoverState.getWidth() / 2.0f, hoverState.getHeight() / 2.0f, 0.0f);
             guiGraphics.setColor(hoverState.getColorManipulator().getRed(), hoverState.getColorManipulator().getGreen(), hoverState.getColorManipulator().getBlue(), hoverState.getOpacity());
             hoverState.render(guiGraphics, mouseX, mouseY, partialTicks);
+            hoverState.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, partialTicks));
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         } else if (isVisible()) {
@@ -69,9 +83,25 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(getRotation()), getWidth() / 2.0f, getHeight() / 2.0f, 0.0f);
             guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
             this.render(guiGraphics, mouseX, mouseY, partialTicks);
+            this.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, partialTicks));
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         }
+    }
+
+    @Override
+    public Screen getScreen() {
+        return screen;
+    }
+
+    @Override
+    public @Nullable IComponent<?> getParent() {
+        return parent;
+    }
+
+    @Override
+    public List<IComponent<?>> getChildren() {
+        return children;
     }
 
     @Override
@@ -132,6 +162,50 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public IColorManipulator getColorManipulator() {
         return colorManipulator;
+    }
+
+
+    @Override
+    public void setScreen(Screen screen) {
+        this.screen = screen;
+    }
+
+    @Override
+    public void setParent(@Nullable IComponent<?> parent) {
+        this.parent = parent;
+        if (parent != null && !parent.getChildren().contains(this)) {
+            parent.addChild(this);
+        }
+    }
+
+    @Override
+    public void setChildren(List<IComponent<?>> children) {
+        this.children = children;
+        this.children.forEach(child -> child.setParent(this));
+    }
+
+    @Override
+    public void addChild(IComponent<?> child) {
+        children.add(child);
+        child.setParent(this);
+    }
+
+    @Override
+    public void addChildren(IComponent<?>... children) {
+        this.children.addAll(List.of(children));
+        this.children.forEach(child -> child.setParent(this));
+    }
+
+    @Override
+    public void addChildren(List<IComponent<?>> children) {
+        this.children.addAll(children);
+        this.children.forEach(child -> child.setParent(this));
+    }
+
+    @Override
+    public void removeChild(IComponent<?> child) {
+        children.remove(child);
+        child.setParent(null);
     }
 
     @Override
@@ -222,6 +296,34 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public void setHoverState(@Nullable T hoverState) {
         this.hoverState = hoverState;
+    }
+
+    @Override
+    public void centerHorizontally() {
+        int containerWidth = getParentWidth();
+        int componentWidth = getWidth();
+        setX((containerWidth / 2) - (componentWidth / 2));
+    }
+
+    @Override
+    public void centerVertically() {
+        int containerHeight = getParentHeight();
+        int componentHeight = getHeight();
+        setY((containerHeight / 2) - (componentHeight / 2));
+    }
+
+    @Override
+    public void center() {
+        centerHorizontally();
+        centerVertically();
+    }
+
+    private int getParentWidth() {
+        return getParent() != null ? getParent().getWidth() : getScreen() != null ? getScreen().width : 0;
+    }
+
+    private int getParentHeight() {
+        return getParent() != null ? getParent().getHeight() : getScreen() != null ? getScreen().height : 0;
     }
 
     @SuppressWarnings("unchecked")

@@ -1,26 +1,33 @@
 package com.daqem.uilib.api.client.gui;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IHoverable<T>, ICloneable {
 
+    @Nullable Screen getScreen();
     int getX();
     int getY();
     int getWidth();
     int getHeight();
     boolean isVisible();
 
+    void setScreen(@Nullable Screen screen);
     void setX(int x);
     void setY(int y);
     void setWidth(int width);
     void setHeight(int height);
+    @SuppressWarnings("unused")
     void setVisible(boolean visible);
 
     /**
      * Called when the screen is opened.
      * Set your background and add your components here.
      */
+    @SuppressWarnings("unused")
     void start();
 
     /**
@@ -57,17 +64,17 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     }
 
     @Override
-    default void preformOnHoverAction() {
+    default void preformOnHoverAction(double mouseX, double mouseY) {
         if (getOnHoverAction() != null) {
-            getOnHoverAction().onHover(getHoverState());
+            getOnHoverAction().onHover(getHoverState(), getScreen(), mouseX, mouseY);
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    default void preformOnClickAction() {
+    default void preformOnClickAction(double mouseX, double mouseY) {
         if (getOnClickAction() != null) {
-            getOnClickAction().onClick((T) this);
+            getOnClickAction().onClick((T) this, getScreen(), mouseX, mouseY);
         }
     }
 }

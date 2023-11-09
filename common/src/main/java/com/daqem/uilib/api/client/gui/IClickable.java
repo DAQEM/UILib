@@ -6,7 +6,7 @@ public interface IClickable<T extends IClickable<T>> {
 
     boolean isClicked(double mouseX, double mouseY);
 
-    void preformOnClickAction();
+    void preformOnClickAction(double mouseX, double mouseY);
 
     OnClickAction<T> getOnClickAction();
 

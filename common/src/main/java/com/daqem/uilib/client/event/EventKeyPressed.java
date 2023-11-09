@@ -1,7 +1,7 @@
 package com.daqem.uilib.client.event;
 
 import com.daqem.uilib.client.UILibClient;
-import com.daqem.uilib.client.screen.TestScreen;
+import com.daqem.uilib.client.screen.test.TestScreen;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
 import net.minecraft.client.gui.screens.Screen;

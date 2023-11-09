@@ -6,12 +6,14 @@ import com.daqem.uilib.api.client.gui.text.IText;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractText<T extends AbstractText<T>> implements IText<T> {
 
+    private Screen screen;
     private Font font;
 
     private Component text;
@@ -50,6 +52,11 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
 
         //noinspection unchecked
         this.hoverState = (T) this.getClone();
+    }
+
+    @Override
+    public Screen getScreen() {
+        return screen;
     }
 
     @Override
@@ -130,6 +137,11 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     @Override
     public boolean isVerticalCenter() {
         return verticalCenter;
+    }
+
+    @Override
+    public void setScreen(Screen screen) {
+        this.screen = screen;
     }
 
     @Override

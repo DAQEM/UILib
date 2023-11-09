@@ -1,5 +1,6 @@
 package com.daqem.uilib.client.gui;
 
+import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.IScreen;
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.IComponent;
@@ -41,6 +42,10 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     protected void init() {
         super.init();
         this.onStartScreen();
+        if (getBackground() != null) {
+            this.getBackground().start();
+        }
+        this.getComponents().forEach(IRenderable::start);
     }
 
     @Override
@@ -60,7 +65,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     private void checkHovering(int mouseX, int mouseY) {
         for (IComponent<?> component : components) {
             if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnHoverAction();
+                component.preformOnHoverAction(mouseX, mouseY);
             }
         }
     }
@@ -95,11 +100,13 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void addComponent(IComponent<?> component) {
         components.add(component);
+        component.setScreen(this);
     }
 
     @Override
     public void addComponents(IComponent<?>... components) {
         this.components.addAll(List.of(components));
+        this.components.forEach(component -> component.setScreen(this));
     }
 
     @Override
@@ -119,11 +126,16 @@ public abstract class AbstractScreen extends Screen implements IScreen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int clickType) {
+        handleClickAction(components, mouseX, mouseY);
+        return super.mouseClicked(mouseX, mouseY, clickType);
+    }
+
+    private void handleClickAction(List<IComponent<?>> components, double mouseX, double mouseY) {
         for (IComponent<?> component : components) {
             if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnClickAction();
+                component.preformOnClickAction(mouseX, mouseY);
             }
+            handleClickAction(component.getChildren(), mouseX - component.getX(), mouseY - component.getY());
         }
-        return super.mouseClicked(mouseX, mouseY, clickType);
     }
 }

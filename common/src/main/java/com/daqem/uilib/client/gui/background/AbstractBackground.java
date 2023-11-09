@@ -6,16 +6,18 @@ import com.daqem.uilib.api.client.gui.component.action.OnClickAction;
 import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractBackground<T extends AbstractBackground<T>> implements IBackground<T> {
 
-    private int x = 0;
-    private int y = 0;
+    private int x;
+    private int y;
     private int width;
     private int height;
     private boolean visible = true;
     private IColorManipulator colorManipulator = new ColorManipulator();
+    private Screen screen;
 
     private @Nullable OnClickAction<T> onClickAction;
     private @Nullable OnHoverAction<T> onHoverAction;
@@ -34,6 +36,11 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
 
         //noinspection unchecked
         this.hoverState = (T) this.getClone();
+    }
+
+    @Override
+    public Screen getScreen() {
+        return screen;
     }
 
     @Override
@@ -59,6 +66,11 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     @Override
     public boolean isVisible() {
         return visible;
+    }
+
+    @Override
+    public void setScreen(Screen screen) {
+        this.screen = screen;
     }
 
     @Override

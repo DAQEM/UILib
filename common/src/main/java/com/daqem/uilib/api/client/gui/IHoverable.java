@@ -38,7 +38,7 @@ public interface IHoverable<T extends IHoverable<T>> {
      * component.preformOnHoverAction();
      * }</pre>
      */
-    void preformOnHoverAction();
+    void preformOnHoverAction(double mouseX, double mouseY);
 
     /**
      * Retrieves the action performed when hovering over the component.
