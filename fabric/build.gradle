@@ -80,7 +80,7 @@ publishing {
 }
 
 curseforge {
-    apiKey = System.getenv('CURSEFORGE_API_KEY')
+    apiKey = System.getenv('CURSEFORGE_API_KEY') ?: ""
     project {
         id = rootProject.curse_forge_project_id
         releaseType = rootProject.curse_forge_release_type
