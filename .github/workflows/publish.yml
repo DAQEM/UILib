@@ -1,0 +1,49 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ "1.20.1" ]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+
+    runs-on: ubuntu-latest
+
+    env:
+      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant Permissions to gradlew
+        run: chmod +x gradlew
+
+      - name: Build Jars
+        run: ./gradlew build
+
+      - name: Publish to CurseForge
+        run: ./gradlew curseforge
+
+      - name: Retrieve Version
+        run: |
+          echo "::set-output name=VERSION_NAME::$(./gradlew -q :common:printVersionName)"
+        id: gradle_version
+
+      - name: Publish to GitHub Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: |
+            fabric/build/libs/*.jar
+            forge/build/libs/*.jar
+          name: ${{ steps.gradle_version.outputs.VERSION_NAME }}
+          tag: ${{ steps.gradle_version.outputs.VERSION_NAME }}
