@@ -31,6 +31,8 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private float opacity = 1;
     private float rotation = 0;
     private boolean visible = true;
+    private boolean centeredHorizontally = false;
+    private boolean centeredVertically = false;
     private Screen screen;
 
     private @Nullable OnClickAction<T> onClickAction;
@@ -55,12 +57,16 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
-    public void start() {
+    public void startRenderable() {
         if (getText() != null) {
-            getText().start();
+            getText().startRenderable();
         }
 
-        getChildren().forEach(IRenderable::start);
+        getChildren().forEach(IRenderable::startRenderable);
+    }
+
+    @Override
+    public void resizeScreenRepositionRenderable(int width, int height) {
     }
 
     @Override
@@ -299,10 +305,26 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
+    public boolean isCenteredHorizontally() {
+        return centeredHorizontally;
+    }
+
+    @Override
+    public boolean isCenteredVertically() {
+        return centeredVertically;
+    }
+
+    @Override
+    public boolean isCentered() {
+        return isCenteredHorizontally() && isCenteredVertically();
+    }
+
+    @Override
     public void centerHorizontally() {
         int containerWidth = getParentWidth();
         int componentWidth = getWidth();
         setX((containerWidth / 2) - (componentWidth / 2));
+        this.centeredHorizontally = true;
     }
 
     @Override
@@ -310,6 +332,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
         int containerHeight = getParentHeight();
         int componentHeight = getHeight();
         setY((containerHeight / 2) - (componentHeight / 2));
+        this.centeredVertically = true;
     }
 
     @Override

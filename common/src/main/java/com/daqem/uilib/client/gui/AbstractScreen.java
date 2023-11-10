@@ -13,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ */
 public abstract class AbstractScreen extends Screen implements IScreen {
 
     private final List<IComponent<?>> components = new ArrayList<>();
@@ -41,11 +43,19 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     protected void init() {
         super.init();
-        this.onStartScreen();
-        if (getBackground() != null) {
-            this.getBackground().start();
+        if (!initialized) {
+            this.startScreen();
+            if (getBackground() != null) {
+                this.getBackground().startRenderable();
+            }
+            this.getComponents().forEach(IRenderable::startRenderable);
+        } else {
+            this.onResizeScreenRepositionComponents(this.width, this.height);
+            if (getBackground() != null) {
+                this.getBackground().resizeScreenRepositionRenderable(this.width, this.height);
+            }
+            this.getComponents().forEach(component -> component.resizeScreenRepositionRenderable(this.width, this.height));
         }
-        this.getComponents().forEach(IRenderable::start);
     }
 
     @Override
@@ -112,6 +122,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void removeComponent(IComponent<?> component) {
         components.remove(component);
+        component.setScreen(null);
     }
 
     @Override
@@ -122,6 +133,30 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void setBackground(@Nullable IBackground<?> background) {
         this.background = background;
+        if (background != null) {
+            background.setScreen(this);
+        }
+    }
+
+    @Override
+    public void onResizeScreenRepositionComponents(int width, int height) {
+        repositionComponents(components, width, height);
+    }
+
+    private void repositionComponents(List<IComponent<?>> components, int width, int height) {
+        for (IComponent<?> component : components) {
+            centerComponent(width, height, component);
+            repositionComponents(component.getChildren(), width - component.getX(), height - component.getY());
+        }
+    }
+
+    private static void centerComponent(int width, int height, IComponent<?> component) {
+        if (component.isCenteredHorizontally()) {
+            component.setX((width / 2) - (component.getWidth() / 2));
+        }
+        if (component.isCenteredVertically()) {
+            component.setY((height / 2) - (component.getHeight() / 2));
+        }
     }
 
     @Override

@@ -1,15 +1,17 @@
 package com.daqem.uilib.client.screen.test.components;
 
+import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.TextureComponent;
 import com.daqem.uilib.client.gui.texture.Texture;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestBackgroundComponent extends TextureComponent {
 
-    private final TestTabs.TestLeftTabs leftTabs = new TestTabs.TestLeftTabs();
-    private final TestTabs.TestRightTabs rightTabs = new TestTabs.TestRightTabs();
+    private final TestLeftTabs leftTabs = new TestLeftTabs();
+    private final TestRightTabs rightTabs = new TestRightTabs();
 
     public TestBackgroundComponent() {
         super(
@@ -19,28 +21,24 @@ public class TestBackgroundComponent extends TextureComponent {
     }
 
     @Override
-    public void start() {
+    public void startRenderable() {
         this.center();
-
-        this.addChildren(Arrays.asList(
-                leftTabs.ALL_JOBS,
-                leftTabs.ACTIVE_JOBS,
-                leftTabs.INACTIVE_JOBS,
-                rightTabs.INFO,
-                rightTabs.RESTRICTIONS,
-                rightTabs.POWER_UPS,
-                rightTabs.GET_EXP
-        ));
-
-        super.start();
+        this.addChildren(getAllTabs());
+        super.startRenderable();
     }
 
-
-    public TestTabs.TestLeftTabs getLeftTabs() {
+    public TestLeftTabs getLeftTabs() {
         return leftTabs;
     }
 
-    public TestTabs.TestRightTabs getRightTabs() {
+    public TestRightTabs getRightTabs() {
         return rightTabs;
+    }
+
+    private List<IComponent<?>> getAllTabs() {
+        List<IComponent<?>> allTabs = new ArrayList<>();
+        allTabs.addAll(this.getLeftTabs().getTabComponents());
+        allTabs.addAll(this.getRightTabs().getTabComponents());
+        return allTabs;
     }
 }

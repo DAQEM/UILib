@@ -239,7 +239,11 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
-    public void start() {
+    public void startRenderable() {
+    }
+
+    @Override
+    public void resizeScreenRepositionRenderable(int width, int height) {
     }
 
     @Override

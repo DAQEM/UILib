@@ -4,8 +4,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IHoverable<T>, ICloneable {
 
     @Nullable Screen getScreen();
@@ -20,37 +18,13 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     void setY(int y);
     void setWidth(int width);
     void setHeight(int height);
-    @SuppressWarnings("unused")
     void setVisible(boolean visible);
 
-    /**
-     * Called when the screen is opened.
-     * Set your background and add your components here.
-     */
-    @SuppressWarnings("unused")
-    void start();
+    void startRenderable();
 
-    /**
-     * Called every screen tick.
-     * NOTE: Do not add components here, use {@link IRenderable#start()} instead.
-     *
-     * @param graphics the gui graphics
-     * @param mouseX the mouse x position
-     * @param mouseY the mouse y position
-     * @param partialTicks the partial ticks
-     */
+    void resizeScreenRepositionRenderable(int width, int height);
+
     void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks);
-
-    /**
-     * Called every screen tick.
-     * This is called before {@link IRenderable#render(GuiGraphics, int, int, float)} to manage things like color manipulation, position and scale.
-     * NOTE: Do not add components here, use {@link IRenderable#start()} instead.
-     *
-     * @param graphics the gui graphics
-     * @param mouseX the mouse x position
-     * @param mouseY the mouse y position
-     * @param partialTicks the partial ticks
-     */
     void renderBase(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks);
 
     @Override
@@ -77,4 +51,5 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
             getOnClickAction().onClick((T) this, getScreen(), mouseX, mouseY);
         }
     }
+
 }

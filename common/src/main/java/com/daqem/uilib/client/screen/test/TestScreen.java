@@ -12,11 +12,11 @@ public class TestScreen extends AbstractScreen {
         super(UILibClient.translatable("screen.test"));
     }
 
-    @Override
-    public void onStartScreen() {
-        this.setBackground(Backgrounds.getDefaultBackground(this));
+    TestBackgroundComponent testBackgroundComponent = new TestBackgroundComponent();
 
-        TestBackgroundComponent testBackgroundComponent = new TestBackgroundComponent();
+    @Override
+    public void startScreen() {
+        this.setBackground(Backgrounds.getDefaultBackground(this));
 
         addComponents(testBackgroundComponent);
     }

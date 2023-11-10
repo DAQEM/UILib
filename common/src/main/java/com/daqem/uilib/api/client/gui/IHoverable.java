@@ -2,6 +2,7 @@ package com.daqem.uilib.api.client.gui;
 
 import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
 import com.daqem.uilib.api.client.gui.component.IComponent;
+import net.minecraft.client.gui.screens.Screen;
 
 public interface IHoverable<T extends IHoverable<T>> {
 
@@ -21,7 +22,7 @@ public interface IHoverable<T extends IHoverable<T>> {
      * <p>The onHover action is defined by implementing the {@link OnHoverAction} interface with the desired functionality.
      * When a component is hovered, this method is called to perform the associated action.</p>
      * <p/>
-     * <p>Note: The {@link OnHoverAction#onHover(Object)} action is registered using the {@link IHoverable#setOnHoverAction(OnHoverAction)} method of the {@link IComponent} interface.</p>
+     * <p>Note: The {@link OnHoverAction#onHover(Object, Screen, double, double)} action is registered using the {@link IHoverable#setOnHoverAction(OnHoverAction)} method of the {@link IComponent} interface.</p>
      * <p/>
      * <p><b>Example usage:</b></p>
      * <pre>{@code

@@ -109,7 +109,13 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     }
 
     @Override
-    public void start() {
+    public void startRenderable() {
+    }
+
+    @Override
+    public void resizeScreenRepositionRenderable(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     @Override
