@@ -30,7 +30,7 @@ jobs:
         run: chmod +x gradlew
         
       - name: Test
-        run: ./gradlew test
+        run: ./gradlew :common:test
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
