@@ -18,7 +18,7 @@ public class TextureBackground extends AbstractBackground<TextureBackground> {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         guiGraphics.blit(texture.getTextureLocation(), 0, 0, 0, 0.0f, 0.0f, getWidth(), getHeight(), texture.getWidth(), texture.getHeight());
     }
 

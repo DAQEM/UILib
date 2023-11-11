@@ -20,7 +20,7 @@ public class TestText extends AbstractText<TestText> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 
     }
 }

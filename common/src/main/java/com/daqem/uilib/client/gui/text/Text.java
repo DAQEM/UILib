@@ -17,7 +17,7 @@ public class Text extends AbstractText<Text> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         graphics.drawString(getFont(), getText(), 0, 0, getTextColor(), isShadow());
     }
 }

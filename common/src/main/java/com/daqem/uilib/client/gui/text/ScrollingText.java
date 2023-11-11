@@ -32,7 +32,7 @@ public class ScrollingText extends AbstractText<ScrollingText> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         int xOffset = 0;
         int yOffset = 0;
 

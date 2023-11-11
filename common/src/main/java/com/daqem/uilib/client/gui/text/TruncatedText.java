@@ -27,7 +27,7 @@ public class TruncatedText extends AbstractText<TruncatedText> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         Component text = getText();
         Font font = getFont();
         int width = getWidth();

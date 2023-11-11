@@ -1,7 +1,9 @@
 package com.daqem.uilib.client.gui.text;
 
-import com.daqem.uilib.api.client.gui.component.action.OnClickAction;
-import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
+import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnDragEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnScrollEvent;
 import com.daqem.uilib.api.client.gui.text.IText;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
@@ -33,8 +35,10 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     private boolean horizontalCenter;
     private boolean verticalCenter;
 
-    private @Nullable OnClickAction<T> onClickAction;
-    private @Nullable OnHoverAction<T> onHoverAction;
+    private @Nullable OnClickEvent<T> onClickEvent;
+    private @Nullable OnHoverEvent<T> onHoverEvent;
+    private @Nullable OnDragEvent<T> onDragEvent;
+    private @Nullable OnScrollEvent<T> onScrollEvent;
 
     private @Nullable T hoverState;
 
@@ -247,7 +251,7 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
-    public void renderBase(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderBase(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         graphics.pose().pushPose();
 
         graphics.pose().translate(
@@ -257,7 +261,7 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
         Style style = this.text.getStyle().withColor(textColor).withBold(bold).withItalic(italic)
                 .withUnderlined(underlined).withStrikethrough(strikethrough).withObfuscated(obfuscated);
         this.setText(this.text.copy().setStyle(style));
-        this.render(graphics, mouseX, mouseY, partialTicks);
+        this.render(graphics, mouseX, mouseY, delta);
         graphics.pose().popPose();
     }
 
@@ -275,23 +279,23 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
-    public @Nullable OnClickAction<T> getOnClickAction() {
-        return onClickAction;
+    public @Nullable OnClickEvent<T> getOnClickEvent() {
+        return onClickEvent;
     }
 
     @Override
-    public void setOnClickAction(@Nullable OnClickAction<T> onClickAction) {
-        this.onClickAction = onClickAction;
+    public void setOnClickEvent(@Nullable OnClickEvent<T> onClickEvent) {
+        this.onClickEvent = onClickEvent;
     }
 
     @Override
-    public @Nullable OnHoverAction<T> getOnHoverAction() {
-        return onHoverAction;
+    public @Nullable OnHoverEvent<T> getOnHoverEvent() {
+        return onHoverEvent;
     }
 
     @Override
-    public void setOnHoverAction(@Nullable OnHoverAction<T> onHoverAction) {
-        this.onHoverAction = onHoverAction;
+    public void setOnHoverEvent(@Nullable OnHoverEvent<T> onHoverEvent) {
+        this.onHoverEvent = onHoverEvent;
     }
 
     @Override
@@ -302,5 +306,25 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     @Override
     public @Nullable T getHoverState() {
         return hoverState;
+    }
+
+    @Override
+    public OnDragEvent<T> getOnDragEvent() {
+        return onDragEvent;
+    }
+
+    @Override
+    public void setOnDragEvent(OnDragEvent<T> onDragEvent) {
+        this.onDragEvent = onDragEvent;
+    }
+
+    @Override
+    public OnScrollEvent<T> getOnScrollEvent() {
+        return onScrollEvent;
+    }
+
+    @Override
+    public void setOnScrollEvent(OnScrollEvent<T> onScrollEvent) {
+        this.onScrollEvent = onScrollEvent;
     }
 }
