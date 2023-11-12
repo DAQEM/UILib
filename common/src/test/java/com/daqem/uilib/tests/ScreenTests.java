@@ -37,7 +37,6 @@ public class ScreenTests {
         //Assert
         assertEquals(1, testScreen.getComponents().size());
         assertEquals(testComponent, testScreen.getComponents().get(0));
-        assertSame(testScreen, testComponent.getScreen());
         assertTrue(testScreen.getComponents().contains(testComponent));
     }
 
@@ -56,9 +55,6 @@ public class ScreenTests {
         assertTrue(testScreen.getComponents().contains(testComponent1));
         assertTrue(testScreen.getComponents().contains(testComponent2));
         assertTrue(testScreen.getComponents().contains(testComponent3));
-        assertEquals(testScreen, testComponent1.getScreen());
-        assertEquals(testScreen, testComponent2.getScreen());
-        assertEquals(testScreen, testComponent3.getScreen());
         assertFalse(testScreen.getComponents().isEmpty());
         assertEquals(testComponent1, testScreen.getComponents().get(0));
         assertEquals(testComponent2, testScreen.getComponents().get(1));
@@ -76,7 +72,6 @@ public class ScreenTests {
 
         //Assert
         assertTrue(testScreen.getComponents().isEmpty());
-        assertNull(testComponent.getScreen());
         assertFalse(testScreen.getComponents().contains(testComponent));
     }
 
@@ -90,7 +85,6 @@ public class ScreenTests {
 
         //Assert
         assertEquals(testBackground, testScreen.getBackground());
-        assertSame(testScreen, testBackground.getScreen());
     }
 
     @Test
@@ -147,7 +141,6 @@ public class ScreenTests {
         assertEquals(1080, resizeTestScreen.getBackground().getHeight());
         assertNotNull(resizeTestScreen.getComponents());
         assertEquals(1, resizeTestScreen.getComponents().size());
-        assertEquals(resizeTestScreen, resizeTestScreen.getComponents().get(0).getScreen());
         assertEquals(10, resizeTestScreen.getComponents().get(0).getX());
         assertEquals(20, resizeTestScreen.getComponents().get(0).getY());
         assertEquals(30, resizeTestScreen.getComponents().get(0).getWidth());
