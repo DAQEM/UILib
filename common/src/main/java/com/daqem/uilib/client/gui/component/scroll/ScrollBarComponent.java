@@ -3,7 +3,9 @@ package com.daqem.uilib.client.gui.component.scroll;
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
 import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
+import com.daqem.uilib.api.client.gui.component.scroll.ScrollOrientation;
 import com.daqem.uilib.api.client.gui.text.IText;
+import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractNineSlicedComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -64,6 +66,11 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
     public void scroll(ScrollPaneComponent scrolledObject, Screen screen, double mouseX, double mouseY, double delta) {
         if (scrollBar != null) {
             scrollBar.scroll(scrolledObject, screen, mouseX, mouseY, delta);
+            if (scrolledObject.getOrientation() == ScrollOrientation.HORIZONTAL) {
+                scrollBar.setX((int) ((getWidth() - scrollBar.getWidth()) * ((double) scrollBar.getValue() / (double) scrollBar.getMaxValue(scrolledObject))));
+            } else {
+                scrollBar.setY((int) ((getHeight() - scrollBar.getHeight()) * ((double) scrollBar.getValue() / (double) scrollBar.getMaxValue(scrolledObject))));
+            }
         }
     }
 }

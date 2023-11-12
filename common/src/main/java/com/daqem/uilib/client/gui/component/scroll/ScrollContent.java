@@ -8,6 +8,8 @@ import com.daqem.uilib.api.client.gui.component.scroll.ScrollOrientation;
 import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,12 +22,12 @@ public class ScrollContent extends AbstractComponent<ScrollContent> implements I
     private int contentSpacing;
     private ScrollOrientation orientation;
 
-    public ScrollContent(int x, int y, int width, int height, int contentSpacing, ScrollOrientation orientation) {
-        this(x, y, width, height, null, null, null, contentSpacing, orientation);
+    public ScrollContent(int x, int y, int contentSpacing, ScrollOrientation orientation) {
+        this(x, y, null, null, null, contentSpacing, orientation);
     }
 
-    public ScrollContent(int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickEvent<ScrollContent> onClickEvent, @Nullable OnHoverEvent<ScrollContent> onHoverEvent, int contentSpacing, ScrollOrientation orientation) {
-        super(null, x, y, width, height, text, onClickEvent, onHoverEvent);
+    public ScrollContent(int x, int y, @Nullable IText<?> text, @Nullable OnClickEvent<ScrollContent> onClickEvent, @Nullable OnHoverEvent<ScrollContent> onHoverEvent, int contentSpacing, ScrollOrientation orientation) {
+        super(null, x, y, 0, 0, text, onClickEvent, onHoverEvent);
         this.contentSpacing = contentSpacing;
         this.orientation = orientation;
     }
@@ -84,9 +86,36 @@ public class ScrollContent extends AbstractComponent<ScrollContent> implements I
                 int offsetX = previousComponent != null ? previousComponent.getX() + previousComponent.getWidth() + contentSpacing : 0;
                 component.setX(offsetX);
             }
+            component.setZ(10);
         }
         graphics.pose().pushPose();
-        components.forEach(component -> component.render(graphics, mouseX, mouseY, delta));
+        getComponents().forEach(component -> component.renderBase(graphics, mouseX, mouseY, delta));
         graphics.pose().popPose();
+    }
+
+    @Override
+    public int getHeight() {
+        if (getOrientation() == ScrollOrientation.VERTICAL) {
+            return getComponents().stream().mapToInt(IComponent::getHeight).sum() + (getComponents().size() - 1) * getContentSpacing();
+        }
+        return getComponents().stream().mapToInt(IComponent::getHeight).max().orElse(0);
+    }
+
+    @Override
+    public int getWidth() {
+        if (getOrientation() == ScrollOrientation.HORIZONTAL) {
+            return getComponents().stream().mapToInt(IComponent::getWidth).sum() + (getComponents().size() - 1) * getContentSpacing();
+        }
+        return getComponents().stream().mapToInt(IComponent::getWidth).max().orElse(0);
+    }
+
+    public void scroll(ScrollPaneComponent scrolledObject, Screen screen, double mouseX, double mouseY, double delta) {
+        int min = 0;
+        int max = getHeight() - scrolledObject.getHeight();
+        if (scrolledObject.getOrientation() == ScrollOrientation.HORIZONTAL) {
+            this.setX((int) Mth.clamp(this.getX() + -delta, -max, min));
+        } else {
+            this.setY((int) Mth.clamp(this.getY() + -delta, -max, min));
+        }
     }
 }

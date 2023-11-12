@@ -11,8 +11,11 @@ import com.daqem.uilib.client.gui.component.scroll.ScrollBar;
 import com.daqem.uilib.client.gui.component.scroll.ScrollBarComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollContent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollPaneComponent;
+import com.daqem.uilib.client.gui.text.TruncatedText;
 import com.daqem.uilib.client.gui.texture.Texture;
 import com.daqem.uilib.client.gui.texture.Textures;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,21 +41,31 @@ public class TestBackgroundComponent extends TextureComponent {
     public void startRenderable() {
         this.center();
         this.addChildren(getAllTabs());
+        this.addChild(scrollPane);
+
         NineSlicedBackground scrollBarBackground = Backgrounds.getScrollBarBackground(scrollBar.getWidth() + 2, scrollBar.getHeight() + 2);
         scrollBar.setBackground(scrollBarBackground);
-        ScrollContent content = new ScrollContent(1, 1, 114, 138, 0, ScrollOrientation.VERTICAL);
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        content.addComponent(new ButtonComponent(Textures.BUTTON, 0, 0, 112, 20));
-        scrollBar.setScrollBar(new ScrollBar(Textures.SCROLL_BAR, 0, 0, scrollBar.getWidth(), 10, ScrollOrientation.VERTICAL, content));
+        scrollBar.setScrollBar(new ScrollBar(Textures.SCROLL_BAR, 0, 0, scrollBar.getWidth()));
         scrollPane.setScrollBar(scrollBar);
+        ScrollContent content = new ScrollContent(0, 0, 0, ScrollOrientation.VERTICAL);
         scrollPane.setContent(content);
-        this.addChild(scrollPane);
+        ButtonComponent component = new ButtonComponent(Textures.SCROLL_BAR_BACKGROUND, 0, 0, 116, 20);
+        TruncatedText testinggggggggggggg = new TruncatedText(Minecraft.getInstance().font, Component.literal("Testingggggggggggggjhhsgghsbdfbshjfb"), 0, 0, 116, 20);
+        testinggggggggggggg.setCenter(true, true);
+        component.setText(testinggggggggggggg);
+        content.addComponent(component);
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
+        content.addComponent((ButtonComponent) component.getClone());
         super.startRenderable();
     }
 

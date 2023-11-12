@@ -15,6 +15,8 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     @Nullable IComponent<?> getParent();
     List<IComponent<?>> getChildren();
     ITexture getTexture();
+    int getTotalX();
+    int getTotalY();
     int getZ();
     IText<?> getText();
     float getScale();

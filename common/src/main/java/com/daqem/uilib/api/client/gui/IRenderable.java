@@ -4,20 +4,20 @@ import com.daqem.uilib.api.client.gui.event.IClickable;
 import com.daqem.uilib.api.client.gui.event.IDraggable;
 import com.daqem.uilib.api.client.gui.event.IHoverable;
 import com.daqem.uilib.api.client.gui.event.IScrollable;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.vehicle.Minecart;
 import org.jetbrains.annotations.Nullable;
 
 public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IHoverable<T>, IDraggable<T>, IScrollable<T>, ICloneable {
 
-    @Nullable Screen getScreen();
     int getX();
     int getY();
     int getWidth();
     int getHeight();
     boolean isVisible();
 
-    void setScreen(@Nullable Screen screen);
     void setX(int x);
     void setY(int y);
     void setWidth(int width);
@@ -52,9 +52,11 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     }
 
     @Override
-    default void preformOnHoverEvent(double mouseX, double mouseY) {
+    default void preformOnHoverEvent(double mouseX, double mouseY, float delta) {
         if (getOnHoverEvent() != null) {
-            getOnHoverEvent().onHover(getHoverState(), getScreen(), mouseX, mouseY);
+            if (this.isHovered(mouseX, mouseY)) {
+                getOnHoverEvent().onHover(getHoverState(), Minecraft.getInstance().screen, mouseX, mouseY, delta);
+            }
         }
     }
 
@@ -62,7 +64,9 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     @Override
     default void preformOnClickEvent(double mouseX, double mouseY, int button) {
         if (getOnClickEvent() != null) {
-            getOnClickEvent().onClick((T) this, getScreen(), mouseX, mouseY, button);
+            if (this.isHovered(mouseX, mouseY)) {
+                getOnClickEvent().onClick((T) this, Minecraft.getInstance().screen, mouseX, mouseY, button);
+            }
         }
     }
 
@@ -70,14 +74,18 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     @Override
     default void preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (getOnDragEvent() != null) {
-            getOnDragEvent().onDrag((T) this, getScreen(), mouseX, mouseY, button, dragX, dragY);
+            if (this.isHovered(mouseX, mouseY)) {
+                getOnDragEvent().onDrag((T) this, Minecraft.getInstance().screen, mouseX, mouseY, button, dragX, dragY);
+            }
         }
     }
 
     @SuppressWarnings("unchecked")
-    default void preformOnScrollEvent(double mouseX, double mouseY, double scrollAmount) {
+    default void preformOnScrollEvent(double mouseX, double mouseY, double delta) {
         if (getOnScrollEvent() != null) {
-            getOnScrollEvent().onScroll((T) this, getScreen(), mouseX, mouseY, scrollAmount);
+            if (this.isHovered(mouseX, mouseY)) {
+                getOnScrollEvent().onScroll((T) this, Minecraft.getInstance().screen, mouseX, mouseY, delta);
+            }
         }
     }
 }

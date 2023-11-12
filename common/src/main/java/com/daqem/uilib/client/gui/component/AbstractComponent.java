@@ -11,6 +11,7 @@ import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +36,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private boolean visible = true;
     private boolean centeredHorizontally = false;
     private boolean centeredVertically = false;
-    private Screen screen;
 
     private @Nullable OnClickEvent<T> onClickEvent;
     private @Nullable OnHoverEvent<T> onHoverEvent;
@@ -99,10 +99,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
         }
     }
 
-    @Override
-    public Screen getScreen() {
-        return screen;
-    }
 
     @Override
     public @Nullable IComponent<?> getParent() {
@@ -125,8 +121,30 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
+    public int getTotalX() {
+        int totalX = getX();
+        @Nullable IComponent<?> parent = getParent();
+        while (parent != null) {
+            totalX += parent.getX();
+            parent = parent.getParent();
+        }
+        return totalX;
+    }
+
+    @Override
     public int getY() {
         return y;
+    }
+
+    @Override
+    public int getTotalY() {
+        int totalY = getY();
+        @Nullable IComponent<?> parent = getParent();
+        while (parent != null) {
+            totalY += parent.getY();
+            parent = parent.getParent();
+        }
+        return totalY;
     }
 
     @Override
@@ -172,12 +190,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public IColorManipulator getColorManipulator() {
         return colorManipulator;
-    }
-
-
-    @Override
-    public void setScreen(Screen screen) {
-        this.screen = screen;
     }
 
     @Override
@@ -346,11 +358,13 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     private int getParentWidth() {
-        return getParent() != null ? getParent().getWidth() : getScreen() != null ? getScreen().width : 0;
+        Screen screen = Minecraft.getInstance().screen;
+        return getParent() != null ? getParent().getWidth() : screen != null ? screen.width : 0;
     }
 
     private int getParentHeight() {
-        return getParent() != null ? getParent().getHeight() : getScreen() != null ? getScreen().height : 0;
+        Screen screen = Minecraft.getInstance().screen;
+        return getParent() != null ? getParent().getHeight() : screen != null ? screen.height : 0;
     }
 
     @SuppressWarnings("unchecked")

@@ -23,7 +23,7 @@ public class ScrollComponentTests {
     void setUp() {
         this.scrollPaneComponent = new ScrollPaneComponent(Textures.SCROLL_PANE, 0, 0, 100, 100);
         this.scrollBarComponent = new ScrollBarComponent(0, 0, 100, 100);
-        this.scrollContent = new ScrollContent(0, 0, 100, 100, 5, ScrollOrientation.VERTICAL);
+        this.scrollContent = new ScrollContent(0, 0, 5, ScrollOrientation.VERTICAL);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class ScrollComponentTests {
     @Test
     void ScrollBarComponentSetScrollBar() {
         //Arrange
-        ScrollBar scrollBar = new ScrollBar(Textures.SCROLL_BAR, 0, 0, 100, 100, ScrollOrientation.VERTICAL, null);
+        ScrollBar scrollBar = new ScrollBar(Textures.SCROLL_BAR, 0, 0, 100);
 
         //Act
         scrollBarComponent.setScrollBar(scrollBar);

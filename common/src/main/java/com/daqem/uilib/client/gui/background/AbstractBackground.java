@@ -19,7 +19,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     private int height;
     private boolean visible = true;
     private IColorManipulator colorManipulator = new ColorManipulator();
-    private Screen screen;
 
     private @Nullable OnClickEvent<T> onClickEvent;
     private @Nullable OnHoverEvent<T> onHoverEvent;
@@ -40,11 +39,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
 
         //noinspection unchecked
         this.hoverState = (T) this.getClone();
-    }
-
-    @Override
-    public Screen getScreen() {
-        return screen;
     }
 
     @Override
@@ -70,11 +64,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     @Override
     public boolean isVisible() {
         return visible;
-    }
-
-    @Override
-    public void setScreen(Screen screen) {
-        this.screen = screen;
     }
 
     @Override

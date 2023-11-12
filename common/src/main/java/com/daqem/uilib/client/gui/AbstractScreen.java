@@ -4,7 +4,9 @@ import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.IScreen;
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.IComponent;
+import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.background.Backgrounds;
+import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -62,7 +64,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         //check if the mouse is hovering over a component
-        this.checkHovering(mouseX, mouseY);
+        this.checkHovering(mouseX, mouseY, delta);
         //Render background
         this.renderBackground(guiGraphics, mouseX, mouseY, delta);
         //render Minecraft widgets
@@ -73,11 +75,14 @@ public abstract class AbstractScreen extends Screen implements IScreen {
         this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
     }
 
-    private void checkHovering(int mouseX, int mouseY) {
+    private void checkHovering(int mouseX, int mouseY, float delta) {
+        handleHoverEvent(components, mouseX, mouseY, delta);
+    }
+
+    private void handleHoverEvent(List<IComponent<?>> components, int mouseX, int mouseY, float delta) {
         for (IComponent<?> component : components) {
-            if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnHoverEvent(mouseX, mouseY);
-            }
+            component.preformOnHoverEvent(mouseX - component.getX(), mouseY - component.getY(), delta);
+            handleHoverEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
         }
     }
 
@@ -111,19 +116,16 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void addComponent(IComponent<?> component) {
         components.add(component);
-        component.setScreen(this);
     }
 
     @Override
     public void addComponents(IComponent<?>... components) {
         this.components.addAll(List.of(components));
-        this.components.forEach(component -> component.setScreen(this));
     }
 
     @Override
     public void removeComponent(IComponent<?> component) {
         components.remove(component);
-        component.setScreen(null);
     }
 
     @Override
@@ -134,9 +136,6 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void setBackground(@Nullable IBackground<?> background) {
         this.background = background;
-        if (background != null) {
-            background.setScreen(this);
-        }
     }
 
     @Override
@@ -162,46 +161,40 @@ public abstract class AbstractScreen extends Screen implements IScreen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        handleClickAction(components, mouseX, mouseY, button);
+        handleClickEvent(components, mouseX, mouseY, button);
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    private void handleClickAction(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
+    private void handleClickEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
         for (IComponent<?> component : components) {
-            if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnClickEvent(mouseX, mouseY, button);
-            }
-            handleClickAction(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button);
+            component.preformOnClickEvent(mouseX - component.getX(), mouseY - component.getY(), button);
+            handleClickEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button);
         }
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        handleDragAction(components, mouseX, mouseY, button, dragX, dragY);
+        handleDragEvent(components, mouseX, mouseY, button, dragX, dragY);
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
-    private void handleDragAction(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
+    private void handleDragEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
         for (IComponent<?> component : components) {
-            if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
-            }
-            handleDragAction(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button, dragX - component.getX(), dragY - component.getY());
+            component.preformOnDragEvent(mouseX - component.getX(), mouseY - component.getY(), button, dragX - component.getX(), dragY - component.getY());
+            handleDragEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button, dragX - component.getX(), dragY - component.getY());
         }
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        handleScrollAction(components, mouseX, mouseY, delta);
+        handleScrollEvent(components, mouseX, mouseY, -delta);
         return super.mouseScrolled(mouseX, mouseY, delta);
     }
 
-    private void handleScrollAction(List<IComponent<?>> components, double mouseX, double mouseY, double delta) {
+    private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double delta) {
         for (IComponent<?> component : components) {
-            if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnScrollEvent(mouseX, mouseY, delta);
-            }
-            handleScrollAction(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
+            component.preformOnScrollEvent(mouseX - component.getX(), mouseY - component.getY(), delta);
+            handleScrollEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
         }
     }
 

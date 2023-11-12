@@ -8,14 +8,12 @@ import com.daqem.uilib.api.client.gui.text.IText;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractText<T extends AbstractText<T>> implements IText<T> {
 
-    private Screen screen;
     private Font font;
 
     private Component text;
@@ -25,6 +23,7 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     private int height;
     private int textColor = 0xFFFFFFFF;
     private boolean shadow;
+    private boolean visible = true;
 
     private boolean bold;
     private boolean italic;
@@ -59,11 +58,6 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
-    public Screen getScreen() {
-        return screen;
-    }
-
-    @Override
     public Font getFont() {
         return font;
     }
@@ -95,7 +89,7 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
 
     @Override
     public boolean isVisible() {
-        return false;
+        return visible;
     }
 
     @Override
@@ -144,11 +138,6 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
-    public void setScreen(Screen screen) {
-        this.screen = screen;
-    }
-
-    @Override
     public void setFont(Font font) {
         this.font = font;
     }
@@ -180,7 +169,7 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
 
     @Override
     public void setVisible(boolean visible) {
-
+        this.visible = visible;
     }
 
     @Override
@@ -252,17 +241,19 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
 
     @Override
     public void renderBase(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        graphics.pose().pushPose();
+        if (isVisible()) {
+            graphics.pose().pushPose();
 
-        graphics.pose().translate(
-                x + (isHorizontalCenter() ? ((float) getWidth() / 2) - ((float) getFont().width(getText()) / 2) : 0),
-                y + (isVerticalCenter() ? ((float) getHeight() / 2) - ((float) getFont().lineHeight / 2) : 0),
-                0);
-        Style style = this.text.getStyle().withColor(textColor).withBold(bold).withItalic(italic)
-                .withUnderlined(underlined).withStrikethrough(strikethrough).withObfuscated(obfuscated);
-        this.setText(this.text.copy().setStyle(style));
-        this.render(graphics, mouseX, mouseY, delta);
-        graphics.pose().popPose();
+            graphics.pose().translate(
+                    x + (isHorizontalCenter() ? ((float) getWidth() / 2) - ((float) getFont().width(getText()) / 2) : 0),
+                    y + (isVerticalCenter() ? ((float) getHeight() / 2) - ((float) getFont().lineHeight / 2) : 0),
+                    0);
+            Style style = this.getText().getStyle().withColor(getTextColor()).withBold(isBold()).withItalic(isItalic())
+                    .withUnderlined(isUnderlined()).withStrikethrough(isStrikethrough()).withObfuscated(isObfuscated());
+            this.setText(this.getText().copy().setStyle(style));
+            this.render(graphics, mouseX, mouseY, delta);
+            graphics.pose().popPose();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -270,8 +261,8 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     public @Nullable Object getClone() {
         try {
             T clone = (T) super.clone();
-            if (this.text != null)
-                clone.setText(this.text.copy());
+            if (this.getText() != null)
+                clone.setText(this.getText().copy());
             return clone;
         } catch (CloneNotSupportedException e) {
             return null;
@@ -309,22 +300,22 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
-    public OnDragEvent<T> getOnDragEvent() {
+    public @Nullable OnDragEvent<T> getOnDragEvent() {
         return onDragEvent;
     }
 
     @Override
-    public void setOnDragEvent(OnDragEvent<T> onDragEvent) {
+    public void setOnDragEvent(@Nullable OnDragEvent<T> onDragEvent) {
         this.onDragEvent = onDragEvent;
     }
 
     @Override
-    public OnScrollEvent<T> getOnScrollEvent() {
+    public @Nullable OnScrollEvent<T> getOnScrollEvent() {
         return onScrollEvent;
     }
 
     @Override
-    public void setOnScrollEvent(OnScrollEvent<T> onScrollEvent) {
+    public void setOnScrollEvent(@Nullable OnScrollEvent<T> onScrollEvent) {
         this.onScrollEvent = onScrollEvent;
     }
 }

@@ -5,10 +5,29 @@ import org.jetbrains.annotations.Nullable;
 
 public class ColorManipulator implements IColorManipulator {
 
-    private float red = 1F;
-    private float green = 1F;
-    private float blue = 1F;
-    private float opacity = 1F;
+    private float red;
+    private float green;
+    private float blue;
+    private float opacity;
+
+    public ColorManipulator() {
+        this(1F, 1F, 1F, 1F);
+    }
+
+    public ColorManipulator(float rgba) {
+        this(rgba, rgba, rgba, rgba);
+    }
+
+    public ColorManipulator(float red, float green, float blue) {
+        this(red, green, blue, 1F);
+    }
+
+    public ColorManipulator(float red, float green, float blue, float opacity) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.opacity = opacity;
+    }
 
     @Override
     public float getRed() {
