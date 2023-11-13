@@ -66,23 +66,23 @@ public class TestBackgroundComponent extends TextureComponent {
         }
         {
             ScrollOrientation orientation = ScrollOrientation.HORIZONTAL;
-            int scrollPaneX = 157;
+            int scrollPaneX = 158;
             int scrollPaneY = 15;
-            int scrollPaneWidth = 116;
-            int scrollPaneHeight = 140;
-            int scrollBarWidth = 12;
-            int scrollBarXOffset = 4;
-            int scrollBarYOffset = 1;
+            int scrollPaneWidth = 160;
+            int scrollPaneHeight = 123;
+            int scrollBarThickness = 12;
+            int scrollBarXOffset = 1;
+            int scrollBarYOffset = 4;
 
             NineSlicedTexture scrollPaneTexture = Textures.SCROLL_PANE;
             NineSlicedTexture scrollBarTexture = Textures.SCROLL_BAR;
             NineSlicedTexture scrollBarBackgroundTexture = Textures.SCROLL_BAR_BACKGROUND;
 
-//            ScrollBar scrollBar = new ScrollBar(scrollBarTexture, 0, 0, scrollBarWidth);
-//            ScrollBarWrapper scrollBarWrapper = new ScrollBarWrapper(scrollPaneWidth + scrollBarXOffset, scrollBarYOffset, scrollBarWidth, scrollPaneHeight - (scrollBarYOffset * 2), orientation, scrollBar);
+            ScrollBar scrollBar = new ScrollBar(scrollBarTexture, 0, 0, scrollBarThickness);
+            ScrollBarWrapper scrollBarWrapper = new ScrollBarWrapper(scrollBarXOffset, scrollPaneHeight + scrollBarYOffset, scrollPaneWidth - (scrollBarXOffset * 2), scrollBarThickness, orientation, scrollBar);
             ScrollContent content = new ScrollContent(0, 0, 0, orientation);
 
-            ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, 6, scrollPaneHeight);
+            ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, 20, scrollPaneHeight);
             content.addChild(component);
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
@@ -107,7 +107,7 @@ public class TestBackgroundComponent extends TextureComponent {
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
 
-            this.scrollPane2 = new ScrollPaneComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, null);
+            this.scrollPane2 = new ScrollPaneComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarWrapper);
         }
     }
 
