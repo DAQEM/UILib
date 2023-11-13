@@ -81,7 +81,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
 
     private void handleHoverEvent(List<IComponent<?>> components, int mouseX, int mouseY, float delta) {
         for (IComponent<?> component : components) {
-            component.preformOnHoverEvent(mouseX - component.getX(), mouseY - component.getY(), delta);
+            component.preformOnHoverEvent(mouseX, mouseY, delta);
             handleHoverEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
         }
     }
@@ -167,7 +167,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
 
     private void handleClickEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
         for (IComponent<?> component : components) {
-            component.preformOnClickEvent(mouseX - component.getX(), mouseY - component.getY(), button);
+            component.preformOnClickEvent(mouseX, mouseY, button);
             handleClickEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button);
         }
     }
@@ -180,8 +180,8 @@ public abstract class AbstractScreen extends Screen implements IScreen {
 
     private void handleDragEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
         for (IComponent<?> component : components) {
-            component.preformOnDragEvent(mouseX - component.getX(), mouseY - component.getY(), button, dragX - component.getX(), dragY - component.getY());
-            handleDragEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button, dragX - component.getX(), dragY - component.getY());
+            component.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
+            handleDragEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button, dragX, dragY);
         }
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
 
     private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double delta) {
         for (IComponent<?> component : components) {
-            component.preformOnScrollEvent(mouseX - component.getX(), mouseY - component.getY(), delta);
+            component.preformOnScrollEvent(mouseX, mouseY, delta);
             handleScrollEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
         }
     }

@@ -24,7 +24,7 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     float getRotation();
 
 
-    void setParent(@Nullable IComponent<?> parent);
+    void setParent(@Nullable IComponent<?> parent, boolean addAsChild);
     void setChildren(List<IComponent<?>> children);
     void addChild(IComponent<?> child);
     void addChildren(IComponent<?>... children);

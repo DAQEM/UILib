@@ -2,20 +2,17 @@ package com.daqem.uilib.client.screen.test.components;
 
 import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.api.client.gui.component.scroll.ScrollOrientation;
+import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.UILibClient;
-import com.daqem.uilib.client.gui.background.Backgrounds;
-import com.daqem.uilib.client.gui.background.NineSlicedBackground;
 import com.daqem.uilib.client.gui.component.ButtonComponent;
 import com.daqem.uilib.client.gui.component.TextureComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollBar;
-import com.daqem.uilib.client.gui.component.scroll.ScrollBarComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollBarWrapper;
 import com.daqem.uilib.client.gui.component.scroll.ScrollContent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollPaneComponent;
-import com.daqem.uilib.client.gui.text.TruncatedText;
+import com.daqem.uilib.client.gui.texture.NineSlicedTexture;
 import com.daqem.uilib.client.gui.texture.Texture;
 import com.daqem.uilib.client.gui.texture.Textures;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +23,92 @@ public class TestBackgroundComponent extends TextureComponent {
     private final TestRightTabs rightTabs = new TestRightTabs();
 
     private final ScrollPaneComponent scrollPane;
-    private final ScrollBarComponent scrollBar;
+    private final ScrollPaneComponent scrollPane2;
 
     public TestBackgroundComponent() {
-        super(
-                new Texture(UILibClient.getId("textures/jobs_screen.png"),
+        super(new Texture(UILibClient.getId("textures/jobs_screen.png"),
                         0, 0, 326, 166, 362),
                 0, 0, 326, 166);
-        this.scrollPane = new ScrollPaneComponent(Textures.SCROLL_PANE, 7, 15, 116, 140);
-        this.scrollBar = new ScrollBarComponent(this.scrollPane.getWidth() + 4, 1, 12, 138);
+
+        {
+            ScrollOrientation orientation = ScrollOrientation.VERTICAL;
+            int scrollPaneX = 7;
+            int scrollPaneY = 15;
+            int scrollPaneWidth = 116;
+            int scrollPaneHeight = 140;
+            int scrollBarWidth = 12;
+            int scrollBarXOffset = 4;
+            int scrollBarYOffset = 1;
+
+            NineSlicedTexture scrollPaneTexture = Textures.SCROLL_PANE;
+            NineSlicedTexture scrollBarTexture = Textures.SCROLL_BAR;
+            NineSlicedTexture scrollBarBackgroundTexture = Textures.SCROLL_BAR_BACKGROUND;
+
+            ScrollBar scrollBar = new ScrollBar(scrollBarTexture, 0, 0, scrollBarWidth);
+            ScrollBarWrapper scrollBarWrapper = new ScrollBarWrapper(scrollPaneWidth + scrollBarXOffset, scrollBarYOffset, scrollBarWidth, scrollPaneHeight - (scrollBarYOffset * 2), orientation, scrollBar);
+            ScrollContent content = new ScrollContent(0, 0, 0, orientation);
+
+            ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, scrollPaneWidth, 20);
+            content.addChild(component);
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+
+            this.scrollPane = new ScrollPaneComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarWrapper);
+        }
+        {
+            ScrollOrientation orientation = ScrollOrientation.HORIZONTAL;
+            int scrollPaneX = 157;
+            int scrollPaneY = 15;
+            int scrollPaneWidth = 116;
+            int scrollPaneHeight = 140;
+            int scrollBarWidth = 12;
+            int scrollBarXOffset = 4;
+            int scrollBarYOffset = 1;
+
+            NineSlicedTexture scrollPaneTexture = Textures.SCROLL_PANE;
+            NineSlicedTexture scrollBarTexture = Textures.SCROLL_BAR;
+            NineSlicedTexture scrollBarBackgroundTexture = Textures.SCROLL_BAR_BACKGROUND;
+
+//            ScrollBar scrollBar = new ScrollBar(scrollBarTexture, 0, 0, scrollBarWidth);
+//            ScrollBarWrapper scrollBarWrapper = new ScrollBarWrapper(scrollPaneWidth + scrollBarXOffset, scrollBarYOffset, scrollBarWidth, scrollPaneHeight - (scrollBarYOffset * 2), orientation, scrollBar);
+            ScrollContent content = new ScrollContent(0, 0, 0, orientation);
+
+            ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, 6, scrollPaneHeight);
+            content.addChild(component);
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+
+            this.scrollPane2 = new ScrollPaneComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, null);
+        }
     }
 
     @Override
@@ -42,30 +116,7 @@ public class TestBackgroundComponent extends TextureComponent {
         this.center();
         this.addChildren(getAllTabs());
         this.addChild(scrollPane);
-
-        NineSlicedBackground scrollBarBackground = Backgrounds.getScrollBarBackground(scrollBar.getWidth() + 2, scrollBar.getHeight() + 2);
-        scrollBar.setBackground(scrollBarBackground);
-        scrollBar.setScrollBar(new ScrollBar(Textures.SCROLL_BAR, 0, 0, scrollBar.getWidth()));
-        scrollPane.setScrollBar(scrollBar);
-        ScrollContent content = new ScrollContent(0, 0, 0, ScrollOrientation.VERTICAL);
-        scrollPane.setContent(content);
-        ButtonComponent component = new ButtonComponent(Textures.SCROLL_BAR_BACKGROUND, 0, 0, 116, 20);
-        TruncatedText testinggggggggggggg = new TruncatedText(Minecraft.getInstance().font, Component.literal("Testingggggggggggggjhhsgghsbdfbshjfb"), 0, 0, 116, 20);
-        testinggggggggggggg.setCenter(true, true);
-        component.setText(testinggggggggggggg);
-        content.addComponent(component);
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
-        content.addComponent((ButtonComponent) component.getClone());
+        this.addChild(scrollPane2);
         super.startRenderable();
     }
 

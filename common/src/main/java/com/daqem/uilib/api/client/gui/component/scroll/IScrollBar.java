@@ -5,11 +5,11 @@ import net.minecraft.client.gui.screens.Screen;
 
 public interface IScrollBar {
 
-    int getMinValue(ScrollPaneComponent scrolledObject);
-    int getMaxValue(ScrollPaneComponent scrolledObject);
+    int getMinValue(ScrollPaneComponent scrollPaneComponent);
+    int getMaxValue(ScrollPaneComponent scrollPaneComponent);
     int getValue();
     void setValue(int value);
-    int getNextStep(ScrollPaneComponent scrolledObject);
-    int getPreviousStep(ScrollPaneComponent scrolledObject);
-    void scroll(ScrollPaneComponent scrolledObject, Screen screen, double mouseX, double mouseY, double delta);
+    int getNextStep(ScrollPaneComponent scrollPaneComponent);
+    int getPreviousStep(ScrollPaneComponent scrollPaneComponent);
+    void scroll(ScrollPaneComponent scrollPaneComponent, Screen screen, double mouseX, double mouseY, double delta);
 }

@@ -193,9 +193,9 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
-    public void setParent(@Nullable IComponent<?> parent) {
+    public void setParent(@Nullable IComponent<?> parent, boolean addAsChild) {
         this.parent = parent;
-        if (parent != null && !parent.getChildren().contains(this)) {
+        if (addAsChild && parent != null && !parent.getChildren().contains(this)) {
             parent.addChild(this);
         }
     }
@@ -203,31 +203,31 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public void setChildren(List<IComponent<?>> children) {
         this.children = children;
-        this.children.forEach(child -> child.setParent(this));
+        this.children.forEach(child -> child.setParent(this, true));
     }
 
     @Override
     public void addChild(IComponent<?> child) {
         children.add(child);
-        child.setParent(this);
+        child.setParent(this, true);
     }
 
     @Override
     public void addChildren(IComponent<?>... children) {
         this.children.addAll(List.of(children));
-        this.children.forEach(child -> child.setParent(this));
+        this.children.forEach(child -> child.setParent(this, true));
     }
 
     @Override
     public void addChildren(List<IComponent<?>> children) {
         this.children.addAll(children);
-        this.children.forEach(child -> child.setParent(this));
+        this.children.forEach(child -> child.setParent(this, true));
     }
 
     @Override
     public void removeChild(IComponent<?> child) {
         children.remove(child);
-        child.setParent(null);
+        child.setParent(null, false);
     }
 
     @Override

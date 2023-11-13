@@ -6,11 +6,6 @@ import java.util.List;
 
 public interface IScrollContent {
 
-    List<IComponent<?>> getComponents();
-    void addComponent(IComponent<?> component);
-    void removeComponent(IComponent<?> component);
-    void clearComponents();
-
     int getContentSpacing();
     void setContentSpacing(int contentSpacing);
 
