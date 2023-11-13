@@ -4,7 +4,9 @@ import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.IScreen;
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.IComponent;
+import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.background.Backgrounds;
+import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -18,7 +20,8 @@ import java.util.List;
 public abstract class AbstractScreen extends Screen implements IScreen {
 
     private final List<IComponent<?>> components = new ArrayList<>();
-    private @Nullable IBackground<?> background = Backgrounds.getDefaultBackground(this);
+    private @Nullable IBackground<?> background = Backgrounds.getDefaultBackground(this.getWidth(), this.getHeight());
+    private boolean isPauseScreen = false;
 
     /**
      * UI Lib screen constructor with title component
@@ -59,36 +62,39 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         //check if the mouse is hovering over a component
-        this.checkHovering(mouseX, mouseY);
+        this.checkHovering(mouseX, mouseY, delta);
         //Render background
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
+        this.renderBackground(guiGraphics, mouseX, mouseY, delta);
         //render Minecraft widgets
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, delta);
         //render UI Lib components
-        this.renderComponents(guiGraphics, mouseX, mouseY, partialTicks);
+        this.renderComponents(guiGraphics, mouseX, mouseY, delta);
         //render everything else
-        this.onTickScreen(guiGraphics, mouseX, mouseY, partialTicks);
+        this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
     }
 
-    private void checkHovering(int mouseX, int mouseY) {
+    private void checkHovering(int mouseX, int mouseY, float delta) {
+        handleHoverEvent(components, mouseX, mouseY, delta);
+    }
+
+    private void handleHoverEvent(List<IComponent<?>> components, int mouseX, int mouseY, float delta) {
         for (IComponent<?> component : components) {
-            if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnHoverAction(mouseX, mouseY);
-            }
+            component.preformOnHoverEvent(mouseX, mouseY, delta);
+            handleHoverEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
         }
     }
 
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         if (background != null) {
-            background.renderBase(guiGraphics, mouseX, mouseY, partialTicks);
+            background.renderBase(guiGraphics, mouseX, mouseY, delta);
         }
     }
 
-    private void renderComponents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    private void renderComponents(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         for (IComponent<?> component : components) {
-            component.renderBase(guiGraphics, mouseX, mouseY, partialTicks);
+            component.renderBase(guiGraphics, mouseX, mouseY, delta);
         }
     }
 
@@ -110,19 +116,16 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void addComponent(IComponent<?> component) {
         components.add(component);
-        component.setScreen(this);
     }
 
     @Override
     public void addComponents(IComponent<?>... components) {
         this.components.addAll(List.of(components));
-        this.components.forEach(component -> component.setScreen(this));
     }
 
     @Override
     public void removeComponent(IComponent<?> component) {
         components.remove(component);
-        component.setScreen(null);
     }
 
     @Override
@@ -133,9 +136,6 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public void setBackground(@Nullable IBackground<?> background) {
         this.background = background;
-        if (background != null) {
-            background.setScreen(this);
-        }
     }
 
     @Override
@@ -160,17 +160,51 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int clickType) {
-        handleClickAction(components, mouseX, mouseY);
-        return super.mouseClicked(mouseX, mouseY, clickType);
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        handleClickEvent(components, mouseX, mouseY, button);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    private void handleClickAction(List<IComponent<?>> components, double mouseX, double mouseY) {
+    private void handleClickEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
         for (IComponent<?> component : components) {
-            if (component.isHovered(mouseX, mouseY)) {
-                component.preformOnClickAction(mouseX, mouseY);
-            }
-            handleClickAction(component.getChildren(), mouseX - component.getX(), mouseY - component.getY());
+            component.preformOnClickEvent(mouseX, mouseY, button);
+            handleClickEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button);
         }
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        handleDragEvent(components, mouseX, mouseY, button, dragX, dragY);
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    private void handleDragEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
+        for (IComponent<?> component : components) {
+            component.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
+            handleDragEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button, dragX, dragY);
+        }
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+        handleScrollEvent(components, mouseX, mouseY, -delta);
+        return super.mouseScrolled(mouseX, mouseY, delta);
+    }
+
+    private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double delta) {
+        for (IComponent<?> component : components) {
+            component.preformOnScrollEvent(mouseX, mouseY, delta);
+            handleScrollEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
+        }
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return isPauseScreen;
+    }
+
+    @Override
+    public void setPauseScreen(boolean pauseScreen) {
+        isPauseScreen = pauseScreen;
     }
 }

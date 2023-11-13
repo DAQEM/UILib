@@ -3,12 +3,15 @@ package com.daqem.uilib.client.gui.component;
 import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.color.IColorManipulator;
 import com.daqem.uilib.api.client.gui.component.IComponent;
-import com.daqem.uilib.api.client.gui.component.action.OnClickAction;
-import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
+import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnDragEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnScrollEvent;
 import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
@@ -33,24 +36,25 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private boolean visible = true;
     private boolean centeredHorizontally = false;
     private boolean centeredVertically = false;
-    private Screen screen;
 
-    private @Nullable OnClickAction<T> onClickAction;
-    private @Nullable OnHoverAction<T> onHoverAction;
+    private @Nullable OnClickEvent<T> onClickEvent;
+    private @Nullable OnHoverEvent<T> onHoverEvent;
+    private @Nullable OnDragEvent<T> onDragEvent;
+    private @Nullable OnScrollEvent<T> onScrollEvent;
 
     private @Nullable T hoverState;
 
     private IColorManipulator colorManipulator = new ColorManipulator();
 
-    public AbstractComponent(ITexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickAction<T> onClickAction, @Nullable OnHoverAction<T> onHoverAction) {
+    public AbstractComponent(ITexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickEvent<T> onClickEvent, @Nullable OnHoverEvent<T> onHoverEvent) {
         this.texture = texture;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.text = text;
-        this.onClickAction = onClickAction;
-        this.onHoverAction = onHoverAction;
+        this.onClickEvent = onClickEvent;
+        this.onHoverEvent = onHoverEvent;
 
         //noinspection unchecked
         this.hoverState = (T) this.getClone();
@@ -70,16 +74,16 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
-    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 
-        if (isHovered(mouseX, mouseY) && hoverState != null && hoverState.isVisible() && getOnHoverAction() != null) {
+        if (isHovered(mouseX, mouseY) && hoverState != null && hoverState.isVisible() && getOnHoverEvent() != null) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(hoverState.getX(), hoverState.getY(), hoverState.getZ());
             guiGraphics.pose().scale(hoverState.getScale(), hoverState.getScale(), hoverState.getScale());
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(hoverState.getRotation()), hoverState.getWidth() / 2.0f, hoverState.getHeight() / 2.0f, 0.0f);
             guiGraphics.setColor(hoverState.getColorManipulator().getRed(), hoverState.getColorManipulator().getGreen(), hoverState.getColorManipulator().getBlue(), hoverState.getOpacity());
-            hoverState.render(guiGraphics, mouseX, mouseY, partialTicks);
-            hoverState.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, partialTicks));
+            hoverState.render(guiGraphics, mouseX, mouseY, delta);
+            hoverState.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         } else if (isVisible()) {
@@ -88,17 +92,13 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.pose().scale(getScale(), getScale(), getScale());
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(getRotation()), getWidth() / 2.0f, getHeight() / 2.0f, 0.0f);
             guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
-            this.render(guiGraphics, mouseX, mouseY, partialTicks);
-            this.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, partialTicks));
+            this.render(guiGraphics, mouseX, mouseY, delta);
+            this.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         }
     }
 
-    @Override
-    public Screen getScreen() {
-        return screen;
-    }
 
     @Override
     public @Nullable IComponent<?> getParent() {
@@ -121,8 +121,30 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
+    public int getTotalX() {
+        int totalX = getX();
+        @Nullable IComponent<?> parent = getParent();
+        while (parent != null) {
+            totalX += parent.getX();
+            parent = parent.getParent();
+        }
+        return totalX;
+    }
+
+    @Override
     public int getY() {
         return y;
+    }
+
+    @Override
+    public int getTotalY() {
+        int totalY = getY();
+        @Nullable IComponent<?> parent = getParent();
+        while (parent != null) {
+            totalY += parent.getY();
+            parent = parent.getParent();
+        }
+        return totalY;
     }
 
     @Override
@@ -170,16 +192,10 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
         return colorManipulator;
     }
 
-
     @Override
-    public void setScreen(Screen screen) {
-        this.screen = screen;
-    }
-
-    @Override
-    public void setParent(@Nullable IComponent<?> parent) {
+    public void setParent(@Nullable IComponent<?> parent, boolean addAsChild) {
         this.parent = parent;
-        if (parent != null && !parent.getChildren().contains(this)) {
+        if (addAsChild && parent != null && !parent.getChildren().contains(this)) {
             parent.addChild(this);
         }
     }
@@ -187,31 +203,31 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public void setChildren(List<IComponent<?>> children) {
         this.children = children;
-        this.children.forEach(child -> child.setParent(this));
+        this.children.forEach(child -> child.setParent(this, true));
     }
 
     @Override
     public void addChild(IComponent<?> child) {
         children.add(child);
-        child.setParent(this);
+        child.setParent(this, true);
     }
 
     @Override
     public void addChildren(IComponent<?>... children) {
         this.children.addAll(List.of(children));
-        this.children.forEach(child -> child.setParent(this));
+        this.children.forEach(child -> child.setParent(this, true));
     }
 
     @Override
     public void addChildren(List<IComponent<?>> children) {
         this.children.addAll(children);
-        this.children.forEach(child -> child.setParent(this));
+        this.children.forEach(child -> child.setParent(this, true));
     }
 
     @Override
     public void removeChild(IComponent<?> child) {
         children.remove(child);
-        child.setParent(null);
+        child.setParent(null, false);
     }
 
     @Override
@@ -270,13 +286,13 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
-    public void setOnClickAction(@Nullable OnClickAction<T> onClickAction) {
-        this.onClickAction = onClickAction;
+    public void setOnClickEvent(@Nullable OnClickEvent<T> onClickEvent) {
+        this.onClickEvent = onClickEvent;
     }
 
     @Override
-    public void setOnHoverAction(@Nullable OnHoverAction<T> onHoverAction) {
-        this.onHoverAction = onHoverAction;
+    public void setOnHoverEvent(@Nullable OnHoverEvent<T> onHoverEvent) {
+        this.onHoverEvent = onHoverEvent;
     }
 
     @Override
@@ -285,13 +301,13 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
-    public @Nullable OnClickAction<T> getOnClickAction() {
-        return onClickAction;
+    public @Nullable OnClickEvent<T> getOnClickEvent() {
+        return onClickEvent;
     }
 
     @Override
-    public @Nullable OnHoverAction<T> getOnHoverAction() {
-        return onHoverAction;
+    public @Nullable OnHoverEvent<T> getOnHoverEvent() {
+        return onHoverEvent;
     }
 
     @Override
@@ -342,11 +358,13 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     private int getParentWidth() {
-        return getParent() != null ? getParent().getWidth() : getScreen() != null ? getScreen().width : 0;
+        Screen screen = Minecraft.getInstance().screen;
+        return getParent() != null ? getParent().getWidth() : screen != null ? screen.width : 0;
     }
 
     private int getParentHeight() {
-        return getParent() != null ? getParent().getHeight() : getScreen() != null ? getScreen().height : 0;
+        Screen screen = Minecraft.getInstance().screen;
+        return getParent() != null ? getParent().getHeight() : screen != null ? screen.height : 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -369,5 +387,25 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
         } catch (CloneNotSupportedException e) {
             return null;
         }
+    }
+
+    @Override
+    public OnDragEvent<T> getOnDragEvent() {
+        return onDragEvent;
+    }
+
+    @Override
+    public void setOnDragEvent(OnDragEvent<T> onDragEvent) {
+        this.onDragEvent = onDragEvent;
+    }
+
+    @Override
+    public OnScrollEvent<T> getOnScrollEvent() {
+        return onScrollEvent;
+    }
+
+    @Override
+    public void setOnScrollEvent(OnScrollEvent<T> onScrollEvent) {
+        this.onScrollEvent = onScrollEvent;
     }
 }

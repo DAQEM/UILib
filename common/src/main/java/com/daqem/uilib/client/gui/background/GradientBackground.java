@@ -20,7 +20,7 @@ public class GradientBackground extends AbstractBackground<GradientBackground> {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         guiGraphics.fillGradient(0, 0, getWidth(), getHeight(), colorFrom, colorTo);
     }
 

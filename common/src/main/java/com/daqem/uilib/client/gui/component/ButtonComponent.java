@@ -1,13 +1,13 @@
 package com.daqem.uilib.client.gui.component;
 
-import com.daqem.uilib.api.client.gui.component.action.OnClickAction;
-import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
+import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
 import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.INineSlicedTexture;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.Nullable;
 
-public class ButtonComponent extends AbstractComponent<ButtonComponent> {
+public class ButtonComponent extends AbstractNineSlicedComponent<ButtonComponent> {
 
     @SuppressWarnings("unused")
     public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height) {
@@ -20,55 +20,40 @@ public class ButtonComponent extends AbstractComponent<ButtonComponent> {
     }
 
     @SuppressWarnings("unused")
-    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable OnClickAction<ButtonComponent> onClickAction) {
-        super(texture, x, y, width, height, null, onClickAction, null);
+    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable OnClickEvent<ButtonComponent> onClickEvent) {
+        super(texture, x, y, width, height, null, onClickEvent, null);
     }
 
     @SuppressWarnings("unused")
-    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable OnHoverAction<ButtonComponent> onHoverAction) {
-        super(texture, x, y, width, height, null, null, onHoverAction);
+    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable OnHoverEvent<ButtonComponent> onHoverEvent) {
+        super(texture, x, y, width, height, null, null, onHoverEvent);
     }
 
     @SuppressWarnings("unused")
-    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable OnClickAction<ButtonComponent> onClickAction, @Nullable OnHoverAction<ButtonComponent> onHoverAction) {
-        super(texture, x, y, width, height, null, onClickAction, onHoverAction);
+    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable OnClickEvent<ButtonComponent> onClickEvent, @Nullable OnHoverEvent<ButtonComponent> onHoverEvent) {
+        super(texture, x, y, width, height, null, onClickEvent, onHoverEvent);
     }
 
     @SuppressWarnings("unused")
-    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickAction<ButtonComponent> onClickAction) {
-        super(texture, x, y, width, height, text, onClickAction, null);
+    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickEvent<ButtonComponent> onClickEvent) {
+        super(texture, x, y, width, height, text, onClickEvent, null);
     }
 
     @SuppressWarnings("unused")
-    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnHoverAction<ButtonComponent> onHoverAction) {
-        super(texture, x, y, width, height, text, null, onHoverAction);
+    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnHoverEvent<ButtonComponent> onHoverEvent) {
+        super(texture, x, y, width, height, text, null, onHoverEvent);
     }
 
     @SuppressWarnings("unused")
-    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickAction<ButtonComponent> onClickAction, @Nullable OnHoverAction<ButtonComponent> onHoverAction) {
-        super(texture, x, y, width, height, text, onClickAction, onHoverAction);
+    public ButtonComponent(INineSlicedTexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickEvent<ButtonComponent> onClickEvent, @Nullable OnHoverEvent<ButtonComponent> onHoverEvent) {
+        super(texture, x, y, width, height, text, onClickEvent, onHoverEvent);
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        INineSlicedTexture texture = (INineSlicedTexture) getTexture();
-        guiGraphics.blitNineSliced(
-                texture.getTextureLocation(),
-                0,
-                0,
-                getWidth(),
-                getHeight(),
-                texture.getLeftSliceWidth(),
-                texture.getTopSliceHeight(),
-                texture.getRightSliceWidth(),
-                texture.getBottomSliceHeight(),
-                texture.getWidth(),
-                texture.getHeight(),
-                texture.getX(),
-                texture.getY()
-        );
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        super.render(guiGraphics, mouseX, mouseY, delta);
         if (getText() != null) {
-            getText().renderBase(guiGraphics, mouseX, mouseY, partialTicks);
+            getText().renderBase(guiGraphics, mouseX, mouseY, delta);
         }
     }
 }

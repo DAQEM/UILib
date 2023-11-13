@@ -1,5 +1,6 @@
 package com.daqem.uilib.client.screen.test.components;
 
+import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.ButtonComponent;
 import com.daqem.uilib.client.gui.component.IconComponent;
 import com.daqem.uilib.client.gui.texture.Textures;
@@ -31,7 +32,7 @@ public class TestTabComponent extends ButtonComponent {
         iconComponent.setX(4);
         iconComponent.setY(1);
         this.addChild(iconComponent);
-        setOnClickAction((button, screen, mouseY, mouseX) -> {
+        setOnClickEvent((button, screen, mouseY, mouseX, delta) -> {
             if (getParent() instanceof TestBackgroundComponent backgroundComponent) {
                 if (backgroundComponent.getLeftTabs().getTabComponents().contains(this)) {
                     backgroundComponent.getLeftTabs().deselectAll();
@@ -48,7 +49,7 @@ public class TestTabComponent extends ButtonComponent {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         if (isSelected()) {
             setZ(1);
             int targetY = defaultY - 3;
@@ -63,7 +64,7 @@ public class TestTabComponent extends ButtonComponent {
                 setHeight(getHeight() - 1);
             }
         }
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, delta);
     }
 
     public boolean isSelected() {

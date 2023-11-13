@@ -10,7 +10,7 @@ public class TextureComponent extends AbstractComponent<TextureComponent> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         graphics.blit(getTexture().getTextureLocation(), 0, 0, getWidth(), getHeight(), getTexture().getX(), getTexture().getY(), getTexture().getWidth(), getTexture().getHeight(), getTexture().getFileWidth(), getTexture().getFileHeight());
     }
 }

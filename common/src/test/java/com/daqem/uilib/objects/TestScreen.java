@@ -21,7 +21,7 @@ public class TestScreen extends AbstractScreen {
     }
 
     @Override
-    public void onTickScreen(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void onTickScreen(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 
     }
 }

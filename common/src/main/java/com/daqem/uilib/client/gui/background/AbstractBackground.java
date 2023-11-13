@@ -2,8 +2,10 @@ package com.daqem.uilib.client.gui.background;
 
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.color.IColorManipulator;
-import com.daqem.uilib.api.client.gui.component.action.OnClickAction;
-import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
+import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnDragEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnScrollEvent;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,10 +19,11 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     private int height;
     private boolean visible = true;
     private IColorManipulator colorManipulator = new ColorManipulator();
-    private Screen screen;
 
-    private @Nullable OnClickAction<T> onClickAction;
-    private @Nullable OnHoverAction<T> onHoverAction;
+    private @Nullable OnClickEvent<T> onClickEvent;
+    private @Nullable OnHoverEvent<T> onHoverEvent;
+    private @Nullable OnDragEvent<T> onDragEvent;
+    private @Nullable OnScrollEvent<T> onScrollEvent;
 
     private @Nullable T hoverState;
 
@@ -36,11 +39,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
 
         //noinspection unchecked
         this.hoverState = (T) this.getClone();
-    }
-
-    @Override
-    public Screen getScreen() {
-        return screen;
     }
 
     @Override
@@ -66,11 +64,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     @Override
     public boolean isVisible() {
         return visible;
-    }
-
-    @Override
-    public void setScreen(Screen screen) {
-        this.screen = screen;
     }
 
     @Override
@@ -119,11 +112,11 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     }
 
     @Override
-    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(getX(), getY(), -1);
         guiGraphics.setColor(colorManipulator.getRed(), colorManipulator.getGreen(), colorManipulator.getBlue(), colorManipulator.getOpacity());
-        this.render(guiGraphics, mouseX, mouseY, partialTicks);
+        this.render(guiGraphics, mouseX, mouseY, delta);
         guiGraphics.setColor(1F, 1F, 1F, 1F);
         guiGraphics.pose().popPose();
     }
@@ -141,23 +134,23 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     }
 
     @Override
-    public @Nullable OnClickAction<T> getOnClickAction() {
-        return onClickAction;
+    public @Nullable OnClickEvent<T> getOnClickEvent() {
+        return onClickEvent;
     }
 
     @Override
-    public void setOnClickAction(@Nullable OnClickAction<T> onClickAction) {
-        this.onClickAction = onClickAction;
+    public void setOnClickEvent(@Nullable OnClickEvent<T> onClickEvent) {
+        this.onClickEvent = onClickEvent;
     }
 
     @Override
-    public @Nullable OnHoverAction<T> getOnHoverAction() {
-        return onHoverAction;
+    public @Nullable OnHoverEvent<T> getOnHoverEvent() {
+        return onHoverEvent;
     }
 
     @Override
-    public void setOnHoverAction(@Nullable OnHoverAction<T> onHoverAction) {
-        this.onHoverAction = onHoverAction;
+    public void setOnHoverEvent(@Nullable OnHoverEvent<T> onHoverEvent) {
+        this.onHoverEvent = onHoverEvent;
     }
 
     @Override
@@ -168,5 +161,25 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     @Override
     public @Nullable T getHoverState() {
         return hoverState;
+    }
+
+    @Override
+    public OnDragEvent<T> getOnDragEvent() {
+        return onDragEvent;
+    }
+
+    @Override
+    public void setOnDragEvent(OnDragEvent<T> onDragEvent) {
+        this.onDragEvent = onDragEvent;
+    }
+
+    @Override
+    public OnScrollEvent<T> getOnScrollEvent() {
+        return onScrollEvent;
+    }
+
+    @Override
+    public void setOnScrollEvent(OnScrollEvent<T> onScrollEvent) {
+        this.onScrollEvent = onScrollEvent;
     }
 }

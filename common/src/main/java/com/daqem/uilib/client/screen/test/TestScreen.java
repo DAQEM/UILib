@@ -16,12 +16,13 @@ public class TestScreen extends AbstractScreen {
 
     @Override
     public void startScreen() {
-        this.setBackground(Backgrounds.getDefaultBackground(this));
+        this.setPauseScreen(false);
+        this.setBackground(Backgrounds.getDefaultBackground(this.getWidth(), this.getHeight()));
 
         addComponents(testBackgroundComponent);
     }
 
     @Override
-    public void onTickScreen(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void onTickScreen(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
     }
 }

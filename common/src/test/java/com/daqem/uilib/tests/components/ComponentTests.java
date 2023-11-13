@@ -27,7 +27,7 @@ public class ComponentTests {
         TestComponent parentComponent = new TestComponent();
 
         //Act
-        testComponent.setParent(parentComponent);
+        testComponent.setParent(parentComponent, true);
 
         //Assert
         assertEquals(parentComponent, testComponent.getParent());

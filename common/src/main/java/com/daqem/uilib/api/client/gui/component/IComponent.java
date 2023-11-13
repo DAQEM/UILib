@@ -3,9 +3,6 @@ package com.daqem.uilib.api.client.gui.component;
 import com.daqem.uilib.api.client.gui.ICenterable;
 import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.color.IColorManipulatable;
-import com.daqem.uilib.api.client.gui.color.IColorManipulator;
-import com.daqem.uilib.api.client.gui.component.action.OnClickAction;
-import com.daqem.uilib.api.client.gui.component.action.OnHoverAction;
 import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +15,8 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     @Nullable IComponent<?> getParent();
     List<IComponent<?>> getChildren();
     ITexture getTexture();
+    int getTotalX();
+    int getTotalY();
     int getZ();
     IText<?> getText();
     float getScale();
@@ -25,7 +24,7 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     float getRotation();
 
 
-    void setParent(@Nullable IComponent<?> parent);
+    void setParent(@Nullable IComponent<?> parent, boolean addAsChild);
     void setChildren(List<IComponent<?>> children);
     void addChild(IComponent<?> child);
     void addChildren(IComponent<?>... children);
