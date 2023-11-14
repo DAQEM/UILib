@@ -2,14 +2,13 @@ package com.daqem.uilib.client.screen.test.components;
 
 import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.api.client.gui.component.scroll.ScrollOrientation;
-import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.ButtonComponent;
 import com.daqem.uilib.client.gui.component.TextureComponent;
-import com.daqem.uilib.client.gui.component.scroll.ScrollBar;
-import com.daqem.uilib.client.gui.component.scroll.ScrollBarWrapper;
-import com.daqem.uilib.client.gui.component.scroll.ScrollContent;
-import com.daqem.uilib.client.gui.component.scroll.ScrollPaneComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollWheelComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollBarComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollContentComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollPanelComponent;
 import com.daqem.uilib.client.gui.texture.NineSlicedTexture;
 import com.daqem.uilib.client.gui.texture.Texture;
 import com.daqem.uilib.client.gui.texture.Textures;
@@ -22,8 +21,8 @@ public class TestBackgroundComponent extends TextureComponent {
     private final TestLeftTabs leftTabs = new TestLeftTabs();
     private final TestRightTabs rightTabs = new TestRightTabs();
 
-    private final ScrollPaneComponent scrollPane;
-    private final ScrollPaneComponent scrollPane2;
+    private final ScrollPanelComponent scrollPane;
+    private final ScrollPanelComponent scrollPane2;
 
     public TestBackgroundComponent() {
         super(new Texture(UILibClient.getId("textures/jobs_screen.png"),
@@ -44,9 +43,9 @@ public class TestBackgroundComponent extends TextureComponent {
             NineSlicedTexture scrollBarTexture = Textures.SCROLL_BAR;
             NineSlicedTexture scrollBarBackgroundTexture = Textures.SCROLL_BAR_BACKGROUND;
 
-            ScrollBar scrollBar = new ScrollBar(scrollBarTexture, 0, 0, scrollBarWidth);
-            ScrollBarWrapper scrollBarWrapper = new ScrollBarWrapper(scrollPaneWidth + scrollBarXOffset, scrollBarYOffset, scrollBarWidth, scrollPaneHeight - (scrollBarYOffset * 2), orientation, scrollBar);
-            ScrollContent content = new ScrollContent(0, 0, 0, orientation);
+            ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(scrollBarTexture, 0, 0, scrollBarWidth);
+            ScrollBarComponent scrollBarComponent = new ScrollBarComponent(scrollPaneWidth + scrollBarXOffset, scrollBarYOffset, scrollBarWidth, scrollPaneHeight - (scrollBarYOffset * 2), orientation, scrollWheelComponent);
+            ScrollContentComponent content = new ScrollContentComponent(0, 0, 0, orientation);
 
             ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, scrollPaneWidth, 20);
             content.addChild(component);
@@ -61,8 +60,42 @@ public class TestBackgroundComponent extends TextureComponent {
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
+            content.addChild((ButtonComponent) component.getClone());
 
-            this.scrollPane = new ScrollPaneComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarWrapper);
+            this.scrollPane = new ScrollPanelComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarComponent);
         }
         {
             ScrollOrientation orientation = ScrollOrientation.HORIZONTAL;
@@ -78,9 +111,9 @@ public class TestBackgroundComponent extends TextureComponent {
             NineSlicedTexture scrollBarTexture = Textures.SCROLL_BAR;
             NineSlicedTexture scrollBarBackgroundTexture = Textures.SCROLL_BAR_BACKGROUND;
 
-            ScrollBar scrollBar = new ScrollBar(scrollBarTexture, 0, 0, scrollBarThickness);
-            ScrollBarWrapper scrollBarWrapper = new ScrollBarWrapper(scrollBarXOffset, scrollPaneHeight + scrollBarYOffset, scrollPaneWidth - (scrollBarXOffset * 2), scrollBarThickness, orientation, scrollBar);
-            ScrollContent content = new ScrollContent(0, 0, 0, orientation);
+            ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(scrollBarTexture, 0, 0, scrollBarThickness);
+            ScrollBarComponent scrollBarComponent = new ScrollBarComponent(scrollBarXOffset, scrollPaneHeight + scrollBarYOffset, scrollPaneWidth - (scrollBarXOffset * 2), scrollBarThickness, orientation, scrollWheelComponent);
+            ScrollContentComponent content = new ScrollContentComponent(0, 0, 0, orientation);
 
             ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, 20, scrollPaneHeight);
             content.addChild(component);
@@ -107,7 +140,7 @@ public class TestBackgroundComponent extends TextureComponent {
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
 
-            this.scrollPane2 = new ScrollPaneComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarWrapper);
+            this.scrollPane2 = new ScrollPanelComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarComponent);
         }
     }
 

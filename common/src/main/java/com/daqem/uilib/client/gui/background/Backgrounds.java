@@ -1,6 +1,6 @@
 package com.daqem.uilib.client.gui.background;
 
-import com.daqem.uilib.client.gui.component.scroll.ScrollBarWrapper;
+import com.daqem.uilib.client.gui.component.scroll.ScrollBarComponent;
 import com.daqem.uilib.client.gui.texture.Texture;
 import com.daqem.uilib.client.gui.texture.Textures;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +15,7 @@ public class Backgrounds {
         return new TextureBackground(width, height, new Texture(new ResourceLocation("textures/gui/options_background.png"), 0, 0, 32, 32));
     }
 
-    public static NineSlicedBackground getSolidScrollBarBackground(ScrollBarWrapper scrollBarWrapper) {
-        return new NineSlicedBackground(scrollBarWrapper.getWidth() + 2, scrollBarWrapper.getHeight() + 2, Textures.SCROLL_BAR_BACKGROUND);
+    public static NineSlicedBackground getSolidScrollBarBackground(ScrollBarComponent scrollBarComponent) {
+        return new NineSlicedBackground(scrollBarComponent.getWidth() + 2, scrollBarComponent.getHeight() + 2, Textures.SCROLL_BAR_BACKGROUND);
     }
 }

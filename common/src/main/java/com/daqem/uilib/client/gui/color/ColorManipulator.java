@@ -5,6 +5,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class ColorManipulator implements IColorManipulator {
 
+    public static final ColorManipulator WHITE = new ColorManipulator();
+    public static final ColorManipulator LIGHT_GRAY = new ColorManipulator(0.90F);
+    public static final ColorManipulator GRAY = new ColorManipulator(0.75F);
+    public static final ColorManipulator DARK_GRAY = new ColorManipulator(0.50F);
+    public static final ColorManipulator RED = new ColorManipulator(1F, 0F, 0F);
+    public static final ColorManipulator GREEN = new ColorManipulator(0F, 1F, 0F);
+    public static final ColorManipulator BLUE = new ColorManipulator(0F, 0F, 1F);
+    public static final ColorManipulator BLACK = new ColorManipulator(0F);
+
     private float red;
     private float green;
     private float blue;

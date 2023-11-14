@@ -3,10 +3,10 @@ package com.daqem.uilib.tests.components;
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.scroll.ScrollOrientation;
 import com.daqem.uilib.client.gui.background.Backgrounds;
-import com.daqem.uilib.client.gui.component.scroll.ScrollBar;
-import com.daqem.uilib.client.gui.component.scroll.ScrollBarWrapper;
-import com.daqem.uilib.client.gui.component.scroll.ScrollContent;
-import com.daqem.uilib.client.gui.component.scroll.ScrollPaneComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollBarComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollPanelComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollWheelComponent;
+import com.daqem.uilib.client.gui.component.scroll.ScrollContentComponent;
 import com.daqem.uilib.client.gui.texture.Textures;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,85 +15,85 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ScrollComponentTests {
 
-    private ScrollPaneComponent scrollPaneComponent;
-    private ScrollBarWrapper scrollBarWrapper;
-    private ScrollContent scrollContent;
+    private ScrollPanelComponent scrollPanelComponent;
+    private ScrollBarComponent scrollBarComponent;
+    private ScrollContentComponent scrollContentComponent;
 
     @BeforeEach
     void setUp() {
         ScrollOrientation orientation = ScrollOrientation.VERTICAL;
-        this.scrollPaneComponent = new ScrollPaneComponent(Textures.SCROLL_PANE, 0, 0, 100, 100, orientation);
-        this.scrollBarWrapper = new ScrollBarWrapper(0, 0, 100, 100, orientation);
-        this.scrollContent = new ScrollContent(0, 0, 5, orientation);
+        this.scrollPanelComponent = new ScrollPanelComponent(Textures.SCROLL_PANE, 0, 0, 100, 100, orientation);
+        this.scrollBarComponent = new ScrollBarComponent(0, 0, 100, 100, orientation);
+        this.scrollContentComponent = new ScrollContentComponent(0, 0, 5, orientation);
     }
 
     @Test
     void setScrollBar() {
         //Act
-        scrollPaneComponent.setScrollBar(scrollBarWrapper);
+        scrollPanelComponent.setScrollBar(scrollBarComponent);
 
         //Assert
-        assertNotNull(scrollPaneComponent.getScrollBar());
-        assertEquals(scrollBarWrapper, scrollPaneComponent.getScrollBar());
+        assertNotNull(scrollPanelComponent.getScrollBar());
+        assertEquals(scrollBarComponent, scrollPanelComponent.getScrollBar());
     }
 
     @Test
     void removeScrollBar() {
         //Arrange
-        scrollPaneComponent.setScrollBar(scrollBarWrapper);
+        scrollPanelComponent.setScrollBar(scrollBarComponent);
 
         //Act
-        scrollPaneComponent.removeScrollBar();
+        scrollPanelComponent.removeScrollBar();
 
         //Assert
-        assertNull(scrollPaneComponent.getScrollBar());
+        assertNull(scrollPanelComponent.getScrollBar());
     }
 
     @Test
     void setBackgroundOfScrollBar() {
         //Arrange
-        IBackground<?> background = Backgrounds.getSolidScrollBarBackground(scrollBarWrapper);
+        IBackground<?> background = Backgrounds.getSolidScrollBarBackground(scrollBarComponent);
 
         //Act
-        scrollBarWrapper.setBackground(background);
+        scrollBarComponent.setBackground(background);
 
         //Assert
-        assertEquals(background, scrollBarWrapper.getBackground());
+        assertEquals(background, scrollBarComponent.getBackground());
     }
 
     @Test
     void removeBackgroundOfScrollBar() {
         //Arrange
-        IBackground<?> background = Backgrounds.getSolidScrollBarBackground(scrollBarWrapper);
-        scrollBarWrapper.setBackground(background);
+        IBackground<?> background = Backgrounds.getSolidScrollBarBackground(scrollBarComponent);
+        scrollBarComponent.setBackground(background);
 
         //Act
-        scrollBarWrapper.removeBackground();
+        scrollBarComponent.removeBackground();
 
         //Assert
-        assertNull(scrollBarWrapper.getBackground());
+        assertNull(scrollBarComponent.getBackground());
     }
 
     @Test
     void ScrollBarComponentSetScrollBar() {
         //Arrange
-        ScrollBar scrollBar = new ScrollBar(Textures.SCROLL_BAR, 0, 0, 100);
+        ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(Textures.SCROLL_BAR, 0, 0, 100);
 
         //Act
-        scrollBarWrapper.setScrollBar(scrollBar);
+        scrollBarComponent.setScrollBar(scrollWheelComponent);
 
         //Assert
-        assertNotNull(scrollBarWrapper.getScrollBar());
-        assertEquals(scrollBar, scrollBarWrapper.getScrollBar());
+        assertNotNull(scrollBarComponent.getScrollWheel());
+        assertEquals(scrollWheelComponent, scrollBarComponent.getScrollWheel());
     }
 
     @Test
     void setScrollContent() {
         //Act
-        scrollPaneComponent.setContent(scrollContent);
+        scrollPanelComponent.setScrollContentComponent(scrollContentComponent);
 
         //Assert
-        assertNotNull(scrollPaneComponent.getContent());
-        assertEquals(scrollContent, scrollPaneComponent.getContent());
+        assertNotNull(scrollPanelComponent.getScrollContentComponent());
+        assertEquals(scrollContentComponent, scrollPanelComponent.getScrollContentComponent());
     }
 }
