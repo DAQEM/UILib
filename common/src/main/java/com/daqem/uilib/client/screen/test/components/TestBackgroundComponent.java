@@ -9,9 +9,12 @@ import com.daqem.uilib.client.gui.component.scroll.ScrollWheelComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollBarComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollContentComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollPanelComponent;
+import com.daqem.uilib.client.gui.text.Text;
 import com.daqem.uilib.client.gui.texture.NineSlicedTexture;
 import com.daqem.uilib.client.gui.texture.Texture;
 import com.daqem.uilib.client.gui.texture.Textures;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +48,7 @@ public class TestBackgroundComponent extends TextureComponent {
 
             ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(scrollBarTexture, 0, 0, scrollBarWidth);
             ScrollBarComponent scrollBarComponent = new ScrollBarComponent(scrollPaneWidth + scrollBarXOffset, scrollBarYOffset, scrollBarWidth, scrollPaneHeight - (scrollBarYOffset * 2), orientation, scrollWheelComponent);
-            ScrollContentComponent content = new ScrollContentComponent(0, 0, 0, orientation);
+            ScrollContentComponent content = new ScrollContentComponent(0, 0, 10, orientation);
 
             ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, scrollPaneWidth, 20);
             content.addChild(component);
@@ -94,6 +97,9 @@ public class TestBackgroundComponent extends TextureComponent {
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
+            ButtonComponent x = (ButtonComponent) component.getClone();
+            x.setText(new Text(Minecraft.getInstance().font, Component.literal("Test"), 0, 0));
+            content.addChild(x);
 
             this.scrollPane = new ScrollPanelComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarComponent);
         }
@@ -113,7 +119,7 @@ public class TestBackgroundComponent extends TextureComponent {
 
             ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(scrollBarTexture, 0, 0, scrollBarThickness);
             ScrollBarComponent scrollBarComponent = new ScrollBarComponent(scrollBarXOffset, scrollPaneHeight + scrollBarYOffset, scrollPaneWidth - (scrollBarXOffset * 2), scrollBarThickness, orientation, scrollWheelComponent);
-            ScrollContentComponent content = new ScrollContentComponent(0, 0, 0, orientation);
+            ScrollContentComponent content = new ScrollContentComponent(0, 0, 10, orientation);
 
             ButtonComponent component = new ButtonComponent(scrollBarBackgroundTexture, 0, 0, 20, scrollPaneHeight);
             content.addChild(component);
@@ -139,6 +145,9 @@ public class TestBackgroundComponent extends TextureComponent {
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
             content.addChild((ButtonComponent) component.getClone());
+            ButtonComponent x = (ButtonComponent) component.getClone();
+            x.setText(new Text(Minecraft.getInstance().font, Component.literal("Test"), 0, 0));
+            content.addChild(x);
 
             this.scrollPane2 = new ScrollPanelComponent(scrollPaneTexture, scrollPaneX, scrollPaneY, scrollPaneWidth, scrollPaneHeight, orientation, content, scrollBarComponent);
         }

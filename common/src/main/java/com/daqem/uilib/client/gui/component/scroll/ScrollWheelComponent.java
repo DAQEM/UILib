@@ -55,6 +55,11 @@ public class ScrollWheelComponent extends AbstractNineSlicedComponent<ScrollWhee
         return calculateStepValue(scrollPanelComponent, positionCheck, getMinValue(scrollPanelComponent));
     }
 
+    @Override
+    public int getDimension(boolean isHorizontal) {
+        return isHorizontal ? getWidth() : getHeight();
+    }
+
     private int calculateStepValue(ScrollPanelComponent scrollPanelComponent, BiPredicate<IComponent<?>, Integer> positionCheck, int fallbackValue) {
         return scrollPanelComponent.getScrollContentComponent().map(scrollContentComponent -> scrollContentComponent.getChildren().stream()
                 .filter(component -> positionCheck.test(component, getScrollValue()))

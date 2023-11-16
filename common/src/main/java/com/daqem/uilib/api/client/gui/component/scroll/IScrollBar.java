@@ -12,4 +12,5 @@ public interface IScrollBar {
     int getNextStep(ScrollPanelComponent scrollPanelComponent);
     int getPreviousStep(ScrollPanelComponent scrollPanelComponent);
     void scroll(ScrollPanelComponent scrollPanelComponent, double delta);
+    int getDimension(boolean isHorizontal);
 }

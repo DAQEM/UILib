@@ -62,12 +62,12 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
 
     private double getDragPercentage(double mouseX, double mouseY, ScrollWheelComponent scrollWheelComponent) {
         boolean isHorizontal = getOrientation().isHorizontal();
-        int scrollWheelDimension = isHorizontal ? scrollWheelComponent.getWidth() : scrollWheelComponent.getHeight();
-        int scrollBarLength = isHorizontal ? getWidth() : getHeight();
+        int scrollWheelDimension = scrollWheelComponent.getDimension(isHorizontal);
+        int scrollBarLength = getDimension(isHorizontal);
         double offset = scrollWheelDimension / 2.0;
         double mousePosition = isHorizontal ? mouseX : mouseY;
         double newPosition = mousePosition - offset;
-        // Make sure the scroll position stays within the boundaries
+
         if (newPosition < 0) {
             newPosition = 0;
         }
@@ -75,6 +75,10 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
             newPosition = scrollBarLength - scrollWheelDimension;
         }
         return Mth.clamp((newPosition / (scrollBarLength - scrollWheelDimension)) * 100, 0D, 100D);
+    }
+
+    private int getDimension(boolean isHorizontal) {
+        return isHorizontal ? getWidth() : getHeight();
     }
 
     @Override
