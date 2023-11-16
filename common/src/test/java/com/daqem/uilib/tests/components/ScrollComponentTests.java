@@ -34,7 +34,7 @@ public class ScrollComponentTests {
 
         //Assert
         assertNotNull(scrollPanelComponent.getScrollBar());
-        assertEquals(scrollBarComponent, scrollPanelComponent.getScrollBar());
+        assertEquals(scrollBarComponent, scrollPanelComponent.getScrollBar().orElse(null));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class ScrollComponentTests {
         scrollPanelComponent.removeScrollBar();
 
         //Assert
-        assertNull(scrollPanelComponent.getScrollBar());
+        assertTrue(scrollPanelComponent.getScrollBar().isEmpty());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class ScrollComponentTests {
 
         //Assert
         assertNotNull(scrollBarComponent.getScrollWheel());
-        assertEquals(scrollWheelComponent, scrollBarComponent.getScrollWheel());
+        assertEquals(scrollWheelComponent, scrollBarComponent.getScrollWheel().orElse(null));
     }
 
     @Test
@@ -94,6 +94,6 @@ public class ScrollComponentTests {
 
         //Assert
         assertNotNull(scrollPanelComponent.getScrollContentComponent());
-        assertEquals(scrollContentComponent, scrollPanelComponent.getScrollContentComponent());
+        assertEquals(scrollContentComponent, scrollPanelComponent.getScrollContentComponent().orElse(null));
     }
 }
