@@ -25,7 +25,7 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
     }
 
     public ScrollBarComponent(int x, int y, int width, int height, ScrollOrientation orientation, @Nullable ScrollWheelComponent scrollWheelComponent) {
-        super(null, x, y, width, height, null, null, null);
+        super(null, x, y, width, height);
         this.scrollWheelComponent = scrollWheelComponent;
         this.orientation = orientation;
         this.background = Backgrounds.getSolidScrollBarBackground(this);

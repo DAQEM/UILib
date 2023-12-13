@@ -14,7 +14,7 @@ public class ScrollWheelComponent extends AbstractNineSlicedComponent<ScrollWhee
     private int scrollValue = 0;
 
     public ScrollWheelComponent(NineSlicedTexture texture, int x, int y, int thickness) {
-        super(texture, x, y, thickness, thickness, null, null, null);
+        super(texture, x, y, thickness, thickness);
     }
 
     @Override

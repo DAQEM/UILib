@@ -31,18 +31,31 @@ public class TruncatedText extends AbstractText<TruncatedText> {
         Component text = getText();
         Font font = getFont();
         int width = getWidth();
-        int textWidth = font.width(text);
-        if (textWidth > width) {
 
-            text = text.plainCopy().append(ending).withStyle(style -> getText().getStyle());
-
-            while (font.width(text) > width) {
-                text = Component.literal(text.getString().substring(0, text.getString().length() - (1 + ending.length()))).append(ending).withStyle(style -> getText().getStyle());
-            }
-
+        if (textExceedsWidth(text, font, width)) {
+            text = trimTextToFitWidth(text, font, width);
             setText(text);
-
         }
+
+        renderText(graphics);
+    }
+
+    private boolean textExceedsWidth(Component text, Font font, int width) {
+        return font.width(text) > width;
+    }
+
+    private Component trimTextToFitWidth(Component text, Font font, int width) {
+        text = text.plainCopy().append(ending).withStyle(style -> getText().getStyle());
+
+        while (font.width(text) > width && text.getString().length() > (1 + ending.length())) {
+            String trimmedText = text.getString().substring(0, text.getString().length() - (1 + ending.length()));
+            text = Component.literal(trimmedText).append(ending).withStyle(style -> getText().getStyle());
+        }
+
+        return text;
+    }
+
+    private void renderText(GuiGraphics graphics) {
         graphics.drawString(getFont(), getText(), 0, 0, getTextColor(), isShadow());
     }
 

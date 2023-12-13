@@ -33,7 +33,7 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
     }
 
     public ScrollPanelComponent(ITexture texture, int x, int y, int width, int height, ScrollOrientation scrollOrientation, @Nullable ScrollContentComponent scrollContentComponent, @Nullable ScrollBarComponent scrollBarComponent) {
-        super(texture, x, y, width, height, null, null, null);
+        super(texture, x, y, width, height);
         this.scrollOrientation = scrollOrientation;
         this.scrollContentComponent = scrollContentComponent;
         this.scrollBarComponent = scrollBarComponent;
