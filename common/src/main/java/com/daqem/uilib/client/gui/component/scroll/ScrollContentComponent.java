@@ -22,11 +22,7 @@ public class ScrollContentComponent extends AbstractComponent<ScrollContentCompo
     private ScrollOrientation orientation;
 
     public ScrollContentComponent(int x, int y, int contentSpacing, ScrollOrientation orientation) {
-        this(x, y, null, null, null, contentSpacing, orientation);
-    }
-
-    public ScrollContentComponent(int x, int y, @Nullable IText<?> text, @Nullable OnClickEvent<ScrollContentComponent> onClickEvent, @Nullable OnHoverEvent<ScrollContentComponent> onHoverEvent, int contentSpacing, ScrollOrientation orientation) {
-        super(null, x, y, 0, 0, text, onClickEvent, onHoverEvent);
+        super(null, x, y, 0, 0);
         this.contentSpacing = contentSpacing;
         this.orientation = orientation;
     }

@@ -46,15 +46,12 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
 
     private IColorManipulator colorManipulator = new ColorManipulator();
 
-    public AbstractComponent(ITexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickEvent<T> onClickEvent, @Nullable OnHoverEvent<T> onHoverEvent) {
+    public AbstractComponent(ITexture texture, int x, int y, int width, int height) {
         this.texture = texture;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.text = text;
-        this.onClickEvent = onClickEvent;
-        this.onHoverEvent = onHoverEvent;
 
         //noinspection unchecked
         this.hoverState = (T) this.getClone();
@@ -94,6 +91,9 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
             this.render(guiGraphics, mouseX, mouseY, delta);
             this.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
+            if (getText() != null) {
+                getText().renderBase(guiGraphics, mouseX, mouseY, delta);
+            }
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         }

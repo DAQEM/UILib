@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 public class TextureComponent extends AbstractComponent<TextureComponent> {
 
     public TextureComponent(ITexture texture, int x, int y, int width, int height) {
-        super(texture, x, y, width, height, null, null, null);
+        super(texture, x, y, width, height);
     }
 
     @Override

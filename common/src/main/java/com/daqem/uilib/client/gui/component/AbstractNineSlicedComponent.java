@@ -10,13 +10,14 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractNineSlicedComponent<T extends AbstractNineSlicedComponent<T>> extends AbstractComponent<T> {
 
-    public AbstractNineSlicedComponent(ITexture texture, int x, int y, int width, int height, @Nullable IText<?> text, @Nullable OnClickEvent<T> onClickEvent, @Nullable OnHoverEvent<T> onHoverEvent) {
-        super(texture, x, y, width, height, text, onClickEvent, onHoverEvent);
+    public AbstractNineSlicedComponent(ITexture texture, int x, int y, int width, int height) {
+        super(texture, x, y, width, height);
     }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         INineSlicedTexture texture = (INineSlicedTexture) getTexture();
+        if (texture == null) return;
         graphics.blitNineSliced(
                 texture.getTextureLocation(),
                 0,

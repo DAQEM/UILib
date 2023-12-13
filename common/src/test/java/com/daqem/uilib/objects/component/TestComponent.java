@@ -5,11 +5,11 @@ import net.minecraft.client.gui.GuiGraphics;
 
 public class TestComponent extends AbstractComponent<TestComponent> {
     public TestComponent() {
-        super(null, 0, 0, 0, 0, null, null, null);
+        super(null, 0, 0, 0, 0);
     }
 
     public TestComponent(int x, int y, int width, int height) {
-        super(null, x, y, width, height, null, null, null);
+        super(null, x, y, width, height);
     }
 
     @Override
