@@ -306,6 +306,11 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
+    public boolean isHovered(double mouseX, double mouseY) {
+        return mouseX >= getX() && mouseX <= getX() + (getWidth() * getScale()) && mouseY >= getY() && mouseY <= getY() + (getHeight() * getScale());
+    }
+
+    @Override
     public @Nullable OnHoverEvent<T> getOnHoverEvent() {
         return onHoverEvent;
     }
