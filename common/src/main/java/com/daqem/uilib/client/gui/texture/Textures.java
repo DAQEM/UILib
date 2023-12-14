@@ -14,7 +14,7 @@ public class Textures {
     public static final NineSlicedTexture MINECRAFT_BUTTON = new NineSlicedTexture(new ResourceLocation("textures/gui/widgets.png"), 0, 66, 200, 20, 20, 4);
     public static final NineSlicedTexture MINECRAFT_BUTTON_HOVERED = new NineSlicedTexture(new ResourceLocation("textures/gui/widgets.png"), 0, 86, 200, 20, 20, 4);
     public static final NineSlicedTexture SCROLL_PANE = new NineSlicedTexture(GUI_TEXTURES, 128, 0, 32, 32, 1);
-    public static final NineSlicedTexture SCROLL_BAR = new NineSlicedTexture(GUI_TEXTURES, 0, 0, 8, 255, 2);
+    public static final NineSlicedTexture SCROLL_WHEEL = new NineSlicedTexture(GUI_TEXTURES, 0, 0, 8, 255, 2);
     public static final NineSlicedTexture SCROLL_BAR_BACKGROUND = new NineSlicedTexture(GUI_TEXTURES, 160, 0, 32, 32, 1);
 
     public static class Advancement {

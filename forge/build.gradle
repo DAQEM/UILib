@@ -101,6 +101,7 @@ curseforge {
 
         relations {
             requiredDependency("architectury-api")
+            requiredDependency("supermartijn642s-config-lib")
         }
 
         mainArtifact(remapJar) {

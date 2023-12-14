@@ -339,7 +339,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     public void centerHorizontally() {
         int containerWidth = getParentWidth();
         int componentWidth = getWidth();
-        setX((containerWidth / 2) - (componentWidth / 2));
+        setX((int) ((containerWidth / 2) - ((componentWidth * scale) / 2)));
         this.centeredHorizontally = true;
     }
 
@@ -347,7 +347,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     public void centerVertically() {
         int containerHeight = getParentHeight();
         int componentHeight = getHeight();
-        setY((containerHeight / 2) - (componentHeight / 2));
+        setY((int) ((containerHeight / 2) - ((componentHeight * scale) / 2)));
         this.centeredVertically = true;
     }
 

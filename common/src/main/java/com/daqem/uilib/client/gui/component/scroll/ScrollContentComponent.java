@@ -112,7 +112,6 @@ public class ScrollContentComponent extends AbstractComponent<ScrollContentCompo
     }
 
     public void updateContentPositionBasedOnPercentage(ScrollPanelComponent scrollPanelComponent, double percentage) {
-        UILibClient.LOGGER.error(String.valueOf(percentage));
         int min = 0;
         if (scrollPanelComponent.getScrollOrientation().isHorizontal()) {
             int max = getWidth() - scrollPanelComponent.getWidth();
