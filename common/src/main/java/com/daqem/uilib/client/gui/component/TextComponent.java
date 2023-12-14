@@ -9,6 +9,10 @@ public class TextComponent extends AbstractComponent<TextComponent> {
     public TextComponent(int x, int y, @Nullable IText<?> text) {
         super(null, x, y, 0, 0);
         setText(text);
+        if (text != null) {
+            setWidth(text.getWidth());
+            setHeight(text.getHeight());
+        }
     }
 
     @Override

@@ -77,7 +77,7 @@ public class ScrollComponentTests {
     @Test
     void ScrollBarComponentSetScrollBar() {
         //Arrange
-        ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(Textures.SCROLL_BAR, 0, 0, 100);
+        ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(Textures.SCROLL_WHEEL, 0, 0, 100);
 
         //Act
         scrollBarComponent.setScrollBar(scrollWheelComponent);

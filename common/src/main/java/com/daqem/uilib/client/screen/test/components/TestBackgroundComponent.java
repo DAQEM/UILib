@@ -43,7 +43,7 @@ public class TestBackgroundComponent extends TextureComponent {
             int scrollBarYOffset = 1;
 
             NineSlicedTexture scrollPaneTexture = Textures.SCROLL_PANE;
-            NineSlicedTexture scrollBarTexture = Textures.SCROLL_BAR;
+            NineSlicedTexture scrollBarTexture = Textures.SCROLL_WHEEL;
             NineSlicedTexture scrollBarBackgroundTexture = Textures.SCROLL_BAR_BACKGROUND;
 
             ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(scrollBarTexture, 0, 0, scrollBarWidth);
@@ -114,7 +114,7 @@ public class TestBackgroundComponent extends TextureComponent {
             int scrollBarYOffset = 4;
 
             NineSlicedTexture scrollPaneTexture = Textures.SCROLL_PANE;
-            NineSlicedTexture scrollBarTexture = Textures.SCROLL_BAR;
+            NineSlicedTexture scrollBarTexture = Textures.SCROLL_WHEEL;
             NineSlicedTexture scrollBarBackgroundTexture = Textures.SCROLL_BAR_BACKGROUND;
 
             ScrollWheelComponent scrollWheelComponent = new ScrollWheelComponent(scrollBarTexture, 0, 0, scrollBarThickness);
