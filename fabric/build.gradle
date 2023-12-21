@@ -112,3 +112,17 @@ curseforge {
 afterEvaluate {
     tasks.curseforge933200.dependsOn remapJar
 }
+
+modrinth {
+    token = System.getenv("MODRINTH_API_KEY")
+    projectId = "AOEDs9Al"
+    versionName = "UI Lib Fabric $rootProject.minecraft_version - $rootProject.mod_version"
+    versionNumber = "$rootProject.mod_version"
+    versionType = "$rootProject.curse_forge_release_type"
+    uploadFile = remapJar
+    gameVersions = ["$rootProject.minecraft_version"]
+    loaders = ["fabric"]
+    dependencies {
+        required.project "architectury-api"
+    }
+}

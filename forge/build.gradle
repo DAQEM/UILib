@@ -112,3 +112,17 @@ curseforge {
         }
     }
 }
+
+modrinth {
+    token = System.getenv("MODRINTH_API_KEY")
+    projectId = "AOEDs9Al"
+    versionName = "UI Lib Forge $rootProject.minecraft_version - $rootProject.mod_version"
+    versionNumber = "$rootProject.mod_version"
+    versionType = "$rootProject.curse_forge_release_type"
+    uploadFile = remapJar
+    gameVersions = ["$rootProject.minecraft_version"]
+    loaders = ["forge"]
+    dependencies {
+        required.project "architectury-api"
+    }
+}
