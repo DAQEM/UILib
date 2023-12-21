@@ -79,8 +79,8 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.pose().translate(hoverState.getX(), hoverState.getY(), hoverState.getZ());
             guiGraphics.pose().scale(hoverState.getScale(), hoverState.getScale(), hoverState.getScale());
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(hoverState.getRotation()), hoverState.getWidth() / 2.0f, hoverState.getHeight() / 2.0f, 0.0f);
-            guiGraphics.setColor(hoverState.getColorManipulator().getRed(), hoverState.getColorManipulator().getGreen(), hoverState.getColorManipulator().getBlue(), hoverState.getOpacity());
             hoverState.getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
+            guiGraphics.setColor(hoverState.getColorManipulator().getRed(), hoverState.getColorManipulator().getGreen(), hoverState.getColorManipulator().getBlue(), hoverState.getOpacity());
             hoverState.render(guiGraphics, mouseX, mouseY, delta);
             hoverState.getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             guiGraphics.setColor(1F, 1F, 1F, 1F);
@@ -90,8 +90,8 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.pose().translate(getX(), getY(), getZ());
             guiGraphics.pose().scale(getScale(), getScale(), getScale());
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(getRotation()), getWidth() / 2.0f, getHeight() / 2.0f, 0.0f);
-            guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
             this.getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
+            guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
             this.render(guiGraphics, mouseX, mouseY, delta);
             this.getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             if (getText() != null) {
