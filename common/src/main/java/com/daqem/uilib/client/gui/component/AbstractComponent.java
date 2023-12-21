@@ -36,6 +36,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private boolean visible = true;
     private boolean centeredHorizontally = false;
     private boolean centeredVertically = false;
+    private boolean renderBeforeParent = false;
 
     private @Nullable OnClickEvent<T> onClickEvent;
     private @Nullable OnHoverEvent<T> onHoverEvent;
@@ -79,8 +80,9 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.pose().scale(hoverState.getScale(), hoverState.getScale(), hoverState.getScale());
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(hoverState.getRotation()), hoverState.getWidth() / 2.0f, hoverState.getHeight() / 2.0f, 0.0f);
             guiGraphics.setColor(hoverState.getColorManipulator().getRed(), hoverState.getColorManipulator().getGreen(), hoverState.getColorManipulator().getBlue(), hoverState.getOpacity());
+            hoverState.getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             hoverState.render(guiGraphics, mouseX, mouseY, delta);
-            hoverState.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
+            hoverState.getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         } else if (isVisible()) {
@@ -89,8 +91,9 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.pose().scale(getScale(), getScale(), getScale());
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(getRotation()), getWidth() / 2.0f, getHeight() / 2.0f, 0.0f);
             guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
+            this.getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             this.render(guiGraphics, mouseX, mouseY, delta);
-            this.getChildren().forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
+            this.getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             if (getText() != null) {
                 getText().renderBase(guiGraphics, mouseX, mouseY, delta);
             }
@@ -180,6 +183,11 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public float getRotation() {
         return rotation;
+    }
+
+    @Override
+    public boolean renderBeforeParent() {
+        return renderBeforeParent;
     }
 
     @Override
@@ -278,6 +286,11 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public void setRotation(float rotation) {
         this.rotation = rotation;
+    }
+
+    @Override
+    public void setRenderBeforeParent(boolean renderBeforeParent) {
+        this.renderBeforeParent = renderBeforeParent;
     }
 
     @Override
