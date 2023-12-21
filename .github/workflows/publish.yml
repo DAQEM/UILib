@@ -32,16 +32,27 @@ jobs:
       - name: Build Jars
         run: ./gradlew build
 
+      - name: Retrieve Version
+        id: gradle_version
+        run: |
+          echo "::set-output name=VERSION_NAME::$(./gradlew -q :common:printVersionName)"
+
+      - name: Check if tag exists 
+        uses: mukunku/tag-exists-action@v1.4.0
+        id: checkTag
+        with: 
+          tag: ${{ steps.gradle_version.outputs.VERSION_NAME }}
+          repo: 'actions/checkout'
+
+      - name: Fail if tag exists
+        if: steps.checkTag.outputs.exists == 'true'
+        run: exit 1
+
       - name: Publish to Modrinth
         run: ./gradlew modrinth
 
       - name: Publish to CurseForge
         run: ./gradlew curseforge
-
-      - name: Retrieve Version
-        run: |
-          echo "::set-output name=VERSION_NAME::$(./gradlew -q :common:printVersionName)"
-        id: gradle_version
 
       - name: Publish to GitHub Releases
         uses: ncipollo/release-action@v1
