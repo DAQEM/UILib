@@ -42,7 +42,6 @@ jobs:
         id: checkTag
         with: 
           tag: ${{ steps.gradle_version.outputs.VERSION_NAME }}
-          repo: 'actions/checkout'
 
       - name: Fail if tag exists
         if: steps.checkTag.outputs.exists == 'true'
