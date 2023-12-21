@@ -37,11 +37,6 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     }
 
     @Override
-    default boolean isHovered(double mouseX, double mouseY) {
-        return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();
-    }
-
-    @Override
     default boolean isDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         return isHovered(mouseX, mouseY);
     }

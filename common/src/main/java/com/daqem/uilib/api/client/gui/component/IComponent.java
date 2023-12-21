@@ -22,6 +22,7 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     float getScale();
     float getOpacity();
     float getRotation();
+    boolean renderBeforeParent();
 
 
     void setParent(@Nullable IComponent<?> parent, boolean addAsChild);
@@ -36,4 +37,5 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     void setScale(float scale);
     void setOpacity(float opacity);
     void setRotation(float rotation);
+    void setRenderBeforeParent(boolean renderBeforeParent);
 }

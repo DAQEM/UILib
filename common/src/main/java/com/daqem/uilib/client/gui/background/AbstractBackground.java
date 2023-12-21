@@ -144,6 +144,11 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     }
 
     @Override
+    public boolean isHovered(double mouseX, double mouseY) {
+        return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();
+    }
+
+    @Override
     public @Nullable OnHoverEvent<T> getOnHoverEvent() {
         return onHoverEvent;
     }

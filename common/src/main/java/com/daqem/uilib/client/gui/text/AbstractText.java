@@ -280,6 +280,11 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
+    public boolean isHovered(double mouseX, double mouseY) {
+        return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();
+    }
+
+    @Override
     public @Nullable OnHoverEvent<T> getOnHoverEvent() {
         return onHoverEvent;
     }
