@@ -101,7 +101,7 @@ curseforge {
             displayName = "UI Lib Fabric $rootProject.minecraft_version - $rootProject.mod_version"
         }
 
-        addArtifact(sourcesJar) {
+        addArtifact(remapSourcesJar) {
         }
     }
     options {
@@ -120,6 +120,7 @@ modrinth {
     versionNumber = "$rootProject.mod_version"
     versionType = "$rootProject.curse_forge_release_type"
     uploadFile = remapJar
+    additionalFiles = [remapSourcesJar]
     gameVersions = ["$rootProject.minecraft_version"]
     loaders = ["fabric"]
     dependencies {
