@@ -41,6 +41,10 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
 
     private @Nullable T hoverState;
 
+    public AbstractText(Font font, Component text) {
+        this(font, text, 0, 0, font.width(text), font.lineHeight);
+    }
+
     public AbstractText(Font font, Component text, int x, int y) {
         this(font, text, x, y, font.width(text), font.lineHeight);
     }

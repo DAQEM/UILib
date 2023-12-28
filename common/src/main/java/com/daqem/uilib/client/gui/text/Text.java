@@ -7,6 +7,11 @@ import net.minecraft.network.chat.Component;
 public class Text extends AbstractText<Text> {
 
     @SuppressWarnings("unused")
+    public Text(Font font, Component text) {
+        super(font, text);
+    }
+
+    @SuppressWarnings("unused")
     public Text(Font font, Component text, int x, int y) {
         super(font, text, x, y);
     }

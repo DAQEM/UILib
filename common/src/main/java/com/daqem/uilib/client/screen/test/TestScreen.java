@@ -4,6 +4,7 @@ import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.AbstractScreen;
 import com.daqem.uilib.client.gui.background.Backgrounds;
 import com.daqem.uilib.client.gui.component.ButtonComponent;
+import com.daqem.uilib.client.gui.component.SolidColorComponent;
 import com.daqem.uilib.client.gui.component.advancement.AdvancementHoverComponent;
 import com.daqem.uilib.client.gui.text.Text;
 import com.daqem.uilib.client.gui.texture.Textures;
