@@ -104,9 +104,15 @@ public class ScrollContentComponent extends AbstractComponent<ScrollContentCompo
         int min = 0;
         if (scrolledObject.getScrollOrientation().isHorizontal()) {
             int max = getWidth() - scrolledObject.getWidth();
+            if (max < 0) {
+                max = 0;
+            }
             this.setX((int) Mth.clamp(this.getX() - (delta * scrolledObject.getScrollSpeed()), -max, min));
         } else {
             int max = getHeight() - scrolledObject.getHeight();
+            if (max < 0) {
+                max = 0;
+            }
             this.setY((int) Mth.clamp(this.getY() - (delta * scrolledObject.getScrollSpeed()), -max, min));
         }
     }
