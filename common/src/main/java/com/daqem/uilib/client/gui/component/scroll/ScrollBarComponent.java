@@ -167,6 +167,8 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
             if (dimension >= totalBarDimension) {
                 dimension = totalBarDimension;
                 scrollWheelComponent.setColorManipulator(ColorManipulator.GRAY);
+            } else {
+                scrollWheelComponent.setColorManipulator(ColorManipulator.WHITE);
             }
 
             if (isHorizontal) {
