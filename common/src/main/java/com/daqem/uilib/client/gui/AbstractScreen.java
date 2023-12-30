@@ -93,7 +93,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     private void renderComponents(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        for (IComponent<?> component : components) {
+        for (IComponent<?> component : new ArrayList<>(components)) {
             component.renderBase(guiGraphics, mouseX, mouseY, delta);
         }
     }
@@ -144,7 +144,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     private void repositionComponents(List<IComponent<?>> components, int width, int height) {
-        for (IComponent<?> component : components) {
+        for (IComponent<?> component : new ArrayList<>(components)) {
             centerComponent(width, height, component);
             repositionComponents(component.getChildren(), width - component.getX(), height - component.getY());
         }
@@ -166,7 +166,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     private void handleClickEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
-        for (IComponent<?> component : components) {
+        for (IComponent<?> component : new ArrayList<>(components)) {
             component.preformOnClickEvent(mouseX, mouseY, button);
             handleClickEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button);
         }
@@ -179,7 +179,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     private void handleDragEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
-        for (IComponent<?> component : components) {
+        for (IComponent<?> component : new ArrayList<>(components)) {
             component.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
             handleDragEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button, dragX, dragY);
         }
@@ -192,7 +192,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double delta) {
-        for (IComponent<?> component : components) {
+        for (IComponent<?> component : new ArrayList<>(components)) {
             component.preformOnScrollEvent(mouseX, mouseY, delta);
             handleScrollEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
         }
