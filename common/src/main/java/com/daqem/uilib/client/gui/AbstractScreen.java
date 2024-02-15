@@ -7,7 +7,6 @@ import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.background.Backgrounds;
 import dev.architectury.event.events.client.ClientTickEvent;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -107,11 +106,6 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     @Override
     public int getHeight() {
         return this.height;
-    }
-
-    @Override
-    public Font getFont() {
-        return this.font;
     }
 
     @Override
