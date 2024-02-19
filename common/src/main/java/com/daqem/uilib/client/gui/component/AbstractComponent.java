@@ -69,6 +69,13 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
 
     @Override
     public void resizeScreenRepositionRenderable(int width, int height) {
+        if (isCenteredHorizontally()) {
+            centerHorizontally();
+        }
+        if (isCenteredVertically()) {
+            centerVertically();
+        }
+        getChildren().forEach(child -> child.resizeScreenRepositionRenderable(width, height));
     }
 
     @Override
@@ -294,6 +301,21 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
+    public void renderTooltipsBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(getX(), getY(), 400);
+        getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta));
+        renderTooltips(guiGraphics, mouseX, mouseY, delta);
+        getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta));
+        guiGraphics.pose().popPose();
+    }
+
+    @Override
+    public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+
+    }
+
+    @Override
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
@@ -321,6 +343,11 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public boolean isHovered(double mouseX, double mouseY) {
         return mouseX >= getX() && mouseX <= getX() + (getWidth() * getScale()) && mouseY >= getY() && mouseY <= getY() + (getHeight() * getScale());
+    }
+
+    @Override
+    public boolean isTotalHovered(double mouseX, double mouseY) {
+        return mouseX >= getTotalX() && mouseX <= getTotalX() + (getWidth() * getScale()) && mouseY >= getTotalY() && mouseY <= getTotalY() + (getHeight() * getScale());
     }
 
     @Override

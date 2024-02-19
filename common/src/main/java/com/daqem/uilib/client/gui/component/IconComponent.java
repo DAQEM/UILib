@@ -1,5 +1,6 @@
 package com.daqem.uilib.client.gui.component;
 
+import com.daqem.uilib.client.gui.component.texture.TextureComponent;
 import com.daqem.uilib.client.gui.texture.icon.IconTexture;
 
 public class IconComponent extends TextureComponent

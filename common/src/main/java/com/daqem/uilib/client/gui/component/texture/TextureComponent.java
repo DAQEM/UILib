@@ -1,6 +1,7 @@
-package com.daqem.uilib.client.gui.component;
+package com.daqem.uilib.client.gui.component.texture;
 
 import com.daqem.uilib.api.client.gui.texture.ITexture;
+import com.daqem.uilib.client.gui.component.AbstractComponent;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class TextureComponent extends AbstractComponent<TextureComponent> {

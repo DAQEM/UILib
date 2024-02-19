@@ -4,7 +4,7 @@ import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.api.client.gui.component.scroll.ScrollOrientation;
 import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.ButtonComponent;
-import com.daqem.uilib.client.gui.component.TextureComponent;
+import com.daqem.uilib.client.gui.component.texture.TextureComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollWheelComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollBarComponent;
 import com.daqem.uilib.client.gui.component.scroll.ScrollContentComponent;

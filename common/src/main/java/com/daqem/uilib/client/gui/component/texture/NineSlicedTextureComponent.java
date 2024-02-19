@@ -1,12 +1,8 @@
-package com.daqem.uilib.client.gui.component;
+package com.daqem.uilib.client.gui.component.texture;
 
-import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
-import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.INineSlicedTexture;
-import com.daqem.uilib.api.client.gui.texture.ITexture;
+import com.daqem.uilib.client.gui.component.AbstractNineSlicedComponent;
 import net.minecraft.client.gui.GuiGraphics;
-import org.jetbrains.annotations.Nullable;
 
 public class NineSlicedTextureComponent extends AbstractNineSlicedComponent<NineSlicedTextureComponent> {
 

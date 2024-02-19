@@ -18,16 +18,19 @@ public class Textures {
     public static final NineSlicedTexture SCROLL_BAR_BACKGROUND = new NineSlicedTexture(GUI_TEXTURES, 160, 0, 32, 32, 1);
 
     public static class Advancement {
-        private static final ResourceLocation ADVANCEMENT_TEXTURES = new ResourceLocation("textures/gui/advancements/widgets.png");
+        private static final ResourceLocation ADVANCEMENT_WIDGETS_LOC = new ResourceLocation("textures/gui/advancements/widgets.png");
+        private static final ResourceLocation ADVANCEMENT_WINDOW_LOC = new ResourceLocation("textures/gui/advancements/window.png");
 
-        public static final INineSlicedTexture ADVANCEMENT_HOVER_BAR_OBTAINED = new NineSlicedTexture(ADVANCEMENT_TEXTURES, 0, 0, 200, 26, 6);
-        public static final INineSlicedTexture ADVANCEMENT_HOVER_BAR_UNOBTAINED = new NineSlicedTexture(ADVANCEMENT_TEXTURES, 0, 26, 200, 26, 6);
+        public static final INineSlicedTexture ADVANCEMENT_HOVER_BAR_OBTAINED = new NineSlicedTexture(ADVANCEMENT_WIDGETS_LOC, 0, 0, 200, 26, 6);
+        public static final INineSlicedTexture ADVANCEMENT_HOVER_BAR_UNOBTAINED = new NineSlicedTexture(ADVANCEMENT_WIDGETS_LOC, 0, 26, 200, 26, 6);
 
-        public static final ITexture ADVANCEMENT_ICON_TASK_OBTAINED = new Texture(ADVANCEMENT_TEXTURES, 0, 128, 26, 26);
-        public static final ITexture ADVANCEMENT_ICON_CHALLENGE_OBTAINED = new Texture(ADVANCEMENT_TEXTURES, 26, 128, 26, 26);
-        public static final ITexture ADVANCEMENT_ICON_GOAL_OBTAINED = new Texture(ADVANCEMENT_TEXTURES, 52, 128, 26, 26);
-        public static final ITexture ADVANCEMENT_ICON_TASK_UNOBTAINED = new Texture(ADVANCEMENT_TEXTURES, 0, 154, 26, 26);
-        public static final ITexture ADVANCEMENT_ICON_CHALLENGE_UNOBTAINED = new Texture(ADVANCEMENT_TEXTURES, 26, 154, 26, 26);
-        public static final ITexture ADVANCEMENT_ICON_GOAL_UNOBTAINED = new Texture(ADVANCEMENT_TEXTURES, 52, 154, 26, 26);
+        public static final ITexture ADVANCEMENT_ICON_TASK_OBTAINED = new Texture(ADVANCEMENT_WIDGETS_LOC, 0, 128, 26, 26);
+        public static final ITexture ADVANCEMENT_ICON_CHALLENGE_OBTAINED = new Texture(ADVANCEMENT_WIDGETS_LOC, 26, 128, 26, 26);
+        public static final ITexture ADVANCEMENT_ICON_GOAL_OBTAINED = new Texture(ADVANCEMENT_WIDGETS_LOC, 52, 128, 26, 26);
+        public static final ITexture ADVANCEMENT_ICON_TASK_UNOBTAINED = new Texture(ADVANCEMENT_WIDGETS_LOC, 0, 154, 26, 26);
+        public static final ITexture ADVANCEMENT_ICON_CHALLENGE_UNOBTAINED = new Texture(ADVANCEMENT_WIDGETS_LOC, 26, 154, 26, 26);
+        public static final ITexture ADVANCEMENT_ICON_GOAL_UNOBTAINED = new Texture(ADVANCEMENT_WIDGETS_LOC, 52, 154, 26, 26);
+
+        public static final INineSlicedTexture ADVANCEMENT_WINDOW = new NineSlicedTexture(ADVANCEMENT_WINDOW_LOC, 0, 0, 252, 140, 15, 23, 15, 15);
     }
 }

@@ -4,9 +4,7 @@ import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.IScreen;
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.IComponent;
-import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.background.Backgrounds;
-import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -72,8 +70,12 @@ public abstract class AbstractScreen extends Screen implements IScreen {
         super.render(guiGraphics, mouseX, mouseY, delta);
         //render UI Lib components
         this.renderComponents(guiGraphics, mouseX, mouseY, delta);
+        //render tooltip
+        this.renderTooltips(guiGraphics, mouseX, mouseY, delta);
         //render everything else
         this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
+
+
     }
 
     private void checkHovering(int mouseX, int mouseY, float delta) {
@@ -93,11 +95,19 @@ public abstract class AbstractScreen extends Screen implements IScreen {
         }
     }
 
-    private void renderComponents(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void renderComponents(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         for (IComponent<?> component : new ArrayList<>(components)) {
             component.renderBase(guiGraphics, mouseX, mouseY, delta);
         }
     }
+
+    public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        for (IComponent<?> component : new ArrayList<>(components)) {
+            component.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta);
+        }
+    }
+
+
 
     @Override
     public int getWidth() {

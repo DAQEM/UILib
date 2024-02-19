@@ -1,7 +1,7 @@
 package com.daqem.uilib.client.gui.component.advancement;
 
 import com.daqem.uilib.api.client.gui.texture.INineSlicedTexture;
-import com.daqem.uilib.client.gui.component.NineSlicedTextureComponent;
+import com.daqem.uilib.client.gui.component.texture.NineSlicedTextureComponent;
 import com.daqem.uilib.client.gui.texture.Textures;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidgetType;
 
