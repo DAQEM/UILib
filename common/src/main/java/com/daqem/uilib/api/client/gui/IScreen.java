@@ -24,7 +24,8 @@ public interface IScreen extends ContainerEventHandler {
     void startScreen();
     void onResizeScreenRepositionComponents(int width, int height);
     void onTickScreen(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
-
+    void renderComponents(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
+    void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
     boolean isPauseScreen();
     void setPauseScreen(boolean pauseScreen);
 }

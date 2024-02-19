@@ -5,6 +5,7 @@ import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.color.IColorManipulatable;
 import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -38,4 +39,7 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     void setOpacity(float opacity);
     void setRotation(float rotation);
     void setRenderBeforeParent(boolean renderBeforeParent);
+
+    void renderTooltipsBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
+    void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
 }

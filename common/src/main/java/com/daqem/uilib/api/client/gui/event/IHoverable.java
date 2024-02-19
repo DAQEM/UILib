@@ -5,6 +5,7 @@ import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
 public interface IHoverable<T extends IHoverable<T>> {
 
     boolean isHovered(double mouseX, double mouseY);
+    boolean isTotalHovered(double mouseX, double mouseY);
     void preformOnHoverEvent(double mouseX, double mouseY, float delta);
     OnHoverEvent<T> getOnHoverEvent();
     void setOnHoverEvent(OnHoverEvent<T> onHoverEvent);

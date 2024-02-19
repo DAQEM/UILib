@@ -1,15 +1,23 @@
 package com.daqem.uilib.client.gui.component.advancement;
 
 import com.daqem.uilib.api.client.gui.texture.ITexture;
-import com.daqem.uilib.client.gui.component.TextureComponent;
+import com.daqem.uilib.client.gui.component.ItemComponent;
+import com.daqem.uilib.client.gui.component.texture.TextureComponent;
 import com.daqem.uilib.client.gui.texture.Textures;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidgetType;
+import net.minecraft.world.item.ItemStack;
 
 public class AdvancementIconComponent extends TextureComponent {
 
-    public AdvancementIconComponent(int x, int y, AdvancementWidgetType type, FrameType frameType) {
+    private final ItemComponent itemComponent;
+
+    public AdvancementIconComponent(int x, int y, ItemStack itemStack, AdvancementWidgetType type, FrameType frameType) {
         super(getTexture(type, frameType), x, y, 26, 26);
+
+        this.itemComponent = new ItemComponent(5, 5, itemStack, true);
+
+        addChildren(itemComponent);
     }
 
     private static ITexture getTexture(AdvancementWidgetType type, FrameType frameType) {
