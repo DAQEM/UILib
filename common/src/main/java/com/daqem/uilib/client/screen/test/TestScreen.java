@@ -20,7 +20,7 @@ public class TestScreen extends AbstractScreen {
         this.setPauseScreen(false);
         this.setBackground(Backgrounds.getDefaultBackground(this.getWidth(), this.getHeight()));
 
-        AdvancementsComponent advancementsComponent = new AdvancementsComponent(List.of(new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree()));
+        AdvancementsComponent advancementsComponent = new AdvancementsComponent(List.of(new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree(), new TestAdvancementTree()));
         advancementsComponent.center();
         addComponent(advancementsComponent);
     }

@@ -91,18 +91,21 @@ public class TabsContainerComponent extends AbstractComponent<TabsContainerCompo
         leftArrow.setTexture(leftArrow.isTotalHovered(mouseX, mouseY) ? Textures.MINECRAFT_BUTTON_HOVERED : Textures.MINECRAFT_BUTTON);
         rightArrow.setTexture(rightArrow.isTotalHovered(mouseX, mouseY) ? Textures.MINECRAFT_BUTTON_HOVERED : Textures.MINECRAFT_BUTTON);
 
-        if (page == 0) {
-            removeChild(leftArrow);
-            if (tabComponents.size() > maxTabsPerPage) {
-                if (!getChildren().contains(rightArrow)) {
-                    addChild(rightArrow);
+        if (page == 0 || page == tabComponents.size() / maxTabsPerPage) {
+            if (page == 0) {
+                removeChild(leftArrow);
+                if (tabComponents.size() > maxTabsPerPage) {
+                    if (!getChildren().contains(rightArrow)) {
+                        addChild(rightArrow);
+                    }
                 }
             }
-        } else if (page == tabComponents.size() / maxTabsPerPage) {
-            removeChild(rightArrow);
-            if (tabComponents.size() > maxTabsPerPage) {
-                if (!getChildren().contains(leftArrow)) {
-                    addChild(leftArrow);
+            if (page == (tabComponents.size() - 1) / maxTabsPerPage) {
+                removeChild(rightArrow);
+                if (tabComponents.size() > maxTabsPerPage) {
+                    if (!getChildren().contains(leftArrow)) {
+                        addChild(leftArrow);
+                    }
                 }
             }
         } else {
