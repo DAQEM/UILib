@@ -66,16 +66,14 @@ public abstract class AbstractScreen extends Screen implements IScreen {
         this.checkHovering(mouseX, mouseY, delta);
         //Render background
         this.renderBackground(guiGraphics, mouseX, mouseY, delta);
-        //render Minecraft widgets
-        super.render(guiGraphics, mouseX, mouseY, delta);
         //render UI Lib components
         this.renderComponents(guiGraphics, mouseX, mouseY, delta);
+        //render screen tick
+        this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
+        //render Minecraft widgets
+        super.render(guiGraphics, mouseX, mouseY, delta);
         //render tooltip
         this.renderTooltips(guiGraphics, mouseX, mouseY, delta);
-        //render everything else
-        this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
-
-
     }
 
     private void checkHovering(int mouseX, int mouseY, float delta) {
