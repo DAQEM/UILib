@@ -26,7 +26,7 @@ public class TabComponent extends ButtonComponent {
 
     public TabComponent(int x, int y, int width, int height, ITabInformation tabInformation) {
         super(Textures.TAB, x, y, width, height);
-        this.itemComponent = new ItemComponent(6, 5, tabInformation.getIcon(),true);
+        this.itemComponent = new ItemComponent(6, 5, tabInformation.getIcon(), true);
         this.tabInformation = tabInformation;
         this.addChild(itemComponent);
 
@@ -72,7 +72,7 @@ public class TabComponent extends ButtonComponent {
     public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         super.renderTooltips(guiGraphics, mouseX, mouseY, delta);
         if (this.isTotalHovered(mouseX, mouseY)) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, tabInformation.getName(), mouseX - getX(), mouseY + getTotalY());
+            guiGraphics.renderTooltip(Minecraft.getInstance().font, tabInformation.getName(), mouseX - 3 - getX(), mouseY + 24 - getY());
         }
     }
 }
