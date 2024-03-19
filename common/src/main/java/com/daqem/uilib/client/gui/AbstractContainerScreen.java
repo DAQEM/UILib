@@ -47,22 +47,19 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         //check if the mouse is hovering over a component
         this.checkHovering(mouseX, mouseY, delta);
-        //Render background
-        this.renderBackground(guiGraphics, mouseX, mouseY, delta);
-        //render Minecraft widgets
-        super.render(guiGraphics, mouseX, mouseY, delta);
         //render UI Lib components
         this.renderComponents(guiGraphics, mouseX, mouseY, delta);
+        //render screen tick
+        this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
+        //render Minecraft widgets
+        super.render(guiGraphics, mouseX, mouseY, delta);
         //render tooltip
         this.renderTooltips(guiGraphics, mouseX, mouseY, delta);
-        //render everything else
-        this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
-
-
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float f, int i, int j) {
+    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+        this.renderBackground(guiGraphics, mouseX, mouseY, delta);
     }
 
     private void checkHovering(int mouseX, int mouseY, float delta) {
@@ -92,9 +89,8 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
         for (IComponent<?> component : new ArrayList<>(components)) {
             component.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta);
         }
+        this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
-
-
 
     @Override
     public int getWidth() {
