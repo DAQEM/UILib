@@ -162,13 +162,13 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
         super.preformOnClickEvent(mouseX, mouseY, button);
         getScrollContentComponent().ifPresent(scrollContentComponent -> {
             scrollContentComponent.preformOnClickEvent(mouseX, mouseY, button);
-            scrollContentComponent.getChildren().forEach(component -> component.preformOnClickEvent(mouseX - component.getX(), mouseY - component.getY(), button));
+            if (this.isTotalHovered(mouseX, mouseY)) {
+                scrollContentComponent.getChildren().forEach(component -> component.preformOnClickEvent(mouseX, mouseY, button));
+            }
         });
         getScrollBar().ifPresent(scrollBarComponent -> {
-            scrollBarComponent.preformOnClickEvent(mouseX - getX(), mouseY - getY(), button);
-            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> {
-                    scrollWheelComponent.preformOnClickEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), button);
-            });
+            scrollBarComponent.preformOnClickEvent(mouseX, mouseY, button);
+            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> scrollWheelComponent.preformOnClickEvent(mouseX, mouseY, button));
         });
     }
 

@@ -69,7 +69,7 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     private void handleHoverEvent(List<IComponent<?>> components, int mouseX, int mouseY, float delta) {
         for (IComponent<?> component : components) {
             component.preformOnHoverEvent(mouseX, mouseY, delta);
-            handleHoverEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
+            handleHoverEvent(component.getChildren(), mouseX, mouseY, delta);
         }
     }
 
@@ -167,7 +167,7 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     private void handleClickEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
         for (IComponent<?> component : new ArrayList<>(components)) {
             component.preformOnClickEvent(mouseX, mouseY, button);
-            handleClickEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button);
+            handleClickEvent(component.getChildren(), mouseX, mouseY, button);
         }
     }
 
@@ -180,7 +180,7 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     private void handleDragEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
         for (IComponent<?> component : new ArrayList<>(components)) {
             component.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
-            handleDragEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), button, dragX, dragY);
+            handleDragEvent(component.getChildren(), mouseX, mouseY, button, dragX, dragY);
         }
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double delta) {
         for (IComponent<?> component : new ArrayList<>(components)) {
             component.preformOnScrollEvent(mouseX, mouseY, delta);
-            handleScrollEvent(component.getChildren(), mouseX - component.getX(), mouseY - component.getY(), delta);
+            handleScrollEvent(component.getChildren(), mouseX, mouseY, delta);
         }
     }
 
