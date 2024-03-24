@@ -33,23 +33,23 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
 
     @Override
     default boolean isClicked(double mouseX, double mouseY, int button) {
-        return isHovered(mouseX, mouseY);
+        return isTotalHovered(mouseX, mouseY);
     }
 
     @Override
     default boolean isDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        return isHovered(mouseX, mouseY);
+        return isTotalHovered(mouseX, mouseY);
     }
 
     @Override
     default boolean isScrolled(double mouseX, double mouseY, double delta) {
-        return isHovered(mouseX, mouseY);
+        return isTotalHovered(mouseX, mouseY);
     }
 
     @Override
     default void preformOnHoverEvent(double mouseX, double mouseY, float delta) {
         if (getOnHoverEvent() != null) {
-            if (this.isHovered(mouseX, mouseY)) {
+            if (this.isTotalHovered(mouseX, mouseY)) {
                 getOnHoverEvent().onHover(getHoverState(), Minecraft.getInstance().screen, mouseX, mouseY, delta);
             }
         }
@@ -59,7 +59,7 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     @Override
     default void preformOnClickEvent(double mouseX, double mouseY, int button) {
         if (getOnClickEvent() != null) {
-            if (this.isHovered(mouseX, mouseY)) {
+            if (this.isTotalHovered(mouseX, mouseY)) {
                 getOnClickEvent().onClick((T) this, Minecraft.getInstance().screen, mouseX, mouseY, button);
             }
         }
@@ -69,7 +69,7 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     @Override
     default void preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (getOnDragEvent() != null) {
-            if (this.isHovered(mouseX, mouseY)) {
+            if (this.isTotalHovered(mouseX, mouseY)) {
                 getOnDragEvent().onDrag((T) this, Minecraft.getInstance().screen, mouseX, mouseY, button, dragX, dragY);
             }
         }
@@ -78,7 +78,7 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     @SuppressWarnings("unchecked")
     default void preformOnScrollEvent(double mouseX, double mouseY, double delta) {
         if (getOnScrollEvent() != null) {
-            if (this.isHovered(mouseX, mouseY)) {
+            if (this.isTotalHovered(mouseX, mouseY)) {
                 getOnScrollEvent().onScroll((T) this, Minecraft.getInstance().screen, mouseX, mouseY, delta);
             }
         }

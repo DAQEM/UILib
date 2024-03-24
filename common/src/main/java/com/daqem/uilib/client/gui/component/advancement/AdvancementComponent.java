@@ -62,7 +62,7 @@ public class AdvancementComponent extends AbstractComponent<AdvancementComponent
 
     @Override
     public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        if (this.iconComponent.isHovered(mouseX - getTotalX(), mouseY - getTotalY())) {
+        if (this.iconComponent.isTotalHovered(mouseX, mouseY)) {
             this.hoverComponent.renderBase(guiGraphics, mouseX, mouseY, delta);
         }
     }

@@ -80,8 +80,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
 
     @Override
     public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-
-        if (isHovered(mouseX, mouseY) && hoverState != null && hoverState.isVisible() && getOnHoverEvent() != null) {
+        if (isTotalHovered(mouseX, mouseY) && hoverState != null && hoverState.isVisible() && getOnHoverEvent() != null) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(hoverState.getX(), hoverState.getY(), hoverState.getZ());
             guiGraphics.pose().scale(hoverState.getScale(), hoverState.getScale(), hoverState.getScale());
