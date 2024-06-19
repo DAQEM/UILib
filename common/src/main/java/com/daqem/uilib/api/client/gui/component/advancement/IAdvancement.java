@@ -1,6 +1,6 @@
 package com.daqem.uilib.api.client.gui.component.advancement;
 
-import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.AdvancementType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -17,5 +17,5 @@ public interface IAdvancement {
     Component getName();
     List<Component> getDescription();
     boolean isObtained();
-    FrameType getFrameType();
+    AdvancementType getFrameType();
 }

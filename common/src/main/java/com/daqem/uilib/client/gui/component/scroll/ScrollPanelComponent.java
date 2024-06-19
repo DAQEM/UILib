@@ -54,9 +54,9 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
         getScrollContentComponent().ifPresent(ScrollContentComponent::startRenderable);
     }
 
-    private void handleScroll(ScrollPanelComponent scrolledObject, Screen screen, double mouseX, double mouseY, double delta) {
-        getScrollBar().ifPresent(s -> s.scroll(scrolledObject, delta));
-        getScrollContentComponent().ifPresent(s -> s.scroll(scrolledObject, delta));
+    private void handleScroll(ScrollPanelComponent scrolledObject, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
+        getScrollBar().ifPresent(s -> s.scroll(scrolledObject, amountX, amountY));
+        getScrollContentComponent().ifPresent(s -> s.scroll(scrolledObject, amountX, amountY));
     }
 
     // endregion
@@ -188,16 +188,16 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
     }
 
     @Override
-    public void preformOnScrollEvent(double mouseX, double mouseY, double delta) {
-        super.preformOnScrollEvent(mouseX, mouseY, delta);
+    public void preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
+        super.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
         getScrollContentComponent().ifPresent(scrollContentComponent -> {
-            scrollContentComponent.preformOnScrollEvent(mouseX, mouseY, delta);
-            scrollContentComponent.getChildren().forEach(component -> component.preformOnScrollEvent(mouseX - component.getX(), mouseY - component.getY(), delta));
+            scrollContentComponent.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
+            scrollContentComponent.getChildren().forEach(component -> component.preformOnScrollEvent(mouseX - component.getX(), mouseY - component.getY(), amountX, amountY));
         });
         getScrollBar().ifPresent(scrollBarComponent -> {
-            scrollBarComponent.preformOnScrollEvent(mouseX - getX(), mouseY - getY(), delta);
+            scrollBarComponent.preformOnScrollEvent(mouseX - getX(), mouseY - getY(), amountX, amountY);
             scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> {
-                scrollWheelComponent.preformOnScrollEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), delta);
+                scrollWheelComponent.preformOnScrollEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), amountX, amountY);
             });
         });
     }

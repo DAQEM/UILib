@@ -1,6 +1,7 @@
 package com.daqem.uilib.client.gui.background;
 
 import com.daqem.uilib.client.gui.texture.NineSlicedTexture;
+import com.daqem.uilib.client.util.GuiGraphicsUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class NineSlicedBackground extends TextureBackground {
@@ -16,7 +17,8 @@ public class NineSlicedBackground extends TextureBackground {
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         NineSlicedTexture texture = (NineSlicedTexture) getTexture();
-        graphics.blitNineSliced(
+        GuiGraphicsUtils.blitNineSliced(
+                graphics,
                 texture.getTextureLocation(),
                 0,
                 0,
