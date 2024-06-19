@@ -13,7 +13,8 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${project.j_unit_version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.j_unit_version}"
 }
 
 publishing {
