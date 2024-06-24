@@ -1,9 +1,12 @@
 package com.daqem.uilib.client.gui.component;
 
+import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
+import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
+import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.INineSlicedTexture;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
-import com.daqem.uilib.client.util.GuiGraphicsUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractNineSlicedComponent<T extends AbstractNineSlicedComponent<T>> extends AbstractComponent<T> {
 
@@ -15,8 +18,7 @@ public abstract class AbstractNineSlicedComponent<T extends AbstractNineSlicedCo
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         INineSlicedTexture texture = (INineSlicedTexture) getTexture();
         if (texture == null) return;
-        GuiGraphicsUtils.blitNineSliced(
-                graphics,
+        graphics.blitNineSliced(
                 texture.getTextureLocation(),
                 0,
                 0,

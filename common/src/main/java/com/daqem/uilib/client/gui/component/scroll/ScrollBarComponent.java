@@ -41,10 +41,10 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
         getScrollWheel().ifPresent(ScrollWheelComponent::startRenderable);
     }
 
-    private void handleScroll(ScrollBarComponent scrollBarComponent, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
+    private void handleScroll(ScrollBarComponent scrollBarComponent, Screen screen, double mouseX, double mouseY, double delta) {
         if (this.getParent() instanceof ScrollPanelComponent parent) {
-            scroll(parent, amountX, amountY);
-            parent.getScrollContentComponent().ifPresent(s -> s.scroll(parent, amountX, amountY));
+            scroll(parent, delta);
+            parent.getScrollContentComponent().ifPresent(s -> s.scroll(parent, delta));
         }
     }
 
@@ -132,9 +132,9 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
         this.centerBackground = centerBackground;
     }
 
-    public void scroll(ScrollPanelComponent scrolledObject, double amountX, double amountY) {
+    public void scroll(ScrollPanelComponent scrolledObject, double delta) {
         getScrollWheel().ifPresent(scrollWheelComponent -> {
-            scrollWheelComponent.scroll(scrolledObject, amountX, amountY);
+            scrollWheelComponent.scroll(scrolledObject, delta);
             this.updateScrollBarPositionBasedOnPercentage(scrolledObject);
         });
 
@@ -153,8 +153,8 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
     }
 
     @Override
-    public void preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
-        super.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
+    public void preformOnScrollEvent(double mouseX, double mouseY, double delta) {
+        super.preformOnScrollEvent(mouseX, mouseY, delta);
     }
 
     public void setScrollWheelLength(int contentLength) {

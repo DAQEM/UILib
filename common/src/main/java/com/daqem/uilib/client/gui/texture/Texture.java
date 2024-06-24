@@ -107,7 +107,7 @@ public class Texture implements ITexture {
         try {
             ITexture clone = (ITexture) this.clone();
             ResourceLocation currentTextureLocation = clone.getTextureLocation();
-            clone.setTextureLocation(ResourceLocation.fromNamespaceAndPath(currentTextureLocation.getNamespace(), currentTextureLocation.getPath()));
+            clone.setTextureLocation(new ResourceLocation(currentTextureLocation.getNamespace(), currentTextureLocation.getPath()));
             return clone;
         } catch (CloneNotSupportedException e) {
             return null;

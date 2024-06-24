@@ -84,7 +84,7 @@ public class TestAdvancementTree implements IAdvancementTree {
 
     @Override
     public ResourceLocation getBackgroundTexture() {
-        return ResourceLocation.parse("textures/block/stone.png");
+        return new ResourceLocation("textures/block/stone.png");
     }
 
     @Override

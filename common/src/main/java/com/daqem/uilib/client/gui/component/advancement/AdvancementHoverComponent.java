@@ -5,8 +5,7 @@ import com.daqem.uilib.client.gui.component.AbstractComponent;
 import com.daqem.uilib.client.gui.component.TextComponent;
 import com.daqem.uilib.client.gui.text.TruncatedText;
 import com.daqem.uilib.client.gui.text.multiline.MultiLineText;
-import com.daqem.uilib.client.util.GuiGraphicsUtils;
-import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,7 +19,7 @@ import java.util.List;
 
 public class AdvancementHoverComponent extends AbstractComponent<AdvancementHoverComponent> {
 
-    private static final ResourceLocation WIDGETS_LOCATION = ResourceLocation.parse("textures/gui/advancements/widgets.png");
+    private static final ResourceLocation WIDGETS_LOCATION = new ResourceLocation("textures/gui/advancements/widgets.png");
     private static final int MIN_WIDTH = 140;
     private static final int MAX_WIDTH = 260;
     private static final int TITLE_X = 28;
@@ -31,15 +30,15 @@ public class AdvancementHoverComponent extends AbstractComponent<AdvancementHove
     private final AdvancementIconComponent iconComponent;
     private final boolean hasStaticHeight;
 
-    public AdvancementHoverComponent(int x, int y, Font font, ItemStack itemStack, Component title, List<Component> descriptions, AdvancementWidgetType type, AdvancementType frameType) {
+    public AdvancementHoverComponent(int x, int y, Font font, ItemStack itemStack, Component title, List<Component> descriptions, AdvancementWidgetType type, FrameType frameType) {
         this(x, y, Mth.clamp(TITLE_X + font.width(title), MIN_WIDTH, MAX_WIDTH), font, itemStack, title, descriptions, type, frameType);
     }
 
-    public AdvancementHoverComponent(int x, int y, int width, Font font, ItemStack itemStack, Component title, List<Component> descriptions, AdvancementWidgetType type, AdvancementType frameType) {
+    public AdvancementHoverComponent(int x, int y, int width, Font font, ItemStack itemStack, Component title, List<Component> descriptions, AdvancementWidgetType type, FrameType frameType) {
         this(x, y, width, -1, font, itemStack, title, descriptions, type, frameType);
     }
 
-    public AdvancementHoverComponent(int x, int y, int width, int height, Font font, ItemStack itemStack, Component title, List<Component> descriptions, AdvancementWidgetType type, AdvancementType frameType) {
+    public AdvancementHoverComponent(int x, int y, int width, int height, Font font, ItemStack itemStack, Component title, List<Component> descriptions, AdvancementWidgetType type, FrameType frameType) {
         super(null, x, y, 0, 0);
         setText(new TruncatedText(font, title, TITLE_X, TITLE_Y, width - TITLE_X - 3, font.lineHeight));
         setWidth(width);
@@ -77,7 +76,7 @@ public class AdvancementHoverComponent extends AbstractComponent<AdvancementHove
             setHeight(32 + getDescriptionHeight());
         }
 
-        GuiGraphicsUtils.blitNineSliced(graphics, WIDGETS_LOCATION, -4, 16, getWidth(), getHeight() - 16, 10, 200, 26, 0, 52);
+        graphics.blitNineSliced(WIDGETS_LOCATION, -4, 16, getWidth(), getHeight() - 16, 10, 200, 26, 0, 52);
     }
 
     private int getDescriptionHeight() {
