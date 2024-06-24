@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
     id "com.matthewprenger.cursegradle" version "1.4.0"
     id "com.modrinth.minotaur" version "2.+"
 }
@@ -32,25 +32,10 @@ dependencies {
 }
 
 processResources {
-    var replaceProperties = [
-            "version": project.version,
-            "mod_id": project.mod_id,
-            "mod_name": project.mod_name,
-            "mod_description": project.mod_description,
-            "mod_author": project.mod_author,
-            "mod_license": project.mod_license,
-            "mod_website": project.mod_website,
-            "mod_repository": project.mod_repository,
+    inputs.property "version", project.version
 
-            "minecraft_version": project.minecraft_version,
-            "architectury_version": project.architectury_version,
-//                "config_library_version": project.config_library_version,
-//                "ui_library_version": project.ui_library_version
-    ]
-    inputs.properties replaceProperties
-
-    filesMatching(['fabric.mod.json']) {
-        expand replaceProperties
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
     }
 }
 
@@ -99,49 +84,48 @@ publishing {
 }
 
 curseforge {
-    apiKey = System.getenv("CURSEFORGE_API_KEY")
+    apiKey = System.getenv('CURSEFORGE_API_KEY')
     project {
-        id = project.curse_forge_project_id
-        releaseType = project.release_type
+        id = rootProject.curse_forge_project_id
+        releaseType = rootProject.curse_forge_release_type
         changelogType = "markdown"
         changelog = rootProject.file('changelog.md')
-
-        project.supported_minecraft_versions.split(',').each { version ->
-            addGameVersion version
-        }
-
-        addGameVersion "Java 21"
+        addGameVersion "$rootProject.minecraft_version"
+        addGameVersion "Java 17"
         addGameVersion "Fabric"
 
         relations {
-            project.curseforge_dependencies.split(',').each { dep ->
-                requiredDependency dep.trim()
-            }
+            requiredDependency("architectury-api")
         }
 
         mainArtifact(remapJar) {
-            displayName = "$project.mod_name Fabric $project.minecraft_version - $project.mod_version"
+            displayName = "UI Lib Fabric $rootProject.minecraft_version - $rootProject.mod_version"
         }
 
         addArtifact(remapSourcesJar) {
         }
     }
+    options {
+        forgeGradleIntegration = false
+    }
+}
+
+afterEvaluate {
+    tasks.curseforge933200.dependsOn remapJar
 }
 
 modrinth {
     token = System.getenv("MODRINTH_API_KEY")
-    projectId = project.modrinth_project_id
-    versionName = "$project.mod_name Fabric $project.minecraft_version - $project.mod_version"
-    versionNumber = "$project.mod_version"
-    versionType = "$project.release_type"
+    projectId = "AOEDs9Al"
+    versionName = "UI Lib Fabric $rootProject.minecraft_version - $rootProject.mod_version"
+    versionNumber = "$rootProject.mod_version"
+    versionType = "$rootProject.curse_forge_release_type"
     uploadFile = remapJar
     additionalFiles = [remapSourcesJar]
-    gameVersions = project.supported_minecraft_versions.split(',').toList()
+    gameVersions = ["$rootProject.minecraft_version"]
     loaders = ["fabric"]
     changelog = rootProject.file('changelog.md').text
     dependencies {
-        project.modrinth_dependencies.split(',').each { dep ->
-            required.project dep
-        }
+        required.project "architectury-api"
     }
 }

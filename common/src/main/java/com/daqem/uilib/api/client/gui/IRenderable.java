@@ -42,7 +42,7 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     }
 
     @Override
-    default boolean isScrolled(double mouseX, double mouseY, double amountX, double amountY) {
+    default boolean isScrolled(double mouseX, double mouseY, double delta) {
         return isTotalHovered(mouseX, mouseY);
     }
 
@@ -76,10 +76,10 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
     }
 
     @SuppressWarnings("unchecked")
-    default void preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
+    default void preformOnScrollEvent(double mouseX, double mouseY, double delta) {
         if (getOnScrollEvent() != null) {
             if (this.isTotalHovered(mouseX, mouseY)) {
-                getOnScrollEvent().onScroll((T) this, Minecraft.getInstance().screen, mouseX, mouseY, amountX, amountY);
+                getOnScrollEvent().onScroll((T) this, Minecraft.getInstance().screen, mouseX, mouseY, delta);
             }
         }
     }

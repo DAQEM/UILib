@@ -1,7 +1,7 @@
 package com.daqem.uilib.client.screen.test.components;
 
 import com.daqem.uilib.api.client.gui.component.advancement.IAdvancement;
-import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -55,7 +55,7 @@ public class TestAdvancement implements IAdvancement {
     }
 
     @Override
-    public AdvancementType getFrameType() {
-        return AdvancementType.TASK;
+    public FrameType getFrameType() {
+        return FrameType.TASK;
     }
 }

@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "uilib",
   "version": "${version}",
-  "name": "${mod_name}",
-  "description": "${mod_description}",
+  "name": "UI Lib",
+  "description": "A user interface library for Minecraft modding.",
   "authors": [
-    "${mod_author}"
+    "DAQEM"
   ],
   "contact": {
-    "homepage": "${mod_website}",
-    "sources": "${mod_repository}"
+    "homepage": "https://daqem.com/",
+    "sources": "https://github.com/DAQEM/UILib"
   },
-  "license": "${mod_license}",
+  "license": "Apache-2.0",
   "icon": "assets/uilib/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -20,11 +20,12 @@
     ]
   },
   "mixins": [
+    "uilib.mixins.json",
     "uilib-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=${minecraft_version}",
-    "architectury": ">=${architectury_version}"
+    "minecraft": ">=1.20.1",
+    "architectury": ">=9.1.12"
   }
 }
