@@ -200,15 +200,15 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-        handleScrollEvent(components, mouseX, mouseY, -delta);
-        return super.mouseScrolled(mouseX, mouseY, delta);
+    public boolean mouseScrolled(double mouseX, double mouseY, double amountX, double amountY) {
+        handleScrollEvent(components, mouseX, mouseY, -amountX, -amountY);
+        return super.mouseScrolled(mouseX, mouseY, amountX, amountY);
     }
 
-    private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double delta) {
+    private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double amountX, double amountY) {
         for (IComponent<?> component : new ArrayList<>(components)) {
-            component.preformOnScrollEvent(mouseX, mouseY, delta);
-            handleScrollEvent(component.getChildren(), mouseX, mouseY, delta);
+            component.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
+            handleScrollEvent(component.getChildren(), mouseX, mouseY, amountX, amountY);
         }
     }
 

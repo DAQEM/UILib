@@ -32,6 +32,6 @@ public class UILibClient {
     }
 
     public static ResourceLocation getId(String location) {
-        return new ResourceLocation(MOD_ID, location);
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, location);
     }
 }

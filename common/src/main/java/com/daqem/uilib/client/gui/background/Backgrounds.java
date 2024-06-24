@@ -12,7 +12,7 @@ public class Backgrounds {
     }
 
     public static TextureBackground getDirtBackground(int width, int height) {
-        return new TextureBackground(width, height, new Texture(new ResourceLocation("textures/gui/options_background.png"), 0, 0, 32, 32));
+        return new TextureBackground(width, height, new Texture(ResourceLocation.parse("textures/gui/options_background.png"), 0, 0, 32, 32));
     }
 
     public static NineSlicedBackground getSolidScrollBarBackground(ScrollBarComponent scrollBarComponent) {

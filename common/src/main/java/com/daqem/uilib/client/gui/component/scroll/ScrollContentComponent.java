@@ -100,20 +100,20 @@ public class ScrollContentComponent extends AbstractComponent<ScrollContentCompo
         return getChildren().stream().mapToInt(getSize::apply).max().orElse(0);
     }
 
-    public void scroll(ScrollPanelComponent scrolledObject, double delta) {
+    public void scroll(ScrollPanelComponent scrolledObject, double amountX, double amountY) {
         int min = 0;
         if (scrolledObject.getScrollOrientation().isHorizontal()) {
             int max = getWidth() - scrolledObject.getWidth();
             if (max < 0) {
                 max = 0;
             }
-            this.setX((int) Mth.clamp(this.getX() - (delta * scrolledObject.getScrollSpeed()), -max, min));
+            this.setX((int) Mth.clamp(this.getX() - (amountX * scrolledObject.getScrollSpeed()), -max, min));
         } else {
             int max = getHeight() - scrolledObject.getHeight();
             if (max < 0) {
                 max = 0;
             }
-            this.setY((int) Mth.clamp(this.getY() - (delta * scrolledObject.getScrollSpeed()), -max, min));
+            this.setY((int) Mth.clamp(this.getY() - (amountY * scrolledObject.getScrollSpeed()), -max, min));
         }
     }
 

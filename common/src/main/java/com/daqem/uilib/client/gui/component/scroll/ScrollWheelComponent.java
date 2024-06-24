@@ -79,8 +79,8 @@ public class ScrollWheelComponent extends AbstractNineSlicedComponent<ScrollWhee
     }
 
     @Override
-    public void scroll(ScrollPanelComponent scrollPanelComponent, double delta) {
-        double scrollStep = getStep(scrollPanelComponent, delta);
+    public void scroll(ScrollPanelComponent scrollPanelComponent, double amountX, double amountY) {
+        double scrollStep = getStep(scrollPanelComponent, scrollPanelComponent.getScrollOrientation().isHorizontal() ? amountX : amountY);
         int newScrollPosition = (int) (getScrollValue() + scrollStep);
 
         int minValue = getMinValue(scrollPanelComponent);
