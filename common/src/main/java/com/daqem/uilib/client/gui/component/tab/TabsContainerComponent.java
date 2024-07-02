@@ -42,6 +42,7 @@ public class TabsContainerComponent extends AbstractComponent<TabsContainerCompo
             deselectAll();
             tabComponent.setSelected(true);
             this.onTabChange.onChange(tabComponent);
+            return false;
         }));
 
         assignTabsForPage(false);
@@ -53,6 +54,7 @@ public class TabsContainerComponent extends AbstractComponent<TabsContainerCompo
                 page--;
                 assignTabsForPage(true);
             }
+            return false;
         });
 
         rightArrow.setOnClickEvent((clickedObject, screen, mouseX, mouseY, button) -> {
@@ -60,6 +62,7 @@ public class TabsContainerComponent extends AbstractComponent<TabsContainerCompo
                 page++;
                 assignTabsForPage(true);
             }
+            return false;
         });
     }
 

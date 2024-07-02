@@ -12,7 +12,7 @@ public class EventKeyPressed {
         ClientRawInputEvent.KEY_PRESSED.register((client, keyCode, scanCode, action, modifiers) -> {
             Screen screen = client.screen;
             if (UILibClient.OPEN_TEST_MENU.matches(keyCode, scanCode) && action == 1) {
-                if (screen instanceof TestScreen) screen.onClose();
+                if (screen instanceof TestScreen testScreen && testScreen.getFocusedComponent() == null) screen.onClose();
                 else if (screen == null) client.setScreen(new TestScreen());
             }
             return EventResult.pass();

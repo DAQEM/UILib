@@ -5,5 +5,5 @@ import net.minecraft.client.gui.screens.Screen;
 @FunctionalInterface
 public interface OnScrollEvent<T> {
 
-    void onScroll(T scrolledObject, Screen screen, double mouseX, double mouseY, double amountX, double amountY);
+    boolean onScroll(T scrolledObject, Screen screen, double mouseX, double mouseY, double amountX, double amountY);
 }

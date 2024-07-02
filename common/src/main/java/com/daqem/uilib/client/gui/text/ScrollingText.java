@@ -9,9 +9,13 @@ public class ScrollingText extends AbstractText<ScrollingText> {
     private Direction direction = Direction.LEFT;
     private float speed = 0.50F;
     private int delay = 50;
+    private boolean defaultCentered = false;
 
     private int delayCounter = 0;
     private float scrollCounter = 0;
+
+    private boolean s2sSide = false;
+    private int s2sDelay = 0;
 
     public ScrollingText(Font font, Component text, int x, int y) {
         super(font, text, x, y);
@@ -36,55 +40,78 @@ public class ScrollingText extends AbstractText<ScrollingText> {
         int xOffset = 0;
         int yOffset = 0;
 
-        if (delayCounter < delay) {
-            delayCounter++;
+        int textWidth = getFont().width(getText());
+        int spaceWidth = textWidth - getWidth();
+
+        if (defaultCentered && textWidth < getWidth()) {
+            xOffset = (getWidth() - textWidth) / 2;
         } else {
-            switch (direction) {
-                case LEFT -> {
-                    xOffset = (int) -scrollCounter;
-                    scrollCounter += speed;
-                    if (scrollCounter >= getFont().width(getText())) {
-                        scrollCounter = -getWidth();
+            if (delayCounter < delay) {
+                delayCounter++;
+            } else {
+                switch (direction) {
+                    case LEFT -> {
+                        xOffset = (int) -scrollCounter;
+                        scrollCounter += speed;
+                        if (scrollCounter >= getFont().width(getText())) {
+                            scrollCounter = -getWidth();
+                        }
+                        if (scrollCounter == 0) {
+                            delayCounter = 0;
+                        }
                     }
-                    if (scrollCounter == 0) {
-                        delayCounter = 0;
+                    case RIGHT -> {
+                        xOffset = (int) scrollCounter;
+                        scrollCounter += speed;
+                        if (scrollCounter >= getFont().width(getText())) {
+                            scrollCounter = -getWidth();
+                        }
+                        if (scrollCounter == 0) {
+                            delayCounter = 0;
+                        }
                     }
-                }
-                case RIGHT -> {
-                    xOffset = (int) scrollCounter;
-                    scrollCounter += speed;
-                    if (scrollCounter >= getFont().width(getText())) {
-                        scrollCounter = -getWidth();
+                    case UP -> {
+                        yOffset = (int) -scrollCounter;
+                        scrollCounter += speed;
+                        if (scrollCounter >= getFont().lineHeight) {
+                            scrollCounter = -getHeight();
+                        }
+                        if (scrollCounter == 0) {
+                            delayCounter = 0;
+                        }
                     }
-                    if (scrollCounter == 0) {
-                        delayCounter = 0;
+                    case DOWN -> {
+                        yOffset = (int) scrollCounter;
+                        scrollCounter += speed;
+                        if (scrollCounter >= getFont().lineHeight) {
+                            scrollCounter = -getHeight();
+                        }
+                        if (scrollCounter == 0) {
+                            delayCounter = 0;
+                        }
                     }
-                }
-                case UP -> {
-                    yOffset = (int) -scrollCounter;
-                    scrollCounter += speed;
-                    if (scrollCounter >= getFont().lineHeight) {
-                        scrollCounter = -getHeight();
-                    }
-                    if (scrollCounter == 0) {
-                        delayCounter = 0;
-                    }
-                }
-                case DOWN -> {
-                    yOffset = (int) scrollCounter;
-                    scrollCounter += speed;
-                    if (scrollCounter >= getFont().lineHeight) {
-                        scrollCounter = -getHeight();
-                    }
-                    if (scrollCounter == 0) {
-                        delayCounter = 0;
+                    case SIDE_TO_SIDE -> {
+                        xOffset = (int) -scrollCounter;
+
+                        if (s2sDelay < delay) {
+                            s2sDelay++;
+                        } else {
+                            scrollCounter += (s2sSide ? -speed : speed);
+
+                            if (!s2sSide && scrollCounter >= spaceWidth) {
+                                s2sSide = true;
+                                s2sDelay = 0;
+                            } else if (s2sSide && scrollCounter <= 0) {
+                                s2sSide = false;
+                                s2sDelay = 0;
+                            }
+                        }
                     }
                 }
             }
         }
 
-        graphics.enableScissor(getX(), getY(), getX() + getWidth(), getY() + getHeight());
-        graphics.fill(0, 0, getWidth(), getHeight(), 0xAA000000);
+        graphics.enableScissor(getTotalX(), getTotalY(), getTotalX() + getWidth(), getTotalY() + getHeight());
         graphics.drawString(getFont(), getText(), xOffset, yOffset, getTextColor(), isShadow());
         graphics.disableScissor();
     }
@@ -113,10 +140,19 @@ public class ScrollingText extends AbstractText<ScrollingText> {
         this.delay = delay;
     }
 
+    public boolean isDefaultCentered() {
+        return defaultCentered;
+    }
+
+    public void setDefaultCentered(boolean defaultCentered) {
+        this.defaultCentered = defaultCentered;
+    }
+
     public enum Direction {
         LEFT,
         RIGHT,
         UP,
-        DOWN
+        DOWN,
+        SIDE_TO_SIDE,
     }
 }

@@ -6,7 +6,7 @@ public interface IDraggable<T extends IDraggable<T>> {
 
     boolean isDragged(double mouseX, double mouseY, int button, double dragX, double dragY);
 
-    void preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY);
+    boolean preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY);
 
     OnDragEvent<T> getOnDragEvent();
 

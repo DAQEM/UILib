@@ -54,9 +54,10 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
         getScrollContentComponent().ifPresent(ScrollContentComponent::startRenderable);
     }
 
-    private void handleScroll(ScrollPanelComponent scrolledObject, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
+    private boolean handleScroll(ScrollPanelComponent scrolledObject, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
         getScrollBar().ifPresent(s -> s.scroll(scrolledObject, amountX, amountY));
         getScrollContentComponent().ifPresent(s -> s.scroll(scrolledObject, amountX, amountY));
+        return false;
     }
 
     // endregion
@@ -158,7 +159,7 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
     // region Event Pass Through
 
     @Override
-    public void preformOnClickEvent(double mouseX, double mouseY, int button) {
+    public boolean preformOnClickEvent(double mouseX, double mouseY, int button) {
         super.preformOnClickEvent(mouseX, mouseY, button);
         getScrollContentComponent().ifPresent(scrollContentComponent -> {
             scrollContentComponent.preformOnClickEvent(mouseX, mouseY, button);
@@ -170,6 +171,7 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
             scrollBarComponent.preformOnClickEvent(mouseX, mouseY, button);
             scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> scrollWheelComponent.preformOnClickEvent(mouseX, mouseY, button));
         });
+        return false;
     }
 
     @Override
@@ -188,7 +190,7 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
     }
 
     @Override
-    public void preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
+    public boolean preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
         super.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
         getScrollContentComponent().ifPresent(scrollContentComponent -> {
             scrollContentComponent.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
@@ -200,10 +202,11 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
                 scrollWheelComponent.preformOnScrollEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), amountX, amountY);
             });
         });
+        return false;
     }
 
     @Override
-    public void preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    public boolean preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY) {
         super.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
         getScrollContentComponent().ifPresent(scrollContentComponent -> {
             scrollContentComponent.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
@@ -215,6 +218,7 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
                 scrollWheelComponent.preformOnDragEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), button, dragX, dragY);
             });
         });
+        return false;
     }
 
     // endregion

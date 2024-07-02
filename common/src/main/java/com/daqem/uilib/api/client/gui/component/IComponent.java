@@ -16,14 +16,14 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
     @Nullable IComponent<?> getParent();
     List<IComponent<?>> getChildren();
     ITexture getTexture();
-    int getTotalX();
-    int getTotalY();
     int getZ();
     IText<?> getText();
     float getScale();
     float getOpacity();
     float getRotation();
     boolean renderBeforeParent();
+    boolean isFocused();
+    void setFocused(boolean focused);
 
 
     void setParent(@Nullable IComponent<?> parent, boolean addAsChild);
@@ -42,4 +42,5 @@ public interface IComponent<T extends IComponent<T>> extends IRenderable<T>, ICo
 
     void renderTooltipsBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
     void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
+    void renderText(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
 }

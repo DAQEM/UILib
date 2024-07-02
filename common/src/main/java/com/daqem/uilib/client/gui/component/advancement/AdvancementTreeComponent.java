@@ -42,6 +42,7 @@ public class AdvancementTreeComponent extends AbstractComponent<AdvancementTreeC
                     setY(newY);
                 }
             }
+            return false;
         });
     }
 

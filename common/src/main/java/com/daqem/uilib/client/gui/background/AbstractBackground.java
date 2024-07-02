@@ -2,13 +2,9 @@ package com.daqem.uilib.client.gui.background;
 
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.color.IColorManipulator;
-import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnDragEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnScrollEvent;
+import com.daqem.uilib.api.client.gui.component.event.*;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractBackground<T extends AbstractBackground<T>> implements IBackground<T> {
@@ -24,6 +20,9 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     private @Nullable OnHoverEvent<T> onHoverEvent;
     private @Nullable OnDragEvent<T> onDragEvent;
     private @Nullable OnScrollEvent<T> onScrollEvent;
+    private @Nullable OnKeyPressedEvent<T> onKeyPressedEvent;
+    private @Nullable OnCharTypedEvent<T> onCharTypedEvent;
+    private @Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent;
 
     private @Nullable T hoverState;
 
@@ -49,6 +48,16 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     @Override
     public int getY() {
         return y;
+    }
+
+    @Override
+    public int getTotalX() {
+        return getX();
+    }
+
+    @Override
+    public int getTotalY() {
+        return getY();
     }
 
     @Override
@@ -174,22 +183,52 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     }
 
     @Override
-    public OnDragEvent<T> getOnDragEvent() {
+    public @Nullable OnDragEvent<T> getOnDragEvent() {
         return onDragEvent;
     }
 
     @Override
-    public void setOnDragEvent(OnDragEvent<T> onDragEvent) {
+    public void setOnDragEvent(@Nullable OnDragEvent<T> onDragEvent) {
         this.onDragEvent = onDragEvent;
     }
 
     @Override
-    public OnScrollEvent<T> getOnScrollEvent() {
+    public @Nullable OnScrollEvent<T> getOnScrollEvent() {
         return onScrollEvent;
     }
 
     @Override
-    public void setOnScrollEvent(OnScrollEvent<T> onScrollEvent) {
+    public void setOnScrollEvent(@Nullable OnScrollEvent<T> onScrollEvent) {
         this.onScrollEvent = onScrollEvent;
+    }
+
+    @Override
+    public @Nullable OnKeyPressedEvent<T> getOnKeyPressedEvent() {
+        return onKeyPressedEvent;
+    }
+
+    @Override
+    public void setOnKeyPressedEvent(@Nullable OnKeyPressedEvent<T> onKeyPressedEvent) {
+        this.onKeyPressedEvent = onKeyPressedEvent;
+    }
+
+    @Override
+    public @Nullable OnCharTypedEvent<T> getOnCharTypedEvent() {
+        return onCharTypedEvent;
+    }
+
+    @Override
+    public void setOnCharTypedEvent(@Nullable OnCharTypedEvent<T> onCharTypedEvent) {
+        this.onCharTypedEvent = onCharTypedEvent;
+    }
+
+    @Override
+    public @Nullable OnMouseReleaseEvent<T> getOnMouseReleaseEvent() {
+        return onMouseReleaseEvent;
+    }
+
+    @Override
+    public void setOnMouseReleaseEvent(@Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent) {
+        this.onMouseReleaseEvent = onMouseReleaseEvent;
     }
 }
