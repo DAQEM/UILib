@@ -15,6 +15,8 @@ public interface IScreen extends ContainerEventHandler {
     int getHeight();
     Font getFont();
     List<IComponent<?>> getComponents();
+    @Nullable IComponent<?> getFocusedComponent();
+    void setFocusedComponent(@Nullable IComponent<?> focusedComponent);
     void addComponent(IComponent<?> component);
     void addComponents(IComponent<?>... components);
     void removeComponent(IComponent<?> component);

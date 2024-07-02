@@ -1,9 +1,7 @@
 package com.daqem.uilib.client.gui.text;
 
-import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnDragEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnScrollEvent;
+import com.daqem.uilib.api.client.gui.component.IComponent;
+import com.daqem.uilib.api.client.gui.component.event.*;
 import com.daqem.uilib.api.client.gui.text.IText;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
@@ -17,6 +15,7 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     private Font font;
 
     private Component text;
+    private @Nullable IComponent<?> parent;
     private int x;
     private int y;
     private int width;
@@ -38,6 +37,9 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     private @Nullable OnHoverEvent<T> onHoverEvent;
     private @Nullable OnDragEvent<T> onDragEvent;
     private @Nullable OnScrollEvent<T> onScrollEvent;
+    private @Nullable OnKeyPressedEvent<T> onKeyPressedEvent;
+    private @Nullable OnCharTypedEvent<T> onCharTypedEvent;
+    private @Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent;
 
     private @Nullable T hoverState;
 
@@ -72,6 +74,11 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     }
 
     @Override
+    public @Nullable IComponent<?> getParent() {
+        return parent;
+    }
+
+    @Override
     public int getX() {
         return x;
     }
@@ -79,6 +86,24 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     @Override
     public int getY() {
         return y;
+    }
+
+    @Override
+    public int getTotalX() {
+        if (getParent() != null) {
+            return getParent().getTotalX() + getX();
+        } else {
+            return getX();
+        }
+    }
+
+    @Override
+    public int getTotalY() {
+        if (getParent() != null) {
+            return getParent().getTotalY() + getY();
+        } else {
+            return getY();
+        }
     }
 
     @Override
@@ -149,6 +174,11 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     @Override
     public void setText(Component text) {
         this.text = text;
+    }
+
+    @Override
+    public void setParent(IComponent<?> parent) {
+        this.parent = parent;
     }
 
     @Override
@@ -331,5 +361,35 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     @Override
     public void setOnScrollEvent(@Nullable OnScrollEvent<T> onScrollEvent) {
         this.onScrollEvent = onScrollEvent;
+    }
+
+    @Override
+    public @Nullable OnKeyPressedEvent<T> getOnKeyPressedEvent() {
+        return onKeyPressedEvent;
+    }
+
+    @Override
+    public void setOnKeyPressedEvent(@Nullable OnKeyPressedEvent<T> onKeyPressedEvent) {
+        this.onKeyPressedEvent = onKeyPressedEvent;
+    }
+
+    @Override
+    public @Nullable OnCharTypedEvent<T> getOnCharTypedEvent() {
+        return onCharTypedEvent;
+    }
+
+    @Override
+    public void setOnCharTypedEvent(@Nullable OnCharTypedEvent<T> onCharTypedEvent) {
+        this.onCharTypedEvent = onCharTypedEvent;
+    }
+
+    @Override
+    public @Nullable OnMouseReleaseEvent<T> getOnMouseReleaseEvent() {
+        return onMouseReleaseEvent;
+    }
+
+    @Override
+    public void setOnMouseReleaseEvent(@Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent) {
+        this.onMouseReleaseEvent = onMouseReleaseEvent;
     }
 }

@@ -1,12 +1,10 @@
 package com.daqem.uilib.client.gui.component;
 
 import com.daqem.uilib.api.client.gui.IRenderable;
+import com.daqem.uilib.api.client.gui.IScreen;
 import com.daqem.uilib.api.client.gui.color.IColorManipulator;
 import com.daqem.uilib.api.client.gui.component.IComponent;
-import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnDragEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnScrollEvent;
+import com.daqem.uilib.api.client.gui.component.event.*;
 import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
@@ -42,6 +40,9 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private @Nullable OnHoverEvent<T> onHoverEvent;
     private @Nullable OnDragEvent<T> onDragEvent;
     private @Nullable OnScrollEvent<T> onScrollEvent;
+    private @Nullable OnKeyPressedEvent<T> onKeyPressedEvent;
+    private @Nullable OnCharTypedEvent<T> onCharTypedEvent;
+    private @Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent;
 
     private @Nullable T hoverState;
 
@@ -100,9 +101,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
             guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
             this.render(guiGraphics, mouseX, mouseY, delta);
             this.getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
-            if (getText() != null) {
-                getText().renderBase(guiGraphics, mouseX, mouseY, delta);
-            }
+            this.renderText(guiGraphics, mouseX, mouseY, delta);
             guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         }
@@ -197,6 +196,18 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
+    public boolean isFocused() {
+        return Minecraft.getInstance().screen instanceof IScreen screen && screen.getFocusedComponent() == this;
+    }
+
+    @Override
+    public void setFocused(boolean focused) {
+        if (Minecraft.getInstance().screen instanceof IScreen screen) {
+            screen.setFocusedComponent(focused ? this : null);
+        }
+    }
+
+    @Override
     public boolean isVisible() {
         return visible;
     }
@@ -277,6 +288,10 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public void setText(@Nullable IText<?> text) {
         this.text = text;
+
+        if (this.text != null) {
+            this.text.setParent(this);
+        }
     }
 
     @Override
@@ -312,6 +327,13 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 
+    }
+
+    @Override
+    public void renderText(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        if (getText() != null) {
+            getText().renderBase(guiGraphics, mouseX, mouseY, delta);
+        }
     }
 
     @Override
@@ -434,22 +456,52 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
-    public OnDragEvent<T> getOnDragEvent() {
+    public @Nullable OnDragEvent<T> getOnDragEvent() {
         return onDragEvent;
     }
 
     @Override
-    public void setOnDragEvent(OnDragEvent<T> onDragEvent) {
+    public void setOnDragEvent(@Nullable OnDragEvent<T> onDragEvent) {
         this.onDragEvent = onDragEvent;
     }
 
     @Override
-    public OnScrollEvent<T> getOnScrollEvent() {
+    public @Nullable OnScrollEvent<T> getOnScrollEvent() {
         return onScrollEvent;
     }
 
     @Override
-    public void setOnScrollEvent(OnScrollEvent<T> onScrollEvent) {
+    public void setOnScrollEvent(@Nullable OnScrollEvent<T> onScrollEvent) {
         this.onScrollEvent = onScrollEvent;
+    }
+
+    @Override
+    public @Nullable OnKeyPressedEvent<T> getOnKeyPressedEvent() {
+        return onKeyPressedEvent;
+    }
+
+    @Override
+    public void setOnKeyPressedEvent(@Nullable OnKeyPressedEvent<T> onKeyPressedEvent) {
+        this.onKeyPressedEvent = onKeyPressedEvent;
+    }
+
+    @Override
+    public @Nullable OnCharTypedEvent<T> getOnCharTypedEvent() {
+        return onCharTypedEvent;
+    }
+
+    @Override
+    public void setOnCharTypedEvent(@Nullable OnCharTypedEvent<T> onCharTypedEvent) {
+        this.onCharTypedEvent = onCharTypedEvent;
+    }
+
+    @Override
+    public @Nullable OnMouseReleaseEvent<T> getOnMouseReleaseEvent() {
+        return onMouseReleaseEvent;
+    }
+
+    @Override
+    public void setOnMouseReleaseEvent(@Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent) {
+        this.onMouseReleaseEvent = onMouseReleaseEvent;
     }
 }

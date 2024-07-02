@@ -18,6 +18,7 @@ import java.util.List;
 public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> extends net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<T> implements IScreen {
 
     private final List<IComponent<?>> components = new ArrayList<>();
+    private @Nullable IComponent<?> focusedComponent;
     private @Nullable IBackground<?> background = Backgrounds.getDefaultBackground(this.getWidth(), this.getHeight());
     private boolean isPauseScreen = false;
 
@@ -113,6 +114,16 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     }
 
     @Override
+    public @Nullable IComponent<?> getFocusedComponent() {
+        return focusedComponent;
+    }
+
+    @Override
+    public void setFocusedComponent(@Nullable IComponent<?> focusedComponent) {
+        this.focusedComponent = focusedComponent;
+    }
+
+    @Override
     public void addComponent(IComponent<?> component) {
         components.add(component);
     }
@@ -160,41 +171,128 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        handleClickEvent(components, mouseX, mouseY, button);
+        if (handleClickEvent(components, mouseX, mouseY, button)) {
+            return true;
+        }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    private void handleClickEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
+    private boolean handleClickEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
         for (IComponent<?> component : new ArrayList<>(components)) {
-            component.preformOnClickEvent(mouseX, mouseY, button);
-            handleClickEvent(component.getChildren(), mouseX, mouseY, button);
+            if (handleClickEvent(component.getChildren(), mouseX, mouseY, button)) {
+                return true;
+            }
+            if (component.preformOnClickEvent(mouseX, mouseY, button)) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        handleDragEvent(components, mouseX, mouseY, button, dragX, dragY);
+        if (handleDragEvent(components, mouseX, mouseY, button, dragX, dragY)) {
+            return true;
+        }
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
-    private void handleDragEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
+    private boolean handleDragEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button, double dragX, double dragY) {
         for (IComponent<?> component : new ArrayList<>(components)) {
-            component.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
-            handleDragEvent(component.getChildren(), mouseX, mouseY, button, dragX, dragY);
+            if (handleDragEvent(component.getChildren(), mouseX, mouseY, button, dragX, dragY)) {
+                return true;
+            }
+            if (component.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY)) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amountX, double amountY) {
-        handleScrollEvent(components, mouseX, mouseY, -amountX, -amountY);
+        if (handleScrollEvent(components, mouseX, mouseY, amountX, amountY)) {
+            return true;
+        }
         return super.mouseScrolled(mouseX, mouseY, amountX, amountY);
     }
 
-    private void handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double amountX, double amountY) {
+    private boolean handleScrollEvent(List<IComponent<?>> components, double mouseX, double mouseY, double amountX, double amountY) {
         for (IComponent<?> component : new ArrayList<>(components)) {
-            component.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
-            handleScrollEvent(component.getChildren(), mouseX, mouseY, amountX, amountY);
+            if (handleScrollEvent(component.getChildren(), mouseX, mouseY, amountX, amountY)) {
+                return true;
+            }
+            if (component.preformOnScrollEvent(mouseX, mouseY, amountX, amountY)) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (handleKeyPressedEvent(components, keyCode, scanCode, modifiers)) {
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    private boolean handleKeyPressedEvent(List<IComponent<?>> components, int keyCode, int scanCode, int modifiers) {
+        boolean handled = false;
+        for (IComponent<?> component : new ArrayList<>(components)) {
+            if (handleKeyPressedEvent(component.getChildren(), keyCode, scanCode, modifiers)) {
+                handled = true;
+                break;
+            }
+            if (component.preformOnKeyPressedEvent(keyCode, scanCode, modifiers)) {
+                handled = true;
+                break;
+            }
+        }
+        return handled;
+    }
+
+    @Override
+    public boolean charTyped(char c, int i) {
+        if (handleCharEvent(components, c, i)) {
+            return true;
+        }
+        return super.charTyped(c, i);
+    }
+
+    private boolean handleCharEvent(List<IComponent<?>> components, char c, int i) {
+        boolean handled = false;
+        for (IComponent<?> component : new ArrayList<>(components)) {
+            if (handleCharEvent(component.getChildren(), c, i)) {
+                handled = true;
+                break;
+            }
+            if (component.preformOnCharTypedEvent(c, i)) {
+                handled = true;
+                break;
+            }
+        }
+        return handled;
+    }
+
+    @Override
+    public boolean mouseReleased(double d, double e, int i) {
+        if (handleMouseReleaseEvent(components, d, e, i)) {
+            return true;
+        }
+        return super.mouseReleased(d, e, i);
+    }
+
+    private boolean handleMouseReleaseEvent(List<IComponent<?>> components, double mouseX, double mouseY, int button) {
+        for (IComponent<?> component : new ArrayList<>(components)) {
+            if (handleMouseReleaseEvent(component.getChildren(), mouseX, mouseY, button)) {
+                return true;
+            }
+            if (component.preformOnMouseReleaseEvent(mouseX, mouseY, button)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

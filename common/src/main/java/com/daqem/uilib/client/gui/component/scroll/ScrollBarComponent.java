@@ -41,14 +41,15 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
         getScrollWheel().ifPresent(ScrollWheelComponent::startRenderable);
     }
 
-    private void handleScroll(ScrollBarComponent scrollBarComponent, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
+    private boolean handleScroll(ScrollBarComponent scrollBarComponent, Screen screen, double mouseX, double mouseY, double amountX, double amountY) {
         if (this.getParent() instanceof ScrollPanelComponent parent) {
             scroll(parent, amountX, amountY);
             parent.getScrollContentComponent().ifPresent(s -> s.scroll(parent, amountX, amountY));
         }
+        return false;
     }
 
-    private void handleDrag(ScrollBarComponent scrollBarComponent, Screen screen, double mouseX, double mouseY, int button, double dragX, double dragY) {
+    private boolean handleDrag(ScrollBarComponent scrollBarComponent, Screen screen, double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (this.getParent() instanceof ScrollPanelComponent parent) {
             getScrollWheel().ifPresent(scrollWheelComponent -> {
                 double dragPercentage = getDragPercentage(mouseX, mouseY, scrollWheelComponent);
@@ -58,6 +59,7 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
                 parent.getScrollContentComponent().ifPresent(s -> s.updateContentPositionBasedOnPercentage(parent, dragPercentage));
             });
         }
+        return false;
     }
 
     private double getDragPercentage(double mouseX, double mouseY, ScrollWheelComponent scrollWheelComponent) {
@@ -150,11 +152,6 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
                 scrollWheelComponent.setY((int) ((getHeight() - scrollWheelComponent.getHeight()) * ((double) value / (double) maxValue)));
             }
         });
-    }
-
-    @Override
-    public void preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
-        super.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
     }
 
     public void setScrollWheelLength(int contentLength) {
