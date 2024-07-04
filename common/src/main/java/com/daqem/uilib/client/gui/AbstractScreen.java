@@ -83,8 +83,8 @@ public abstract class AbstractScreen extends Screen implements IScreen {
 
     private void handleHoverEvent(List<IComponent<?>> components, int mouseX, int mouseY, float delta) {
         for (IComponent<?> component : components) {
-            component.preformOnHoverEvent(mouseX, mouseY, delta);
             handleHoverEvent(component.getChildren(), mouseX, mouseY, delta);
+            component.preformOnHoverEvent(mouseX, mouseY, delta);
         }
     }
 
@@ -105,8 +105,6 @@ public abstract class AbstractScreen extends Screen implements IScreen {
             component.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta);
         }
     }
-
-
 
     @Override
     public int getWidth() {

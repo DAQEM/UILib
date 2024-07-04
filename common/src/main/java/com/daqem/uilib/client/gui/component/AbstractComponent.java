@@ -317,7 +317,7 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     @Override
     public void renderTooltipsBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(getX(), getY(), 400);
+        guiGraphics.pose().translate(0, 0 ,400);
         getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta));
         renderTooltips(guiGraphics, mouseX, mouseY, delta);
         getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta));

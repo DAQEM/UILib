@@ -3,6 +3,7 @@ package com.daqem.uilib.client.gui.component.io;
 import com.daqem.uilib.api.client.gui.component.io.IIOComponent;
 import com.daqem.uilib.client.gui.component.AbstractSpriteComponent;
 import com.daqem.uilib.client.gui.text.ScrollingText;
+import com.daqem.uilib.client.util.SoundManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -58,12 +59,22 @@ public class CycleButtonComponent<T> extends AbstractSpriteComponent<CycleButton
 
     @Override
     public boolean preformOnClickEvent(double mouseX, double mouseY, int button) {
+        if (!enabled) {
+            return false;
+        }
+        boolean returnValue = false;
         if (isTotalHovered(mouseX, mouseY)) {
             cycleValue();
             setFocused(true);
-            return true;
+            returnValue = true;
         }
-        return super.preformOnClickEvent(mouseX, mouseY, button);
+        if (!returnValue && super.preformOnClickEvent(mouseX, mouseY, button)) {
+            returnValue = true;
+        }
+        if (returnValue) {
+            SoundManager.playUIClick();
+        }
+        return returnValue;
     }
 
     public Component getTextFromValue(T value) {

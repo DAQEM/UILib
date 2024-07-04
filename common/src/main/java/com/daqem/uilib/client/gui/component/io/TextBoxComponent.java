@@ -1,7 +1,10 @@
 package com.daqem.uilib.client.gui.component.io;
 
 import com.daqem.uilib.api.client.gui.component.io.IIOComponent;
+import com.daqem.uilib.api.client.gui.component.io.IInputValidatable;
+import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractSpriteComponent;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -9,25 +12,27 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringUtil;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> implements IIOComponent<TextBoxComponent> {
+public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> implements IIOComponent<TextBoxComponent>, IInputValidatable {
 
     private static final LinkedList<ResourceLocation> DEFAULT_SPRITES = new LinkedList<>(List.of(
             ResourceLocation.withDefaultNamespace("widget/text_field"),
-            ResourceLocation.withDefaultNamespace("widget/text_field_highlighted")
+            ResourceLocation.withDefaultNamespace("widget/text_field_highlighted"),
+            ResourceLocation.fromNamespaceAndPath(UILibClient.MOD_ID, "widget/text_field_error")
     ));
 
     private static final int CURSOR_INSERT_COLOR = -3092272;
@@ -51,6 +56,7 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
     @Nullable
     private Consumer<String> responder;
     private Predicate<String> filter = Objects::nonNull;
+    private List<Component> validationErrors = new ArrayList<>();
     private BiFunction<String, Integer, FormattedCharSequence> formatter = (string, integer) -> FormattedCharSequence.forward(string, Style.EMPTY);
     @Nullable
     private Component hint;
@@ -64,6 +70,8 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
         super(sprites, x, y, width, height);
         this.value = value;
         this.font = Minecraft.getInstance().font;
+
+        setInputValidationErrors(this.validateInput(value));
     }
 
     public void setResponder(@Nullable Consumer<String> consumer) {
@@ -73,7 +81,7 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
     public void setFormatter(BiFunction<String, Integer, FormattedCharSequence> biFunction) {
         this.formatter = biFunction;
     }
-    
+
     public void setValue(String string) {
         if (!this.filter.test(string)) {
             return;
@@ -128,6 +136,7 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
         if (this.responder != null) {
             this.responder.accept(string);
         }
+        setInputValidationErrors(this.validateInput(string));
     }
 
     private void deleteText(int i) {
@@ -243,7 +252,7 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
             return false;
         }
         switch (keyCode) {
-            case 263: {
+            case GLFW.GLFW_KEY_LEFT: {
                 if (Screen.hasControlDown()) {
                     this.moveCursorTo(this.getWordPosition(-1), Screen.hasShiftDown());
                 } else {
@@ -251,7 +260,7 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
                 }
                 return true;
             }
-            case 262: {
+            case GLFW.GLFW_KEY_RIGHT: {
                 if (Screen.hasControlDown()) {
                     this.moveCursorTo(this.getWordPosition(1), Screen.hasShiftDown());
                 } else {
@@ -259,23 +268,23 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
                 }
                 return true;
             }
-            case 259: {
+            case GLFW.GLFW_KEY_BACKSPACE: {
                 if (this.isEditable) {
                     this.deleteText(-1);
                 }
                 return true;
             }
-            case 261: {
+            case GLFW.GLFW_KEY_DELETE: {
                 if (this.isEditable) {
                     this.deleteText(1);
                 }
                 return true;
             }
-            case 268: {
+            case GLFW.GLFW_KEY_HOME: {
                 this.moveCursorToStart(Screen.hasShiftDown());
                 return true;
             }
-            case 269: {
+            case GLFW.GLFW_KEY_END: {
                 this.moveCursorToEnd(Screen.hasShiftDown());
                 return true;
             }
@@ -344,7 +353,7 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         if (this.isBordered()) {
-            ResourceLocation resourceLocation = this.isFocused() ? getSprite(1) : getSprite(0);
+            ResourceLocation resourceLocation = hasInputValidationErrors() ? getSprite(2) : isFocused() ? getSprite(1) : getSprite(0);
             guiGraphics.blitSprite(resourceLocation, 0, 0, this.getWidth(), this.getHeight());
         }
         int k = this.isEditable ? this.textColor : this.textColorUneditable;
@@ -388,6 +397,14 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
             int r = m + this.font.width(string.substring(0, p));
             this.renderHighlight(guiGraphics, q, n - 1, r - 1, n + 1 + this.font.lineHeight);
         }
+    }
+
+    @Override
+    public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        if (isTotalHovered(mouseX, mouseY)) {
+            this.renderInputValidationErrorsTooltip(guiGraphics, mouseX, mouseY);
+        }
+        super.renderTooltips(guiGraphics, mouseX, mouseY, delta);
     }
 
     private void renderHighlight(GuiGraphics guiGraphics, int i, int j, int k, int l) {
@@ -505,12 +522,22 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
         return this.getTotalX() + this.font.width(this.value.substring(0, i));
     }
 
-    public void setHint(Component component) {
+    public void setHint(@Nullable Component component) {
         this.hint = component;
     }
 
     @Override
     public String getStringValue() {
         return this.value;
+    }
+
+    @Override
+    public List<Component> getInputValidationErrors() {
+        return this.validationErrors;
+    }
+
+    @Override
+    public void setInputValidationErrors(List<Component> errors) {
+        this.validationErrors = errors;
     }
 }

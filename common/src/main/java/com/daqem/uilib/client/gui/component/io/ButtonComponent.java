@@ -3,12 +3,15 @@ package com.daqem.uilib.client.gui.component.io;
 import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
 import com.daqem.uilib.client.gui.component.AbstractSpriteComponent;
 import com.daqem.uilib.client.gui.text.ScrollingText;
+import com.daqem.uilib.client.util.SoundManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +66,15 @@ public class ButtonComponent extends AbstractSpriteComponent<ButtonComponent> {
             int textColor = this.enabled ? 0xFFFFFF : 0xA0A0A0;
             getText().setTextColor(textColor);
         }
+    }
+
+    @Override
+    public boolean preformOnClickEvent(double mouseX, double mouseY, int button) {
+        if (super.preformOnClickEvent(mouseX, mouseY, button)) {
+            SoundManager.playUIClick();
+            return true;
+        }
+        return false;
     }
 
     public boolean isEnabled() {

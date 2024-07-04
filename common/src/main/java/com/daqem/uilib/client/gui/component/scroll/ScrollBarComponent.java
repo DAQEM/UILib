@@ -63,6 +63,9 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
     }
 
     private double getDragPercentage(double mouseX, double mouseY, ScrollWheelComponent scrollWheelComponent) {
+        mouseX = mouseX - getTotalX();
+        mouseY = mouseY - getTotalY();
+
         boolean isHorizontal = getOrientation().isHorizontal();
         int scrollWheelDimension = scrollWheelComponent.getDimension(isHorizontal);
         int scrollBarLength = getDimension(isHorizontal);
@@ -135,8 +138,10 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
     }
 
     public void scroll(ScrollPanelComponent scrolledObject, double amountX, double amountY) {
+        amountY = -amountY; // Invert the scroll amount to match the scroll direction
+        double finalAmountY = amountY;
         getScrollWheel().ifPresent(scrollWheelComponent -> {
-            scrollWheelComponent.scroll(scrolledObject, amountX, amountY);
+            scrollWheelComponent.scroll(scrolledObject, amountX, finalAmountY);
             this.updateScrollBarPositionBasedOnPercentage(scrolledObject);
         });
 
@@ -159,7 +164,7 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
             boolean isHorizontal = getOrientation().isHorizontal();
 
             int totalBarDimension = isHorizontal ? getWidth() : getHeight();
-            int dimension = (int) ((float) totalBarDimension / (float)contentLength * (float)totalBarDimension);
+            int dimension = Math.max(9, (int) ((float) totalBarDimension / (float)contentLength * (float)totalBarDimension));
 
             if (dimension >= totalBarDimension) {
                 dimension = totalBarDimension;

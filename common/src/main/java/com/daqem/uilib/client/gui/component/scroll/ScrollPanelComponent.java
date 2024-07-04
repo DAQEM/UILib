@@ -160,65 +160,112 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
 
     @Override
     public boolean preformOnClickEvent(double mouseX, double mouseY, int button) {
-        super.preformOnClickEvent(mouseX, mouseY, button);
-        getScrollContentComponent().ifPresent(scrollContentComponent -> {
-            scrollContentComponent.preformOnClickEvent(mouseX, mouseY, button);
-            if (this.isTotalHovered(mouseX, mouseY)) {
-                scrollContentComponent.getChildren().forEach(component -> component.preformOnClickEvent(mouseX, mouseY, button));
-            }
-        });
-        getScrollBar().ifPresent(scrollBarComponent -> {
-            scrollBarComponent.preformOnClickEvent(mouseX, mouseY, button);
-            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> scrollWheelComponent.preformOnClickEvent(mouseX, mouseY, button));
-        });
-        return false;
+        if (getScrollContentComponent().map(scrollContentComponent -> scrollContentComponent.preformOnClickEvent(mouseX, mouseY, button)).orElse(false)) {
+            return true;
+        }
+        if (getScrollBar().map(scrollBarComponent -> {
+            if (scrollBarComponent.getScrollWheel().map(scrollWheelComponent -> scrollWheelComponent.preformOnClickEvent(mouseX, mouseY, button)).orElse(false)) {
+                return true;
+            } else return scrollBarComponent.preformOnClickEvent(mouseX, mouseY, button);
+        }).orElse(false)) {
+            return true;
+        }
+        return super.preformOnClickEvent(mouseX, mouseY, button);
     }
 
     @Override
     public void preformOnHoverEvent(double mouseX, double mouseY, float delta) {
-        super.preformOnHoverEvent(mouseX, mouseY, delta);
-        getScrollContentComponent().ifPresent(scrollContentComponent -> {
-            scrollContentComponent.preformOnHoverEvent(mouseX, mouseY, delta);
-            scrollContentComponent.getChildren().forEach(component -> component.preformOnHoverEvent(mouseX - component.getX(), mouseY - component.getY(), delta));
-        });
+        getScrollContentComponent().ifPresent(scrollContentComponent -> scrollContentComponent.preformOnHoverEvent(mouseX, mouseY, delta));
         getScrollBar().ifPresent(scrollBarComponent -> {
-            scrollBarComponent.preformOnHoverEvent(mouseX - getX(), mouseY - getY(), delta);
-            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> {
-                scrollWheelComponent.preformOnHoverEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), delta);
-            });
+            scrollBarComponent.preformOnHoverEvent(mouseX, mouseY, delta);
+            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> scrollWheelComponent.preformOnHoverEvent(mouseX, mouseY, delta));
         });
+        super.preformOnHoverEvent(mouseX, mouseY, delta);
     }
 
     @Override
     public boolean preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
-        super.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
-        getScrollContentComponent().ifPresent(scrollContentComponent -> {
-            scrollContentComponent.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
-            scrollContentComponent.getChildren().forEach(component -> component.preformOnScrollEvent(mouseX - component.getX(), mouseY - component.getY(), amountX, amountY));
-        });
-        getScrollBar().ifPresent(scrollBarComponent -> {
-            scrollBarComponent.preformOnScrollEvent(mouseX - getX(), mouseY - getY(), amountX, amountY);
-            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> {
-                scrollWheelComponent.preformOnScrollEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), amountX, amountY);
-            });
-        });
-        return false;
+        if (getScrollContentComponent().map(scrollContentComponent -> scrollContentComponent.preformOnScrollEvent(mouseX, mouseY, amountX, amountY)).orElse(false)) {
+            return true;
+        }
+        if (getScrollBar().map(scrollBarComponent -> {
+            if (scrollBarComponent.getScrollWheel().map(scrollWheelComponent -> scrollWheelComponent.preformOnScrollEvent(mouseX, mouseY, amountX, amountY)).orElse(false)) {
+                return true;
+            } else return scrollBarComponent.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
+        }).orElse(false)) {
+            return true;
+        }
+        return super.preformOnScrollEvent(mouseX, mouseY, amountX, amountY);
     }
 
     @Override
     public boolean preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        super.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
-        getScrollContentComponent().ifPresent(scrollContentComponent -> {
-            scrollContentComponent.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
-            scrollContentComponent.getChildren().forEach(component -> component.preformOnDragEvent(mouseX - component.getX(), mouseY - component.getY(), button, dragX - component.getX(), dragY - component.getY()));
-        });
+        if (getScrollContentComponent().map(scrollContentComponent -> scrollContentComponent.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY)).orElse(false)) {
+            return true;
+        }
+        if (getScrollBar().map(scrollBarComponent -> {
+            if (scrollBarComponent.getScrollWheel().map(scrollWheelComponent -> scrollWheelComponent.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY)).orElse(false)) {
+                return true;
+            } else return scrollBarComponent.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
+        }).orElse(false)) {
+            return true;
+        }
+        return super.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean preformOnKeyPressedEvent(int keyCode, int scanCode, int modifiers) {
+        if (getScrollContentComponent().map(scrollContentComponent -> scrollContentComponent.preformOnKeyPressedEvent(keyCode, scanCode, modifiers)).orElse(false)) {
+            return true;
+        }
+        if (getScrollBar().map(scrollBarComponent -> {
+            if (scrollBarComponent.getScrollWheel().map(scrollWheelComponent -> scrollWheelComponent.preformOnKeyPressedEvent(keyCode, scanCode, modifiers)).orElse(false)) {
+                return true;
+            } else return scrollBarComponent.preformOnKeyPressedEvent(keyCode, scanCode, modifiers);
+        }).orElse(false)) {
+            return true;
+        }
+        return super.preformOnKeyPressedEvent(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean preformOnCharTypedEvent(char typedChar, int modifiers) {
+        if (getScrollContentComponent().map(scrollContentComponent -> scrollContentComponent.preformOnCharTypedEvent(typedChar, modifiers)).orElse(false)) {
+            return true;
+        }
+        if (getScrollBar().map(scrollBarComponent -> {
+            if (scrollBarComponent.getScrollWheel().map(scrollWheelComponent -> scrollWheelComponent.preformOnCharTypedEvent(typedChar, modifiers)).orElse(false)) {
+                return true;
+            } else return scrollBarComponent.preformOnCharTypedEvent(typedChar, modifiers);
+        }).orElse(false)) {
+            return true;
+        }
+        return super.preformOnCharTypedEvent(typedChar, modifiers);
+    }
+
+    @Override
+    public boolean preformOnMouseReleaseEvent(double mouseX, double mouseY, int button) {
+        if (getScrollContentComponent().map(scrollContentComponent -> scrollContentComponent.preformOnMouseReleaseEvent(mouseX, mouseY, button)).orElse(false)) {
+            return true;
+        }
+        if (getScrollBar().map(scrollBarComponent -> {
+            if (scrollBarComponent.getScrollWheel().map(scrollWheelComponent -> scrollWheelComponent.preformOnMouseReleaseEvent(mouseX, mouseY, button)).orElse(false)) {
+                return true;
+            } else return scrollBarComponent.preformOnMouseReleaseEvent(mouseX, mouseY, button);
+        }).orElse(false)) {
+            return true;
+        }
+        return super.preformOnMouseReleaseEvent(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        getScrollContentComponent().ifPresent(scrollContentComponent -> scrollContentComponent.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta));
         getScrollBar().ifPresent(scrollBarComponent -> {
-            scrollBarComponent.preformOnDragEvent(mouseX - getX(), mouseY - getY(), button, dragX, dragY);
-            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> {
-                scrollWheelComponent.preformOnDragEvent(mouseX - getX() - scrollWheelComponent.getX(), mouseY - getY() - scrollWheelComponent.getY(), button, dragX, dragY);
-            });
+            scrollBarComponent.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta);
+            scrollBarComponent.getScrollWheel().ifPresent(scrollWheelComponent -> scrollWheelComponent.renderTooltipsBase(guiGraphics, mouseX, mouseY, delta));
         });
-        return false;
+        super.renderTooltips(guiGraphics, mouseX, mouseY, delta);
     }
 
     // endregion
