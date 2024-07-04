@@ -28,6 +28,11 @@ public class ScrollWheelComponent extends AbstractNineSlicedComponent<ScrollWhee
     }
 
     @Override
+    public void setHeight(int height) {
+        super.setHeight(height);
+    }
+
+    @Override
     public int getScrollValue() {
         return scrollValue;
     }

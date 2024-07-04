@@ -1,6 +1,9 @@
 package com.daqem.uilib.client.gui.component.io;
 
 import com.daqem.uilib.api.client.gui.component.io.IIOComponent;
+import com.daqem.uilib.api.client.gui.component.io.IInputValidatable;
+import com.daqem.uilib.client.UILibClient;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -10,13 +13,22 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtil;
 
-import java.util.LinkedList;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLineTextBoxComponent> implements IIOComponent<MultiLineTextBoxComponent> {
+public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLineTextBoxComponent> implements IIOComponent<MultiLineTextBoxComponent>, IInputValidatable {
+
+    protected static final LinkedList<ResourceLocation> DEFAULT_SPRITES = new LinkedList<>(List.of(
+            ResourceLocation.withDefaultNamespace("widget/text_field"),
+            ResourceLocation.withDefaultNamespace("widget/text_field_highlighted"),
+            ResourceLocation.fromNamespaceAndPath(UILibClient.MOD_ID, "widget/text_field_error"),
+            ResourceLocation.withDefaultNamespace("widget/scroller")
+    ));
 
     private static final int CURSOR_INSERT_COLOR = -3092272;
     private static final String CURSOR_APPEND_CHARACTER = "_";
@@ -25,16 +37,24 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
     private final Font font;
     private final MultilineTextField textField;
     private long focusedTime = Util.getMillis();
+    private List<Component> validationErrors = new ArrayList<>();
 
     public MultiLineTextBoxComponent(int x, int y, int width, int height) {
         this(DEFAULT_SPRITES, x, y, width, height);
     }
 
     public MultiLineTextBoxComponent(LinkedList<ResourceLocation> sprites, int x, int y, int width, int height) {
+        this(sprites, x, y, width, height, "");
+    }
+
+    public MultiLineTextBoxComponent(LinkedList<ResourceLocation> sprites, int x, int y, int width, int height, String value) {
         super(sprites, x, y, width, height);
         this.font = Minecraft.getInstance().font;
         this.textField = new MultilineTextField(font, width - this.totalInnerPadding());
+        this.textField.setValue(value);
         this.textField.setCursorListener(this::scrollToCursor);
+
+        setInputValidationErrors(this.validateInput(value));
     }
 
     public void setCharacterLimit(int i) {
@@ -80,6 +100,9 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
 
     @Override
     public boolean preformOnKeyPressedEvent(int keyCode, int scanCode, int modifiers) {
+        if (!isVisible() || !isFocused()) {
+            return false;
+        }
         return this.textField.keyPressed(keyCode);
     }
 
@@ -89,6 +112,7 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
             return false;
         }
         this.textField.insertText(Character.toString(typedChar));
+        setInputValidationErrors(this.validateInput(getValue()));
         return true;
     }
 
@@ -144,13 +168,31 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
     }
 
     @Override
+    public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        if (isTotalHovered(mouseX, mouseY)) {
+            this.renderInputValidationErrorsTooltip(guiGraphics, mouseX, mouseY);
+        }
+        super.renderTooltips(guiGraphics, mouseX, mouseY, delta);
+    }
+
+    @Override
     protected void renderDecorations(GuiGraphics guiGraphics) {
         super.renderDecorations(guiGraphics);
         if (this.textField.hasCharacterLimit()) {
             int i = this.textField.characterLimit();
             MutableComponent component = Component.translatable("gui.multiLineEditBox.character_limit", this.textField.value().length(), i);
-            guiGraphics.drawString(this.font, component, getWidth() - this.font.width(component), getHeight() + 4, 0xA0A0A0);
+            guiGraphics.drawString(this.font, component, getWidth() - this.font.width(component), getHeight() + innerPadding(), 0xA0A0A0);
         }
+    }
+
+    @Override
+    protected ResourceLocation getBackgroundSprite() {
+        return hasInputValidationErrors() ? getSprite(2) : isFocused() ? getSprite(1) : getSprite(0);
+    }
+
+    @Override
+    protected ResourceLocation getScrollWheelSprite() {
+        return getSprite(3);
     }
 
     @Override
@@ -160,12 +202,12 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
 
     @Override
     protected boolean scrollbarVisible() {
-        return (double)this.textField.getLineCount() > this.getDisplayableLineCount();
+        return (double) this.textField.getLineCount() > this.getDisplayableLineCount();
     }
 
     @Override
     protected double scrollRate() {
-        return (double)this.font.lineHeight / 2.0;
+        return (double) this.font.lineHeight / 2.0;
     }
 
     private void renderHighlight(GuiGraphics guiGraphics, int i, int j, int k, int l) {
@@ -174,11 +216,11 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
 
     private void scrollToCursor() {
         double d = this.scrollAmount();
-        MultilineTextField.StringView stringView = this.textField.getLineView((int)(d / (double)this.font.lineHeight));
+        MultilineTextField.StringView stringView = this.textField.getLineView((int) (d / (double) this.font.lineHeight));
         if (this.textField.cursor() <= stringView.beginIndex()) {
             d = this.textField.getLineAtCursor() * this.font.lineHeight;
         } else {
-            MultilineTextField.StringView stringView2 = this.textField.getLineView((int)((d + (double)getHeight()) / (double)this.font.lineHeight) - 1);
+            MultilineTextField.StringView stringView2 = this.textField.getLineView((int) ((d + (double) getHeight()) / (double) this.font.lineHeight) - 1);
             if (this.textField.cursor() > stringView2.endIndex()) {
                 d = this.textField.getLineAtCursor() * this.font.lineHeight - getHeight() + this.font.lineHeight + this.totalInnerPadding();
             }
@@ -187,12 +229,12 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
     }
 
     private double getDisplayableLineCount() {
-        return (double)(getHeight() - this.totalInnerPadding()) / (double)this.font.lineHeight;
+        return (double) (getHeight() - this.totalInnerPadding()) / (double) this.font.lineHeight;
     }
 
     private void seekCursorScreen(double d, double e) {
-        double f = d - (double) getTotalX() - (double)this.innerPadding();
-        double g = e - (double) getTotalY() - (double)this.innerPadding() + this.scrollAmount();
+        double f = d - (double) getTotalX() - (double) this.innerPadding();
+        double g = e - (double) getTotalY() - (double) this.innerPadding() + this.scrollAmount();
         this.textField.seekCursorToPoint(f, g);
     }
 
@@ -207,5 +249,15 @@ public class MultiLineTextBoxComponent extends AbstractScrollComponent<MultiLine
     @Override
     public String getStringValue() {
         return this.getValue();
+    }
+
+    @Override
+    public List<Component> getInputValidationErrors() {
+        return this.validationErrors;
+    }
+
+    @Override
+    public void setInputValidationErrors(List<Component> errors) {
+        this.validationErrors = errors;
     }
 }

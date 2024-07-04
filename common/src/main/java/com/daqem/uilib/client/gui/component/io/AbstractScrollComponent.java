@@ -5,25 +5,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<T>> extends AbstractSpriteComponent<T> {
 
-    protected static final LinkedList<ResourceLocation> DEFAULT_SPRITES = new LinkedList<>(List.of(
-            ResourceLocation.withDefaultNamespace("widget/text_field"),
-            ResourceLocation.withDefaultNamespace("widget/text_field_highlighted"),
-            ResourceLocation.withDefaultNamespace("widget/scroller")
-    ));
     private static final int INNER_PADDING = 4;
     private static final int SCROLL_BAR_WIDTH = 8;
     private double scrollAmount;
     private boolean scrolling;
-
-    public AbstractScrollComponent(int x, int y, int width, int height) {
-        this(DEFAULT_SPRITES, x, y, width, height);
-    }
 
     public AbstractScrollComponent(LinkedList<ResourceLocation> sprites, int x, int y, int width, int height) {
         super(sprites, x, y, width, height);
@@ -35,7 +26,7 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
             return false;
         }
         boolean bl = this.withinContentAreaPoint(mouseX, mouseY);
-        boolean bl2 = this.scrollbarVisible() && mouseX >= (double) (this.getX() + getWidth()) && mouseX <= (double) (this.getX() + getWidth() + 8) && mouseY >= (double) this.getY() && mouseY < (double) (this.getY() + getHeight());
+        boolean bl2 = this.scrollbarVisible() && mouseX >= (double) (this.getTotalX() + getWidth()) && mouseX <= (double) (this.getTotalX() + getWidth() + SCROLL_BAR_WIDTH) && mouseY >= (double) this.getTotalY() && mouseY < (double) (this.getTotalY() + getHeight());
         if (bl2 && button == 0) {
             this.scrolling = true;
             return true;
@@ -53,12 +44,12 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
 
     @Override
     public boolean preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (!(this.isVisible() && this.isFocused() && this.scrolling)) {
+        if (!(this.isVisible() && this.scrolling)) {
             return false;
         }
-        if (mouseY < (double)this.getY()) {
+        if (mouseY < (double)this.getTotalY()) {
             this.setScrollAmount(0.0);
-        } else if (mouseY > (double)(this.getY() + getHeight())) {
+        } else if (mouseY > (double)(this.getTotalY() + getHeight())) {
             this.setScrollAmount(this.getMaxScrollAmount());
         } else {
             int j = this.getScrollBarHeight();
@@ -70,7 +61,7 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
 
     @Override
     public boolean preformOnScrollEvent(double mouseX, double mouseY, double amountX, double amountY) {
-        if (!this.isVisible()) {
+        if (!this.isVisible() || !isFocused() || !this.withinContentAreaPoint(mouseX, mouseY)) {
             return false;
         }
         this.setScrollAmount(this.scrollAmount - amountY * this.scrollRate());
@@ -79,8 +70,8 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
 
     @Override
     public boolean preformOnKeyPressedEvent(int keyCode, int scanCode, int modifiers) {
-        boolean bl = keyCode == 265;
-        boolean bl2 = keyCode == 264;
+        boolean bl = keyCode == GLFW.GLFW_KEY_UP;
+        boolean bl2 = keyCode == GLFW.GLFW_KEY_DOWN;
         if (bl || bl2) {
             double d = this.scrollAmount;
             this.setScrollAmount(this.scrollAmount + (double)(bl ? -1 : 1) * this.scrollRate());
@@ -114,7 +105,7 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
     }
 
     protected int innerPadding() {
-        return 4;
+        return INNER_PADDING;
     }
 
     protected int totalInnerPadding() {
@@ -130,26 +121,30 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
     }
 
     protected int getMaxScrollAmount() {
-        return Math.max(0, this.getContentHeight() - (getHeight() - 4));
+        return Math.max(0, this.getContentHeight() - (getHeight() - INNER_PADDING));
     }
 
     private int getContentHeight() {
-        return this.getInnerHeight() + 4;
+        return this.getInnerHeight() + INNER_PADDING;
     }
 
     protected void renderBackground(GuiGraphics guiGraphics) {
-        ResourceLocation resourceLocation = isFocused() ? getSprite(1) : getSprite(0);
+        ResourceLocation resourceLocation = getBackgroundSprite();
         guiGraphics.blitSprite(resourceLocation, 0, 0, this.getWidth(), this.getHeight());
     }
+
+    protected abstract ResourceLocation getBackgroundSprite();
 
     private void renderScrollBar(GuiGraphics guiGraphics) {
         int i = this.getScrollBarHeight();
         int j = getWidth();
         int k = Math.max(0, (int)this.scrollAmount * (getHeight() - i) / this.getMaxScrollAmount());
         RenderSystem.enableBlend();
-        guiGraphics.blitSprite(getSprite(2), j, k, 8, i);
+        guiGraphics.blitSprite(getScrollWheelSprite(), j, k, SCROLL_BAR_WIDTH, i);
         RenderSystem.disableBlend();
     }
+
+    protected abstract ResourceLocation getScrollWheelSprite();
 
     protected boolean withinContentAreaTopBottom(int i, int j) {
         return (double)j - this.scrollAmount >= 0D && (double)i - this.scrollAmount <= (double)(getHeight());
@@ -163,8 +158,8 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
         return this.getInnerHeight() > this.getHeight();
     }
 
-    public int scrollbarWidth() {
-        return 8;
+    public int getScrollbarWidth() {
+        return SCROLL_BAR_WIDTH;
     }
 
     protected abstract int getInnerHeight();

@@ -3,6 +3,7 @@ package com.daqem.uilib.client.gui.component.io;
 import com.daqem.uilib.api.client.gui.component.io.IIOComponent;
 import com.daqem.uilib.client.gui.component.AbstractSpriteComponent;
 import com.daqem.uilib.client.gui.text.ScrollingText;
+import com.daqem.uilib.client.util.SoundManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -70,6 +71,12 @@ public class SliderComponent<T> extends AbstractSpriteComponent<SliderComponent<
     public boolean preformOnDragEvent(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (isTotalHovered(mouseX, mouseY)) setValueFromMouse(mouseX);
         return super.preformOnDragEvent(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean preformOnMouseReleaseEvent(double mouseX, double mouseY, int button) {
+        if (isTotalHovered(mouseX, mouseY)) SoundManager.playUIClick();
+        return super.preformOnMouseReleaseEvent(mouseX, mouseY, button);
     }
 
     private void setValueFromMouse(double d) {
