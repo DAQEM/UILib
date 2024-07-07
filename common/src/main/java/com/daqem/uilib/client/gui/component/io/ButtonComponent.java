@@ -70,9 +70,11 @@ public class ButtonComponent extends AbstractSpriteComponent<ButtonComponent> {
 
     @Override
     public boolean preformOnClickEvent(double mouseX, double mouseY, int button) {
-        if (super.preformOnClickEvent(mouseX, mouseY, button)) {
-            SoundManager.playUIClick();
-            return true;
+        if (enabled) {
+            if (super.preformOnClickEvent(mouseX, mouseY, button)) {
+                SoundManager.playUIClick();
+                return true;
+            }
         }
         return false;
     }

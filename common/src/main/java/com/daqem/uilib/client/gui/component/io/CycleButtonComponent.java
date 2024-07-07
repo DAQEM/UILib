@@ -78,14 +78,15 @@ public class CycleButtonComponent<T> extends AbstractSpriteComponent<CycleButton
     }
 
     public Component getTextFromValue(T value) {
-        return Component.empty()
+        Component component = values.stream()
+                .filter(entry -> entry.value().equals(value))
+                .map(IOComponentEntry::component)
+                .findFirst()
+                .orElse(Component.empty());
+        return !prefix.getString().isEmpty() ? Component.empty()
                 .append(prefix)
                 .append(": ")
-                .append(values.stream()
-                        .filter(entry -> entry.value().equals(value))
-                        .map(IOComponentEntry::component)
-                        .findFirst()
-                        .orElse(Component.empty()));
+                .append(component) : component;
     }
 
     public void cycleValue() {
