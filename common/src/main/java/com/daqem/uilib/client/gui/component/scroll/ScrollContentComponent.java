@@ -1,16 +1,11 @@
 package com.daqem.uilib.client.gui.component.scroll;
 
 import com.daqem.uilib.api.client.gui.component.IComponent;
-import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
 import com.daqem.uilib.api.client.gui.component.scroll.IScrollContent;
 import com.daqem.uilib.api.client.gui.component.scroll.ScrollOrientation;
-import com.daqem.uilib.api.client.gui.text.IText;
-import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Function;
@@ -85,9 +80,6 @@ public class ScrollContentComponent extends AbstractComponent<ScrollContentCompo
             component.setZ(10);
             previousComponent = component;
         }
-        graphics.pose().pushPose();
-        getChildren().forEach(component -> component.renderBase(graphics, mouseX, mouseY, delta));
-        graphics.pose().popPose();
     }
 
     @Override

@@ -58,7 +58,7 @@ public class SliderComponent<T> extends AbstractSpriteComponent<SliderComponent<
             handleSprite = getSprite(2);
         }
         graphics.blitSprite(getSprite(0), 0, 0, this.getWidth(), this.getHeight());
-        graphics.blitSprite(handleSprite, (int)(this.doubleValue * (double)(getWidth() - 8)), 0, 8, this.getHeight());
+        graphics.blitSprite(handleSprite, (int) (this.doubleValue * (double) (getWidth() - 8)), 0, 8, this.getHeight());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SliderComponent<T> extends AbstractSpriteComponent<SliderComponent<
     }
 
     private void setValueFromMouse(double d) {
-        this.setDoubleValue((d - (double)(this.getTotalX() + 4)) / (double)(getWidth() - 8));
+        this.setDoubleValue((d - (double) (this.getTotalX() + 4)) / (double) (getWidth() - 8));
     }
 
     public double getDoubleValue() {
@@ -155,9 +155,9 @@ public class SliderComponent<T> extends AbstractSpriteComponent<SliderComponent<
     }
 
     public Component updateMessage() {
-        return Component.empty()
+        return !prefix.getString().isEmpty() ? Component.empty()
                 .append(prefix)
                 .append(": ")
-                .append(getEntry().component());
+                .append(getEntry().component()) : getEntry().component();
     }
 }
