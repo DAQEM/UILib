@@ -16,6 +16,8 @@ public class ScrollContentComponent extends AbstractComponent<ScrollContentCompo
     private int contentSpacing;
     private ScrollOrientation orientation;
 
+    private int previousHeight = 0;
+
     public ScrollContentComponent(int x, int y, int contentSpacing, ScrollOrientation orientation) {
         super(null, x, y, 0, 0);
         this.contentSpacing = contentSpacing;

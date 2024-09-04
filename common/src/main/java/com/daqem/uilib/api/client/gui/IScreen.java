@@ -4,6 +4,7 @@ import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.IComponent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,4 +31,6 @@ public interface IScreen extends ContainerEventHandler {
     void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
     boolean isPauseScreen();
     void setPauseScreen(boolean pauseScreen);
+
+    IScreenAccessor getAccessor();
 }

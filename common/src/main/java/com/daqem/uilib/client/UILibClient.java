@@ -4,6 +4,7 @@ package com.daqem.uilib.client;
 import com.daqem.uilib.client.event.EventKeyPressed;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.logging.LogUtils;
+import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -21,6 +22,7 @@ public class UILibClient {
 
     public static void init() {
         EventKeyPressed.registerEvent();
+        KeyMappingRegistry.register(OPEN_TEST_MENU);
     }
 
     public static MutableComponent translatable(String resourceKey) {

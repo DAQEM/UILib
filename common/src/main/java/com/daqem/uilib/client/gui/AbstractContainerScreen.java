@@ -2,6 +2,7 @@ package com.daqem.uilib.client.gui;
 
 import com.daqem.uilib.api.client.gui.IRenderable;
 import com.daqem.uilib.api.client.gui.IScreen;
+import com.daqem.uilib.api.client.gui.IScreenAccessor;
 import com.daqem.uilib.api.client.gui.background.IBackground;
 import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.client.gui.background.Backgrounds;
@@ -29,7 +30,7 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     @Override
     protected void init() {
         super.init();
-        if (!initialized) {
+        if (!getAccessor().uilib$isInitialized()) {
             this.startScreen();
             if (getBackground() != null) {
                 this.getBackground().startRenderable();
@@ -303,5 +304,10 @@ public abstract class AbstractContainerScreen<T extends AbstractContainerMenu> e
     @Override
     public void setPauseScreen(boolean pauseScreen) {
         isPauseScreen = pauseScreen;
+    }
+
+    @Override
+    public IScreenAccessor getAccessor() {
+        return (IScreenAccessor) this;
     }
 }
