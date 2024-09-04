@@ -70,9 +70,23 @@ public class TestScreen extends AbstractScreen {
 
         ArrayList<IComponent<?>> configCategories = new ArrayList<>();
 
-        IntStream.range(0, 3).forEach(modConfigs ->
-                configCategories.add(new TestComponent(0, 0, 300, 200)
-        ));
+        IntStream.range(0, 30).forEach(modConfigs -> {
+            ScrollContentComponent e = new ScrollContentComponent(0, 0, 0, ScrollOrientation.VERTICAL);
+            configCategories.add(e);
+            ScrollContentComponent e1 = new ScrollContentComponent(0, 0, 0, ScrollOrientation.VERTICAL);
+            e.addChild(e1);
+            ScrollContentComponent e2 = new ScrollContentComponent(0, 0, 0, ScrollOrientation.VERTICAL);
+            e1.addChild(e2);
+            ScrollContentComponent e3 = new ScrollContentComponent(0, 0, 0, ScrollOrientation.VERTICAL);
+            e2.addChild(e3);
+            ScrollContentComponent e4 = new ScrollContentComponent(0, 0, 0, ScrollOrientation.VERTICAL);
+            e3.addChild(e4);
+            e4.addChild(new TestComponent(0, 0, 300, 200));
+            e4.addChild(new TestComponent(0, 0, 300, 200));
+            e4.addChild(new TestComponent(0, 0, 300, 200));
+            e4.addChild(new TestComponent(0, 0, 300, 200));
+            e4.addChild(new TestComponent(0, 0, 300, 200));
+        });
 
         ScrollContentComponent content = new ScrollContentComponent(0, 0, 0, ScrollOrientation.VERTICAL);
         ScrollWheelComponent scrollWheel = new ScrollWheelComponent(Textures.SCROLL_WHEEL, 0, 0, 6);
