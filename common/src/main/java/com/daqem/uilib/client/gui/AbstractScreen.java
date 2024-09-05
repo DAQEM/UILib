@@ -8,6 +8,7 @@ import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.client.gui.background.Backgrounds;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
@@ -73,7 +74,9 @@ public abstract class AbstractScreen extends Screen implements IScreen {
         //render screen tick
         this.onTickScreen(guiGraphics, mouseX, mouseY, delta);
         //render Minecraft widgets
-        super.render(guiGraphics, mouseX, mouseY, delta);
+        for (Renderable renderable : this.getAccessor().uilib$getRenderables()) {
+            renderable.render(guiGraphics, mouseX, mouseY, delta);
+        }
         //render tooltip
         this.renderTooltips(guiGraphics, mouseX, mouseY, delta);
     }
