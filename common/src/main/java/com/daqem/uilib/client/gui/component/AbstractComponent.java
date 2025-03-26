@@ -12,6 +12,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -44,8 +45,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private @Nullable OnCharTypedEvent<T> onCharTypedEvent;
     private @Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent;
 
-    private @Nullable T hoverState;
-
     private IColorManipulator colorManipulator = new ColorManipulator();
 
     public AbstractComponent(ITexture texture, int x, int y, int width, int height) {
@@ -54,9 +53,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
         this.y = y;
         this.width = width;
         this.height = height;
-
-        //noinspection unchecked
-        this.hoverState = (T) this.getClone();
     }
 
     @Override
@@ -81,28 +77,15 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
 
     @Override
     public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        if (isTotalHovered(mouseX, mouseY) && hoverState != null && hoverState.isVisible() && getOnHoverEvent() != null) {
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().translate(hoverState.getX(), hoverState.getY(), hoverState.getZ());
-            guiGraphics.pose().scale(hoverState.getScale(), hoverState.getScale(), hoverState.getScale());
-            guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(hoverState.getRotation()), hoverState.getWidth() / 2.0f, hoverState.getHeight() / 2.0f, 0.0f);
-            hoverState.getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
-            guiGraphics.setColor(hoverState.getColorManipulator().getRed(), hoverState.getColorManipulator().getGreen(), hoverState.getColorManipulator().getBlue(), hoverState.getOpacity());
-            hoverState.render(guiGraphics, mouseX, mouseY, delta);
-            hoverState.getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
-            guiGraphics.setColor(1F, 1F, 1F, 1F);
-            guiGraphics.pose().popPose();
-        } else if (isVisible()) {
+        if (isVisible()) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(getX(), getY(), getZ());
             guiGraphics.pose().scale(getScale(), getScale(), getScale());
             guiGraphics.pose().rotateAround(Axis.ZP.rotationDegrees(getRotation()), getWidth() / 2.0f, getHeight() / 2.0f, 0.0f);
             this.getChildren().stream().filter(IComponent::renderBeforeParent).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
-            guiGraphics.setColor(getColorManipulator().getRed(), getColorManipulator().getGreen(), getColorManipulator().getBlue(), getOpacity());
-            this.render(guiGraphics, mouseX, mouseY, delta);
+            this.render(guiGraphics, mouseX, mouseY, delta, ARGB.colorFromFloat(colorManipulator.getRed(), colorManipulator.getGreen(), colorManipulator.getBlue(), colorManipulator.getOpacity()));
             this.getChildren().stream().filter(x -> !x.renderBeforeParent()).forEach(child -> child.renderBase(guiGraphics, mouseX, mouseY, delta));
             this.renderText(guiGraphics, mouseX, mouseY, delta);
-            guiGraphics.setColor(1F, 1F, 1F, 1F);
             guiGraphics.pose().popPose();
         }
     }
@@ -377,16 +360,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     }
 
     @Override
-    public @Nullable T getHoverState() {
-        return hoverState;
-    }
-
-    @Override
-    public void setHoverState(@Nullable T hoverState) {
-        this.hoverState = hoverState;
-    }
-
-    @Override
     public boolean isCenteredHorizontally() {
         return centeredHorizontally;
     }
@@ -431,28 +404,6 @@ public abstract class AbstractComponent<T extends AbstractComponent<T>> implemen
     private int getParentHeight() {
         Screen screen = Minecraft.getInstance().screen;
         return getParent() != null ? getParent().getHeight() : screen != null ? screen.height : 0;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public @Nullable Object getClone() {
-        try {
-            T clone = (T) this.clone();
-
-            IText<?> currentText = getText();
-            if (currentText != null)
-                clone.setText((IText<?>) currentText.getClone());
-
-            ITexture currentTexture = getTexture();
-            if (currentTexture != null)
-                clone.setTexture((ITexture) currentTexture.getClone());
-
-            clone.setColorManipulator((IColorManipulator) getColorManipulator().getClone());
-
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
     }
 
     @Override

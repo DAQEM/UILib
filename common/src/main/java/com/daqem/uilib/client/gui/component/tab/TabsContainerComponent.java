@@ -3,7 +3,6 @@ package com.daqem.uilib.client.gui.component.tab;
 import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.api.client.gui.component.event.OnChange;
 import com.daqem.uilib.api.client.gui.component.tab.ITabInformation;
-import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import com.daqem.uilib.client.gui.component.arrow.ArrowButtonComponent;
 import com.daqem.uilib.client.gui.component.arrow.ArrowComponent;
@@ -90,7 +89,7 @@ public class TabsContainerComponent extends AbstractComponent<TabsContainerCompo
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         leftArrow.setTexture(leftArrow.isTotalHovered(mouseX, mouseY) ? Textures.MINECRAFT_BUTTON_HOVERED : Textures.MINECRAFT_BUTTON);
         rightArrow.setTexture(rightArrow.isTotalHovered(mouseX, mouseY) ? Textures.MINECRAFT_BUTTON_HOVERED : Textures.MINECRAFT_BUTTON);
 

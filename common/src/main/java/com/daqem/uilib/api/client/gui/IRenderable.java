@@ -4,7 +4,7 @@ import com.daqem.uilib.api.client.gui.event.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
-public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IHoverable<T>, IDraggable<T>, IScrollable<T>, IKeyPressable<T>, ICharTypable<T>, IMouseReleasable<T>, ICloneable {
+public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IHoverable<T>, IDraggable<T>, IScrollable<T>, IKeyPressable<T>, ICharTypable<T>, IMouseReleasable<T> {
 
     int getX();
     int getY();
@@ -24,7 +24,7 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
 
     void resizeScreenRepositionRenderable(int width, int height);
 
-    void render(GuiGraphics graphics, int mouseX, int mouseY, float delta);
+    void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color);
     void renderBase(GuiGraphics graphics, int mouseX, int mouseY, float delta);
 
     @Override
@@ -42,11 +42,12 @@ public interface IRenderable<T extends IRenderable<T>> extends IClickable<T>, IH
         return isTotalHovered(mouseX, mouseY);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     default void preformOnHoverEvent(double mouseX, double mouseY, float delta) {
         if (getOnHoverEvent() != null) {
             if (this.isTotalHovered(mouseX, mouseY)) {
-                getOnHoverEvent().onHover(getHoverState(), Minecraft.getInstance().screen, mouseX, mouseY, delta);
+                getOnHoverEvent().onHover((T) this, Minecraft.getInstance().screen, mouseX, mouseY, delta);
             }
         }
     }

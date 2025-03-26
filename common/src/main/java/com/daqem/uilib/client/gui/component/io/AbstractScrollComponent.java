@@ -3,6 +3,7 @@ package com.daqem.uilib.client.gui.component.io;
 import com.daqem.uilib.client.gui.component.AbstractSpriteComponent;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.lwjgl.glfw.GLFW;
@@ -83,9 +84,9 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, int color) {
         this.renderBackground(guiGraphics);
-        guiGraphics.enableScissor(getTotalX() + innerPadding(), getTotalY() + innerPadding(), getTotalX() + getWidth() - innerPadding(), getTotalY() + getHeight() - innerPadding());
+        guiGraphics.enableScissor(innerPadding(), innerPadding(), getWidth() - innerPadding(), getHeight() - innerPadding());
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(0.0, -this.scrollAmount, 0.0);
         this.renderContents(guiGraphics, mouseX, mouseY, delta);
@@ -130,7 +131,7 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
 
     protected void renderBackground(GuiGraphics guiGraphics) {
         ResourceLocation resourceLocation = getBackgroundSprite();
-        guiGraphics.blitSprite(resourceLocation, 0, 0, this.getWidth(), this.getHeight());
+        guiGraphics.blitSprite(RenderType::guiTextured, resourceLocation, 0, 0, this.getWidth(), this.getHeight());
     }
 
     protected abstract ResourceLocation getBackgroundSprite();
@@ -139,9 +140,7 @@ public abstract class AbstractScrollComponent<T extends AbstractScrollComponent<
         int i = this.getScrollBarHeight();
         int j = getWidth();
         int k = Math.max(0, (int)this.scrollAmount * (getHeight() - i) / this.getMaxScrollAmount());
-        RenderSystem.enableBlend();
-        guiGraphics.blitSprite(getScrollWheelSprite(), j, k, SCROLL_BAR_WIDTH, i);
-        RenderSystem.disableBlend();
+        guiGraphics.blitSprite(RenderType::guiTextured, getScrollWheelSprite(), j, k, SCROLL_BAR_WIDTH, i);
     }
 
     protected abstract ResourceLocation getScrollWheelSprite();

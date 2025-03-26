@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractText<T extends AbstractText<T>> implements IText<T> {
@@ -41,8 +42,6 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     private @Nullable OnCharTypedEvent<T> onCharTypedEvent;
     private @Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent;
 
-    private @Nullable T hoverState;
-
     public AbstractText(Font font, Component text) {
         this(font, text, 0, 0, font.width(text), font.lineHeight);
     }
@@ -58,9 +57,6 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
         this.y = y;
         this.width = width;
         this.height = height;
-
-        //noinspection unchecked
-        this.hoverState = (T) this.getClone();
     }
 
     @Override
@@ -285,21 +281,8 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
             Style style = this.getText().getStyle().withColor(getTextColor()).withBold(isBold()).withItalic(isItalic())
                     .withUnderlined(isUnderlined()).withStrikethrough(isStrikethrough()).withObfuscated(isObfuscated());
             this.setText(this.getText().copy().setStyle(style));
-            this.render(graphics, mouseX, mouseY, delta);
+            this.render(graphics, mouseX, mouseY, delta, ARGB.colorFromFloat(1.0F, 1.0F, 1.0F, 1.0F));
             graphics.pose().popPose();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public @Nullable Object getClone() {
-        try {
-            T clone = (T) super.clone();
-            if (this.getText() != null)
-                clone.setText(this.getText().copy());
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            return null;
         }
     }
 
@@ -331,16 +314,6 @@ public abstract class AbstractText<T extends AbstractText<T>> implements IText<T
     @Override
     public void setOnHoverEvent(@Nullable OnHoverEvent<T> onHoverEvent) {
         this.onHoverEvent = onHoverEvent;
-    }
-
-    @Override
-    public void setHoverState(@Nullable T component) {
-        this.hoverState = component;
-    }
-
-    @Override
-    public @Nullable T getHoverState() {
-        return hoverState;
     }
 
     @Override

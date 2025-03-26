@@ -1,13 +1,11 @@
 package com.daqem.uilib.client.gui.component.advancement;
 
 import com.daqem.uilib.api.client.gui.component.advancement.IAdvancementTree;
-import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import com.daqem.uilib.client.gui.component.TextComponent;
 import com.daqem.uilib.client.gui.component.tab.TabComponent;
 import com.daqem.uilib.client.gui.component.tab.TabsContainerComponent;
 import com.daqem.uilib.client.gui.text.Text;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
@@ -68,7 +66,7 @@ public class AdvancementsComponent extends AbstractComponent<AdvancementsCompone
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
 
     }
 

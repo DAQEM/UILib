@@ -11,7 +11,7 @@ public class NineSlicedTextureComponent extends AbstractNineSlicedComponent<Nine
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        super.render(graphics, mouseX, mouseY, delta);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
+        super.render(graphics, mouseX, mouseY, delta, color);
     }
 }

@@ -87,7 +87,7 @@ public class ScrollBarComponent extends AbstractNineSlicedComponent<ScrollBarCom
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         graphics.pose().pushPose();
         if (background != null) {
             if (centerBackground) {

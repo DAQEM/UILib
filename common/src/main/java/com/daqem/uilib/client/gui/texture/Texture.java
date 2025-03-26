@@ -101,16 +101,4 @@ public class Texture implements ITexture {
     public void setFileHeight(int fileHeight) {
         this.fileHeight = fileHeight;
     }
-
-    @Override
-    public @Nullable Object getClone() {
-        try {
-            ITexture clone = (ITexture) this.clone();
-            ResourceLocation currentTextureLocation = clone.getTextureLocation();
-            clone.setTextureLocation(ResourceLocation.fromNamespaceAndPath(currentTextureLocation.getNamespace(), currentTextureLocation.getPath()));
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
-    }
 }

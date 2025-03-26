@@ -19,8 +19,8 @@ public class ArrowButtonComponent extends ButtonComponent {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        super.render(guiGraphics, mouseX, mouseY, delta);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, int color) {
+        super.render(guiGraphics, mouseX, mouseY, delta, color);
         guiGraphics.fill(0, 0, getWidth(), getHeight(), 0x00000000);
     }
 }

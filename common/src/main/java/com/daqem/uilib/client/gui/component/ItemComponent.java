@@ -22,7 +22,7 @@ public class ItemComponent extends AbstractComponent<ItemComponent> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         graphics.renderFakeItem(itemStack, 0, 0);
         if (decorated) {
             graphics.renderItemDecorations(Minecraft.getInstance().font, itemStack, 0, 0);

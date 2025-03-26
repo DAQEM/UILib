@@ -10,11 +10,4 @@ public class AdvancementWindowComponent extends NineSlicedTextureComponent {
     public AdvancementWindowComponent(int x, int y, int width, int height) {
         super(Textures.Advancement.ADVANCEMENT_WINDOW, x, y, width, height);
     }
-
-    @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        RenderSystem.enableBlend();
-        super.render(graphics, mouseX, mouseY, delta);
-        RenderSystem.disableBlend();
-    }
 }

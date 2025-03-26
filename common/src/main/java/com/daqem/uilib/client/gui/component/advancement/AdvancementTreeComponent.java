@@ -1,7 +1,6 @@
 package com.daqem.uilib.client.gui.component.advancement;
 
 import com.daqem.uilib.api.client.gui.component.advancement.IAdvancementTree;
-import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -51,7 +50,7 @@ public class AdvancementTreeComponent extends AbstractComponent<AdvancementTreeC
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
     }
 
     public void run() {

@@ -17,4 +17,4 @@ include("common")
 include("fabric")
 include("neoforge")
 
-rootProject.name = "ui-lib"
+rootProject.name = "UI Lib 1.21.5"

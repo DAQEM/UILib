@@ -9,6 +9,4 @@ public interface IHoverable<T extends IHoverable<T>> {
     void preformOnHoverEvent(double mouseX, double mouseY, float delta);
     OnHoverEvent<T> getOnHoverEvent();
     void setOnHoverEvent(OnHoverEvent<T> onHoverEvent);
-    void setHoverState(T component);
-    T getHoverState();
 }

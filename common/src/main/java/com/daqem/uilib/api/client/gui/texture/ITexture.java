@@ -1,9 +1,8 @@
 package com.daqem.uilib.api.client.gui.texture;
 
-import com.daqem.uilib.api.client.gui.ICloneable;
 import net.minecraft.resources.ResourceLocation;
 
-public interface ITexture extends ICloneable {
+public interface ITexture {
 
     ResourceLocation getTextureLocation();
     int getX();

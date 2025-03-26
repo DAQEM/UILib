@@ -20,23 +20,23 @@ public class ArrowComponent extends AbstractComponent<ArrowComponent> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         switch (direction) {
             case RIGHT -> {
                 for (int i = 0; i < size; i++) {
                     if (i < size / 2) {
-                        graphics.hLine(i + size / 4 + (thickness - 1), i + size / 4 - thickness / 2, size - i - 1, color);
+                        graphics.hLine(i + size / 4 + (thickness - 1), i + size / 4 - thickness / 2, size - i - 1, this.color);
                     } else {
-                        graphics.hLine(size - i - 1 + size / 4 + (thickness - 1), size - i - 1 + size / 4 - thickness / 2, size - i - 1, color);
+                        graphics.hLine(size - i - 1 + size / 4 + (thickness - 1), size - i - 1 + size / 4 - thickness / 2, size - i - 1, this.color);
                     }
                 }
             }
             case LEFT -> {
                 for (int i = 0; i < size; i++) {
                     if (i < size / 2) {
-                        graphics.hLine(size - i - 1 - size / 4 - (thickness - 1), size - i - 1 - size / 4 + thickness / 2, size - i - 1, color);
+                        graphics.hLine(size - i - 1 - size / 4 - (thickness - 1), size - i - 1 - size / 4 + thickness / 2, size - i - 1, this.color);
                     } else {
-                        graphics.hLine(i - size / 4 - (thickness - 1), i - size / 4 + thickness / 2, size - i - 1, color);
+                        graphics.hLine(i - size / 4 - (thickness - 1), i - size / 4 + thickness / 2, size - i - 1, this.color);
                     }
                 }
             }

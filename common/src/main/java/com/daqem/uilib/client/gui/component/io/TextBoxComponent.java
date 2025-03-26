@@ -4,7 +4,6 @@ import com.daqem.uilib.api.client.gui.component.io.IIOComponent;
 import com.daqem.uilib.api.client.gui.component.io.IInputValidatable;
 import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractSpriteComponent;
-import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -12,13 +11,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringUtil;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -351,10 +348,10 @@ public class TextBoxComponent extends AbstractSpriteComponent<TextBoxComponent> 
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, int color) {
         if (this.isBordered()) {
             ResourceLocation resourceLocation = hasInputValidationErrors() ? getSprite(2) : isFocused() ? getSprite(1) : getSprite(0);
-            guiGraphics.blitSprite(resourceLocation, 0, 0, this.getWidth(), this.getHeight());
+            guiGraphics.blitSprite(RenderType::guiTextured, resourceLocation, 0, 0, this.getWidth(), this.getHeight());
         }
         int k = this.isEditable ? this.textColor : this.textColorUneditable;
         int l = this.cursorPos - this.displayPos;

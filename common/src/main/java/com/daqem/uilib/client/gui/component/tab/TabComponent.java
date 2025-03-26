@@ -1,14 +1,11 @@
 package com.daqem.uilib.client.gui.component.tab;
 
 import com.daqem.uilib.api.client.gui.component.tab.ITabInformation;
-import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.ButtonComponent;
 import com.daqem.uilib.client.gui.component.ItemComponent;
 import com.daqem.uilib.client.gui.texture.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-
-import java.util.List;
 
 public class TabComponent extends ButtonComponent {
 
@@ -38,7 +35,7 @@ public class TabComponent extends ButtonComponent {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, int color) {
         if (isSelected()) {
             setZ(1);
             int targetY = defaultY - 3;
@@ -53,7 +50,7 @@ public class TabComponent extends ButtonComponent {
                 setHeight(getHeight() - 1);
             }
         }
-        super.render(guiGraphics, mouseX, mouseY, delta);
+        super.render(guiGraphics, mouseX, mouseY, delta, color);
     }
 
     public boolean isSelected() {

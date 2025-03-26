@@ -39,8 +39,8 @@ public class ColorBackground extends AbstractBackground<ColorBackground> {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        guiGraphics.fill(0, 0, getWidth(), getHeight(), color);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, int color) {
+        guiGraphics.fill(0, 0, getWidth(), getHeight(), this.color);
     }
 
     public int getColor() {

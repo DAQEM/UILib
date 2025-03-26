@@ -65,8 +65,8 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
     // region Rendering
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        super.render(graphics, mouseX, mouseY, delta);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
+        super.render(graphics, mouseX, mouseY, delta, color);
 
         renderScrollbar(graphics, mouseX, mouseY, delta);
         renderScrollContent(graphics, mouseX, mouseY, delta);
@@ -74,7 +74,7 @@ public class ScrollPanelComponent extends AbstractNineSlicedComponent<ScrollPane
 
     private void renderScrollContent(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         getScrollContentComponent().ifPresent(scrollContentComponent -> {
-            graphics.enableScissor(getTotalX(), getTotalY(), getTotalX() + getWidth(), getTotalY() + getHeight());
+            graphics.enableScissor(0, 0, getWidth(), getHeight());
             scrollContentComponent.renderBase(graphics, mouseX, mouseY, delta);
             graphics.disableScissor();
         });

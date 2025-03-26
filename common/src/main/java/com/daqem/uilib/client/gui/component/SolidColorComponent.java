@@ -12,7 +12,7 @@ public class SolidColorComponent extends AbstractComponent<SolidColorComponent> 
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        graphics.fill(0, 0, getWidth(), getHeight(), color);
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
+        graphics.fill(0, 0, getWidth(), getHeight(), this.color);
     }
 }
