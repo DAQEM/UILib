@@ -10,7 +10,7 @@ public class TestBackground extends AbstractBackground<TestBackground> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
 
     }
 }

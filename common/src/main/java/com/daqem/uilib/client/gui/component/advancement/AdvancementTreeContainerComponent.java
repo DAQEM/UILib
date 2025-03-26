@@ -1,7 +1,6 @@
 package com.daqem.uilib.client.gui.component.advancement;
 
 import com.daqem.uilib.api.client.gui.component.advancement.IAdvancementTree;
-import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -22,13 +21,13 @@ public class AdvancementTreeContainerComponent extends AbstractComponent<Advance
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
     }
 
     @Override
     public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         guiGraphics.pose().pushPose();
-        guiGraphics.enableScissor(getTotalX(), getTotalY(), getTotalX() + getWidth(), getTotalY() + getHeight());
+        guiGraphics.enableScissor(0, 0, getWidth(), getHeight());
         super.renderBase(guiGraphics, mouseX, mouseY, delta);
         guiGraphics.disableScissor();
         guiGraphics.pose().popPose();

@@ -8,6 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -49,16 +50,13 @@ public class SliderComponent<T> extends AbstractSpriteComponent<SliderComponent<
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.enableDepthTest();
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         ResourceLocation handleSprite = getSprite(1);
         if (isTotalHovered(mouseX, mouseY) || isFocused()) {
             handleSprite = getSprite(2);
         }
-        graphics.blitSprite(getSprite(0), 0, 0, this.getWidth(), this.getHeight());
-        graphics.blitSprite(handleSprite, (int) (this.doubleValue * (double) (getWidth() - 8)), 0, 8, this.getHeight());
+        graphics.blitSprite(RenderType::guiTextured, getSprite(0), 0, 0, this.getWidth(), this.getHeight());
+        graphics.blitSprite(RenderType::guiTextured, handleSprite, (int) (this.doubleValue * (double) (getWidth() - 8)), 0, 8, this.getHeight());
     }
 
     @Override

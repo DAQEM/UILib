@@ -1,6 +1,5 @@
 package com.daqem.uilib.client.screen.test;
 
-import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import com.daqem.uilib.client.gui.component.io.*;
 import net.minecraft.client.Minecraft;
@@ -52,7 +51,7 @@ public class TestComponent extends AbstractComponent<TestComponent> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
 
     }
 }

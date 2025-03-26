@@ -22,7 +22,7 @@ public class Text extends AbstractText<Text> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         graphics.drawString(getFont(), getText(), 0, 0, getTextColor(), isShadow());
     }
 }

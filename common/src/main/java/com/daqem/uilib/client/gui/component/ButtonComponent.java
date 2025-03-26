@@ -1,11 +1,7 @@
 package com.daqem.uilib.client.gui.component;
 
-import com.daqem.uilib.api.client.gui.component.event.OnClickEvent;
-import com.daqem.uilib.api.client.gui.component.event.OnHoverEvent;
-import com.daqem.uilib.api.client.gui.text.IText;
 import com.daqem.uilib.api.client.gui.texture.INineSlicedTexture;
 import net.minecraft.client.gui.GuiGraphics;
-import org.jetbrains.annotations.Nullable;
 
 public class ButtonComponent extends AbstractNineSlicedComponent<ButtonComponent> {
 
@@ -15,7 +11,7 @@ public class ButtonComponent extends AbstractNineSlicedComponent<ButtonComponent
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        super.render(guiGraphics, mouseX, mouseY, delta);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta, int color) {
+        super.render(guiGraphics, mouseX, mouseY, delta, color);
     }
 }

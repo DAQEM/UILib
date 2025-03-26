@@ -5,6 +5,7 @@ import com.daqem.uilib.api.client.gui.color.IColorManipulator;
 import com.daqem.uilib.api.client.gui.component.event.*;
 import com.daqem.uilib.client.gui.color.ColorManipulator;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractBackground<T extends AbstractBackground<T>> implements IBackground<T> {
@@ -24,8 +25,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     private @Nullable OnCharTypedEvent<T> onCharTypedEvent;
     private @Nullable OnMouseReleaseEvent<T> onMouseReleaseEvent;
 
-    private @Nullable T hoverState;
-
     public AbstractBackground(int width, int height) {
         this(0, 0, width, height);
     }
@@ -35,9 +34,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
         this.y = y;
         this.width = width;
         this.height = height;
-
-        //noinspection unchecked
-        this.hoverState = (T) this.getClone();
     }
 
     @Override
@@ -124,22 +120,8 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(getX(), getY(), -1);
-        guiGraphics.setColor(colorManipulator.getRed(), colorManipulator.getGreen(), colorManipulator.getBlue(), colorManipulator.getOpacity());
-        this.render(guiGraphics, mouseX, mouseY, delta);
-        guiGraphics.setColor(1F, 1F, 1F, 1F);
+        this.render(guiGraphics, mouseX, mouseY, delta, ARGB.colorFromFloat(colorManipulator.getRed(), colorManipulator.getGreen(), colorManipulator.getBlue(), colorManipulator.getOpacity()));
         guiGraphics.pose().popPose();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public @Nullable Object getClone() {
-        try {
-            T clone = (T) this.clone();
-            clone.setColorManipulator((IColorManipulator) getColorManipulator().getClone());
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
     }
 
     @Override
@@ -170,16 +152,6 @@ public abstract class AbstractBackground<T extends AbstractBackground<T>> implem
     @Override
     public void setOnHoverEvent(@Nullable OnHoverEvent<T> onHoverEvent) {
         this.onHoverEvent = onHoverEvent;
-    }
-
-    @Override
-    public void setHoverState(@Nullable T hoverState) {
-        this.hoverState = hoverState;
-    }
-
-    @Override
-    public @Nullable T getHoverState() {
-        return hoverState;
     }
 
     @Override

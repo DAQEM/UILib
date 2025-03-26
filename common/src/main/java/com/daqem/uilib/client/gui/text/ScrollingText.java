@@ -36,7 +36,7 @@ public class ScrollingText extends AbstractText<ScrollingText> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         int xOffset = 0;
         int yOffset = 0;
 
@@ -111,7 +111,7 @@ public class ScrollingText extends AbstractText<ScrollingText> {
             }
         }
 
-        graphics.enableScissor(getTotalX(), getTotalY(), getTotalX() + getWidth(), getTotalY() + getHeight());
+        graphics.enableScissor(0, 0, getWidth(), getHeight());
         graphics.drawString(getFont(), getText(), xOffset, yOffset, getTextColor(), isShadow());
         graphics.disableScissor();
     }

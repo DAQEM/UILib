@@ -80,13 +80,4 @@ public class ColorManipulator implements IColorManipulator {
         this.blue = 1F;
         this.opacity = 1F;
     }
-
-    @Override
-    public @Nullable Object getClone() {
-        try {
-            return this.clone();
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
-    }
 }

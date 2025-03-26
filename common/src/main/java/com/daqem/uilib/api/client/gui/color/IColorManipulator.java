@@ -1,8 +1,6 @@
 package com.daqem.uilib.api.client.gui.color;
 
-import com.daqem.uilib.api.client.gui.ICloneable;
-
-public interface IColorManipulator extends ICloneable {
+public interface IColorManipulator {
 
     float getRed();
     float getGreen();

@@ -2,13 +2,10 @@ package com.daqem.uilib.client.gui.component.advancement;
 
 import com.daqem.uilib.api.client.gui.component.IComponent;
 import com.daqem.uilib.api.client.gui.component.advancement.IAdvancement;
-import com.daqem.uilib.client.UILibClient;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
-import net.minecraft.advancements.AdvancementType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidgetType;
-import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -105,7 +102,7 @@ public class AdvancementComponent extends AbstractComponent<AdvancementComponent
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         for (AdvancementComponent advancementChild : this.getAdvancementChildren()) {
             this.drawConnectivity(graphics,
                     1,

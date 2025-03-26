@@ -8,10 +8,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -52,15 +51,13 @@ public class ButtonComponent extends AbstractSpriteComponent<ButtonComponent> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        RenderSystem.enableBlend();
-        RenderSystem.enableDepthTest();
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         ResourceLocation sprite = getSprite(0);
 
         if (!enabled) sprite = getSprite(1);
         else if (isTotalHovered(mouseX, mouseY)) sprite = getSprite(2);
 
-        graphics.blitSprite(sprite, 0, 0, getWidth(), getHeight());
+        graphics.blitSprite(RenderType::guiTextured, sprite, 0, 0, getWidth(), getHeight());
 
         if (getText() != null) {
             int textColor = this.enabled ? 0xFFFFFF : 0xA0A0A0;

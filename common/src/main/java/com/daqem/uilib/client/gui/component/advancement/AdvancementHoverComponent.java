@@ -72,12 +72,12 @@ public class AdvancementHoverComponent extends AbstractComponent<AdvancementHove
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         if (!hasStaticHeight) {
             setHeight(32 + getDescriptionHeight());
         }
 
-        GuiGraphicsUtils.blitNineSliced(graphics, WIDGETS_LOCATION, -4, 16, getWidth(), getHeight() - 16, 10, 200, 26, 0, 52);
+        GuiGraphicsUtils.blitNineSliced(graphics, WIDGETS_LOCATION, -4, 16, getWidth(), getHeight() - 16, 10, 200, 26, 0, 52, color);
     }
 
     private int getDescriptionHeight() {

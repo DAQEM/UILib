@@ -3,6 +3,7 @@ package com.daqem.uilib.client.gui.component.texture;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.gui.component.AbstractComponent;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 
 public class TextureComponent extends AbstractComponent<TextureComponent> {
 
@@ -11,7 +12,7 @@ public class TextureComponent extends AbstractComponent<TextureComponent> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        graphics.blit(getTexture().getTextureLocation(), 0, 0, getWidth(), getHeight(), getTexture().getX(), getTexture().getY(), getTexture().getWidth(), getTexture().getHeight(), getTexture().getFileWidth(), getTexture().getFileHeight());
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
+        graphics.blit(RenderType::guiTextured, getTexture().getTextureLocation(), 0, 0, getWidth(), getHeight(), getTexture().getX(), getTexture().getY(), getTexture().getWidth(), getTexture().getHeight(), getTexture().getFileWidth(), getTexture().getFileHeight());
     }
 }

@@ -4,6 +4,7 @@ import com.daqem.uilib.api.client.gui.texture.INineSlicedTexture;
 import com.daqem.uilib.api.client.gui.texture.ITexture;
 import com.daqem.uilib.client.util.GuiGraphicsUtils;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.util.ARGB;
 
 public abstract class AbstractNineSlicedComponent<T extends AbstractNineSlicedComponent<T>> extends AbstractComponent<T> {
 
@@ -12,7 +13,7 @@ public abstract class AbstractNineSlicedComponent<T extends AbstractNineSlicedCo
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta, int color) {
         INineSlicedTexture texture = (INineSlicedTexture) getTexture();
         if (texture == null) return;
         GuiGraphicsUtils.blitNineSliced(
@@ -29,7 +30,8 @@ public abstract class AbstractNineSlicedComponent<T extends AbstractNineSlicedCo
                 texture.getWidth(),
                 texture.getHeight(),
                 texture.getX(),
-                texture.getY()
+                texture.getY(),
+                color
         );
     }
 }
