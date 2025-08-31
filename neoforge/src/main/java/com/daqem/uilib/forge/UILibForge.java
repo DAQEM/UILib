@@ -1,14 +1,14 @@
 package com.daqem.uilib.forge;
 
-import com.daqem.uilib.client.UILibClient;
+import com.daqem.uilib.UILib;
 import dev.architectury.utils.Env;
 import dev.architectury.utils.EnvExecutor;
 import net.neoforged.fml.common.Mod;
 
-@Mod(UILibClient.MOD_ID)
+@Mod(UILib.MOD_ID)
 public class UILibForge {
 
     public UILibForge() {
-        EnvExecutor.runInEnv(Env.CLIENT, () -> UILibClient::init);
+        EnvExecutor.runInEnv(Env.CLIENT, () -> UILib::init);
     }
 }
