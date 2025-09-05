@@ -5,6 +5,7 @@ import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.screen.IScreen;
 import com.daqem.uilib.api.screen.IScreenAccessor;
 import com.daqem.uilib.api.widget.IWidget;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -130,7 +131,7 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     @Override
-    public void clearWidgets() {
+    public void clearOnlyWidgets() {
         if (screenAccessor != null) {
             screenAccessor.uilib$getRenderables().removeIf(renderable -> renderable instanceof IWidget);
             screenAccessor.uilib$getChildren().removeIf(renderable -> renderable instanceof IWidget);

@@ -18,7 +18,7 @@ public class TextComponent extends AbstractSingleLineTextComponent {
         guiGraphics.drawString(
                 this.getFont(),
                 this.getText(),
-                this.getCalculatedX(),
+                this.getTotalX(),
                 this.getTotalY(),
                 this.getColor(),
                 this.isDrawShadow()

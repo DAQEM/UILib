@@ -30,17 +30,31 @@ public class TruncatedTextComponent extends AbstractSingleLineTextComponent{
         guiGraphics.drawString(
                 this.getFont(),
                 this.getText(),
-                this.getCalculatedX(),
+                this.getTotalX(),
                 this.getTotalY(),
                 this.getColor(),
                 this.isDrawShadow()
         );
 
         if (isRenderDebugBorder()) {
-            guiGraphics.hLine(getCalculatedX(), getCalculatedX() + maxWidth - 1, getTotalY(), 0xFF0000FF);
-            guiGraphics.vLine(getCalculatedX() + maxWidth - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.hLine(getCalculatedX(), getCalculatedX() + maxWidth - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.vLine(getCalculatedX(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getUnusedSpaceX(), getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY(), 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getUnusedSpaceX(), getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + getUnusedSpaceX(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+        }
+    }
+
+    protected int getUnusedSpaceX() {
+        switch (getTextAlign()) {
+            case CENTER -> {
+                return (getWidth() - maxWidth) / 2;
+            }
+            case RIGHT -> {
+                return getWidth() - maxWidth;
+            }
+            default -> {
+                return 0;
+            }
         }
     }
 

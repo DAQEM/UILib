@@ -23,6 +23,22 @@ public abstract class AbstractTextComponent extends AbstractComponent {
         this.color = color;
     }
 
+    @Override
+    public int getTotalX() {
+        switch (getTextAlign()) {
+            case CENTER -> {
+                return super.getTotalX() - (getWidth() / 2);
+            }
+            case RIGHT -> {
+                return super.getTotalX() - getWidth();
+            }
+            case LEFT -> {
+                return super.getTotalX();
+            }
+        }
+        return super.getTotalX();
+    }
+
     public Component getText() {
         return text;
     }

@@ -31,19 +31,4 @@ public abstract class AbstractSingleLineTextComponent extends AbstractTextCompon
         setWidth(getFont().width(getText()));
         setHeight(getFont().lineHeight);
     }
-
-    protected int getCalculatedX() {
-        switch (getTextAlign()) {
-            case CENTER -> {
-                return getTotalX() - (getWidth() / 2);
-            }
-            case RIGHT -> {
-                return getTotalX() - getWidth();
-            }
-            case LEFT -> {
-                return getTotalX();
-            }
-        }
-        return getTotalX();
-    }
 }

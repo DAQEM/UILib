@@ -21,7 +21,7 @@ public interface IParent {
     void removeWidget(IWidget widget);
     void removeWidgets(List<? extends IWidget> widgets);
 
-    void clearWidgets();
+    void clearOnlyWidgets();
 
     void clear();
 }

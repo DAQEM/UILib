@@ -130,12 +130,12 @@ public abstract class AbstractComponent implements IComponent {
 
     @Override
     public int getTotalX() {
-        return parentX + x;
+        return getParentX() + getX();
     }
 
     @Override
     public int getTotalY() {
-        return parentY + y;
+        return getParentY() + getY();
     }
 
     @Override
@@ -283,14 +283,14 @@ public abstract class AbstractComponent implements IComponent {
     }
 
     @Override
-    public void clearWidgets() {
+    public void clearOnlyWidgets() {
         this.widgets.clear();
     }
 
     @Override
     public void clear() {
         clearComponents();
-        clearWidgets();
+        clearOnlyWidgets();
     }
 
     @Override

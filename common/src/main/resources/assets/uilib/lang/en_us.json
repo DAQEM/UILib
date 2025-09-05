@@ -3,5 +3,8 @@
   "key.uilib.open_test_menu": "Open Test Menu",
   "uilib.screen.test.title": "Test Screen",
   "uilib.component.test.number": "Number: %d",
-  "uilib.widget.test.button": "Test Button"
+  "uilib.component.test.long_text": "This is a long text component. It is used to test how text wrapping and overflow are handled in the UI library. The quick brown fox jumps over the lazy dog.",
+  "uilib.widget.test.button": "Test Button",
+  "uilib.screen.test.button.previous": "Previous",
+  "uilib.screen.test.button.next": "Next"
 }

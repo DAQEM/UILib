@@ -23,9 +23,9 @@ public class ScrollingTextComponent extends AbstractSingleLineTextComponent {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         if (getWidth() > maxWidth) {
             guiGraphics.enableScissor(
-                    getCalculatedX(),
+                    getTotalX() + getXOffset(),
                     getTotalY(),
-                    getCalculatedX() + maxWidth,
+                    getTotalX() + maxWidth + getXOffset(),
                     getTotalY() + getHeight()
             );
             int hiddenWidth = getWidth() - maxWidth;
@@ -33,17 +33,31 @@ public class ScrollingTextComponent extends AbstractSingleLineTextComponent {
             double animationDuration = Math.max(hiddenWidth * 0.5, 3.0);
             double animationFactor = Math.sin((Math.PI / 2) * Math.cos((Math.PI * 2) * currentTimeSeconds / animationDuration)) / 2.0 + 0.5;
             double scrollOffset = Mth.lerp(animationFactor, 0.0, hiddenWidth);
-            drawText(guiGraphics, (int) scrollOffset);
+            drawText(guiGraphics, (int) scrollOffset - getXOffset());
             guiGraphics.disableScissor();
         } else {
             drawText(guiGraphics, 0);
         }
 
         if (isRenderDebugBorder()) {
-            guiGraphics.hLine(getCalculatedX(), getCalculatedX() + maxWidth - 1, getTotalY(), 0xFF0000FF);
-            guiGraphics.vLine(getCalculatedX() + maxWidth - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.hLine(getCalculatedX(), getCalculatedX() + maxWidth - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.vLine(getCalculatedX(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getXOffset(), getTotalX() + maxWidth + getXOffset() - 1, getTotalY(), 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + maxWidth + getXOffset() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getXOffset(), getTotalX() + maxWidth + getXOffset() - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + getXOffset(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+        }
+    }
+
+    protected int getXOffset() {
+        switch (getTextAlign()) {
+            case CENTER -> {
+                return (getWidth() - maxWidth) / 2;
+            }
+            case RIGHT -> {
+                return getWidth() - maxWidth;
+            }
+            default -> {
+                return 0;
+            }
         }
     }
 
@@ -59,7 +73,7 @@ public class ScrollingTextComponent extends AbstractSingleLineTextComponent {
         guiGraphics.drawString(
                 this.getFont(),
                 this.getText(),
-                this.getCalculatedX() - scrollOffset,
+                this.getTotalX() - scrollOffset,
                 this.getTotalY(),
                 this.getColor(),
                 this.isDrawShadow()
