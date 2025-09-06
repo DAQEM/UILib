@@ -21,11 +21,11 @@ public class ValidationErrors {
         return UILib.translatable("widget.validation_error.valid_values", values);
     }
 
-    public static MutableComponent minValue(int value) {
+    public static MutableComponent minValue(Number value) {
         return UILib.translatable("widget.validation_error.min_value", value);
     }
 
-    public static MutableComponent maxValue(int value) {
+    public static MutableComponent maxValue(Number value) {
         return UILib.translatable("widget.validation_error.max_value", value);
     }
 
