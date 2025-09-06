@@ -5,7 +5,6 @@ import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.screen.IScreen;
 import com.daqem.uilib.api.screen.IScreenAccessor;
 import com.daqem.uilib.api.widget.IWidget;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -17,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractScreen extends Screen implements IScreen {
+public class AbstractScreen extends Screen implements IScreen {
 
     private @Nullable IBackground background;
     private final IScreenAccessor screenAccessor = this instanceof IScreenAccessor ? (IScreenAccessor) this : null;
@@ -68,6 +67,14 @@ public abstract class AbstractScreen extends Screen implements IScreen {
     }
 
     @Override
+    public List<IComponent> getComponents() {
+        return screenAccessor != null ? screenAccessor.uilib$getRenderables().stream()
+                .filter(renderable -> renderable instanceof IComponent)
+                .map(renderable -> (IComponent) renderable)
+                .toList() : List.of();
+    }
+
+    @Override
     public void addComponent(IComponent component) {
         this.addRenderableOnly(component);
     }
@@ -100,6 +107,14 @@ public abstract class AbstractScreen extends Screen implements IScreen {
         if (screenAccessor != null) {
             screenAccessor.uilib$getRenderables().clear();
         }
+    }
+
+    @Override
+    public List<IWidget> getWidgets() {
+        return children().stream()
+                .filter(guiEventListener -> guiEventListener instanceof IWidget)
+                .map(guiEventListener -> (IWidget) guiEventListener)
+                .toList();
     }
 
     @Override

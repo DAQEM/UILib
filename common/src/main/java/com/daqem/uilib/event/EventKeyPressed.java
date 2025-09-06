@@ -1,9 +1,7 @@
 package com.daqem.uilib.event;
 
 import com.daqem.uilib.UILib;
-import com.daqem.uilib.api.widget.ITextInputWidget;
-import com.daqem.uilib.gui.widget.EditBoxWidget;
-import com.daqem.uilib.gui.widget.MultiLineEditBoxWidget;
+import com.daqem.uilib.api.widget.IInputValidatable;
 import com.daqem.uilib.test.TestScreen;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.client.ClientRawInputEvent;
@@ -16,7 +14,7 @@ public class EventKeyPressed {
             Screen screen = client.screen;
             if (UILib.OPEN_TEST_MENU.matches(keyCode, scanCode) && action == 1) {
                 if (screen instanceof TestScreen testScreen) {
-                    if (testScreen.getFocused() instanceof ITextInputWidget) {
+                    if (testScreen.getFocused() instanceof IInputValidatable) {
                         return EventResult.pass();
                     }
                     client.setScreen(null);

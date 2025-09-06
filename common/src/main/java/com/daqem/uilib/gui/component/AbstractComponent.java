@@ -2,6 +2,7 @@ package com.daqem.uilib.gui.component;
 
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IWidget;
+import com.daqem.uilib.api.widget.IWidgetsParent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;

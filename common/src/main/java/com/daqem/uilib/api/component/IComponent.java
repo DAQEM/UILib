@@ -16,8 +16,6 @@ public interface IComponent extends IRenderable, ICenterable, IParent {
     int getTotalX();
     int getTotalY();
 
-    List<IComponent> getComponents();
-    List<IWidget> getWidgets();
     List<IWidget> getAllWidgets();
     void getAllWidgetsMap(Map<IWidget, IComponent> map);
 
