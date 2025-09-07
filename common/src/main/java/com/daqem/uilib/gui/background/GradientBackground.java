@@ -4,12 +4,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 
-public class AbstractGradientBackground extends AbstractBackground {
+public class GradientBackground extends AbstractBackground {
 
     private int colorFrom;
     private int colorTo;
 
-    public AbstractGradientBackground(int colorFrom, int colorTo) {
+    public GradientBackground(int colorFrom, int colorTo) {
         this.colorFrom = colorFrom;
         this.colorTo = colorTo;
     }

@@ -4,11 +4,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 
-public class AbstractColorBackground extends AbstractBackground {
+public class ColorBackground extends AbstractBackground {
 
     private int color;
 
-    public AbstractColorBackground(int color) {
+    public ColorBackground(int color) {
         this.color = color;
     }
 
