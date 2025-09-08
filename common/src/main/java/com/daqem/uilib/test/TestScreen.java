@@ -6,10 +6,7 @@ import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.gui.AbstractScreen;
 import com.daqem.uilib.gui.background.DarkenedBackground;
 import com.daqem.uilib.gui.widget.ButtonWidget;
-import com.daqem.uilib.test.component.TestComponent;
-import com.daqem.uilib.test.component.TestScrollWidgetComponent;
-import com.daqem.uilib.test.component.TestTextsComponent;
-import com.daqem.uilib.test.component.TestWidgetsComponent;
+import com.daqem.uilib.test.component.*;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -30,17 +27,20 @@ public class TestScreen extends AbstractScreen {
 
     @Override
     public void init() {
+        IComponent testComponent0 = new TestSkillTreeComponent();
         IComponent testComponent1 = new TestTextsComponent(1);
         IComponent testComponent2 = new TestWidgetsComponent(2);
         IComponent testComponent3 = new TestComponent(3);
         TestScrollWidgetComponent testComponent4 = new TestScrollWidgetComponent(3);
 
         components.clear();
+        components.add(testComponent0);
         components.add(testComponent1);
         components.add(testComponent2);
         components.add(testComponent3);
         components.add(testComponent4);
 
+        testComponent0.center();
         testComponent1.center();
         testComponent2.center();
         testComponent3.center();
@@ -82,5 +82,15 @@ public class TestScreen extends AbstractScreen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 }
