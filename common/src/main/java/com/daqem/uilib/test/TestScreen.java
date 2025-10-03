@@ -7,6 +7,7 @@ import com.daqem.uilib.gui.AbstractScreen;
 import com.daqem.uilib.gui.background.DarkenedBackground;
 import com.daqem.uilib.gui.widget.ButtonWidget;
 import com.daqem.uilib.test.component.*;
+import net.minecraft.client.input.KeyEvent;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -54,15 +55,15 @@ public class TestScreen extends AbstractScreen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_LEFT) {
+    public boolean keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.key() == GLFW.GLFW_KEY_LEFT) {
             previousComponent();
             return true;
-        } else if (keyCode == GLFW.GLFW_KEY_RIGHT) {
+        } else if (keyEvent.key() == GLFW.GLFW_KEY_RIGHT) {
             nextComponent();
             return true;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(keyEvent);
     }
 
     private void nextComponent() {
@@ -82,15 +83,5 @@ public class TestScreen extends AbstractScreen {
     @Override
     public boolean isPauseScreen() {
         return false;
-    }
-
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return super.mouseClicked(mouseX, mouseY, button);
     }
 }

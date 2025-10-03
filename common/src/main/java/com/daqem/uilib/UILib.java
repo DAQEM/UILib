@@ -17,7 +17,7 @@ public class UILib {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "uilib";
 
-    private static final String UI_LIB_CATEGORY = "key.categories.uilib";
+    private static final KeyMapping.Category UI_LIB_CATEGORY = new KeyMapping.Category(getId("category"));
     public static final KeyMapping OPEN_TEST_MENU = new KeyMapping("key.uilib.open_test_menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, UI_LIB_CATEGORY);
 
     public static void init() {

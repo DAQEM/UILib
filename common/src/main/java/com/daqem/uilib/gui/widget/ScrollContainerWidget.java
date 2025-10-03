@@ -64,7 +64,7 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
         }
 
         guiGraphics.disableScissor();
-        this.renderScrollbar(guiGraphics);
+        this.renderScrollbar(guiGraphics, mouseX, mouseY);
     }
 
     @Override

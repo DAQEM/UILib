@@ -13,6 +13,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.input.MouseButtonEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,7 +94,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    protected void renderScrollbar(GuiGraphics guiGraphics) {
+    protected void renderScrollbar(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         // No scrollbars
     }
 
@@ -108,14 +109,14 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
         if (!this.active || !this.visible) {
             return false;
         }
-        if (this.isValidClickButton(button)) {
+        if (this.isValidClickButton(event.buttonInfo())) {
             this.hasDragged = false; // Reset drag state
-            this.clickStartX = mouseX; // Store click start position
-            this.clickStartY = mouseY;
+            this.clickStartX = event.x(); // Store click start position
+            this.clickStartY = event.y();
             this.setDragging(true); // Enable dragging
             return true;
         }
@@ -123,11 +124,11 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (this.isValidClickButton(button) && this.isDragging()) {
+    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+        if (this.isValidClickButton(event.buttonInfo()) && this.isDragging()) {
             // Check if movement exceeds drag threshold
-            double deltaX = Math.abs(mouseX - this.clickStartX);
-            double deltaY = Math.abs(mouseY - this.clickStartY);
+            double deltaX = Math.abs(event.x() - this.clickStartX);
+            double deltaY = Math.abs(event.y() - this.clickStartY);
             if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
                 this.hasDragged = true;
             }
@@ -141,26 +142,26 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        super.mouseReleased(mouseX, mouseY, button);
-        if (this.isValidClickButton(button)) {
+    public boolean mouseReleased(MouseButtonEvent event) {
+        super.mouseReleased(event);
+        if (this.isValidClickButton(event.buttonInfo())) {
             this.setDragging(false);
             if (!this.hasDragged) {
                 // Only process click if no drag occurred
-                Optional<GuiEventListener> optional = this.getChildAt(mouseX, mouseY);
+                Optional<GuiEventListener> optional = this.getChildAt(event.x(), event.y());
                 if (optional.isPresent()) {
                     GuiEventListener guiEventListener = optional.get();
-                    boolean handled = guiEventListener.mouseClicked(mouseX, mouseY, button);
+                    boolean handled = guiEventListener.mouseClicked(event, false);
                     if (handled) {
                         this.setFocused(guiEventListener);
                         return true;
                     }
                 }
-                this.onClick(mouseX, mouseY);
+                this.onClick(event, false);
                 return true;
             }
             if (this.getFocused() != null) {
-                return this.getFocused().mouseReleased(mouseX, mouseY, button);
+                return this.getFocused().mouseReleased(event);
             }
         }
         return false;

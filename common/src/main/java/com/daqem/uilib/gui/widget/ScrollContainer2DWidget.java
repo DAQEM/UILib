@@ -3,6 +3,8 @@ package com.daqem.uilib.gui.widget;
 import com.daqem.uilib.api.IParent;
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IWidget;
+import com.daqem.uilib.mixin.AbstractScrollAreaAccessor;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractContainerWidget;
@@ -11,6 +13,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -116,41 +119,41 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
         if (!this.active || !this.visible) {
             return false;
         }
         boolean handled = false;
-        if (this.isValidClickButton(button)) {
+        if (this.isValidClickButton(event.buttonInfo())) {
             boolean onHBar = this.horizontalScrollbarVisible() &&
-                    mouseY >= this.getBottom() - 6 &&
-                    mouseY < this.getBottom() &&
-                    mouseX >= this.getX() &&
-                    mouseX < this.getRight();
+                    event.y() >= this.getBottom() - 6 &&
+                    event.y() < this.getBottom() &&
+                    event.x() >= this.getX() &&
+                    event.x() < this.getRight();
             this.scrollingHorizontal = onHBar;
 
             boolean onVBar = !onHBar && this.scrollbarVisible() &&
-                    mouseX >= this.scrollBarX() &&
-                    mouseX < this.scrollBarX() + 6 &&
-                    mouseY >= this.getY() &&
-                    mouseY < this.getBottom();
+                    event.x() >= this.scrollBarX() &&
+                    event.x() < this.scrollBarX() + 6 &&
+                    event.y() >= this.getY() &&
+                    event.y() < this.getBottom();
             this.scrollingVertical = onVBar;
 
             if (onHBar || onVBar) {
                 handled = true;
             } else {
-                Optional<GuiEventListener> optional = this.getChildAt(mouseX, mouseY);
+                Optional<GuiEventListener> optional = this.getChildAt(event.x(), event.y());
                 if (optional.isPresent()) {
                     GuiEventListener guiEventListener = optional.get();
-                    if (guiEventListener.mouseClicked(mouseX, mouseY, button)) {
+                    if (guiEventListener.mouseClicked(event, bl)) {
                         this.setFocused(guiEventListener);
-                        if (button == 0) {
+                        if (event.button() == 0) {
                             this.setDragging(true);
                         }
                         handled = true;
                     }
                 } else {
-                    this.onClick(mouseX, mouseY);
+                    this.onClick(event, bl);
                     handled = true;
                 }
             }
@@ -159,11 +162,11 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
         if (this.scrollingVertical) {
-            if (mouseY < this.getY()) {
+            if (event.y() < this.getY()) {
                 this.setScrollAmount(0.0);
-            } else if (mouseY > this.getBottom()) {
+            } else if (event.y() > this.getBottom()) {
                 this.setScrollAmount(this.maxScrollAmount());
             } else {
                 double d = Math.max(1, this.maxScrollAmount());
@@ -173,9 +176,9 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             }
             return true;
         } else if (this.scrollingHorizontal) {
-            if (mouseX < this.getX()) {
+            if (event.x() < this.getX()) {
                 this.setHorizontalScrollAmount(0.0);
-            } else if (mouseX > this.getRight()) {
+            } else if (event.x() > this.getRight()) {
                 this.setHorizontalScrollAmount(this.maxHorizontalScrollAmount());
             } else {
                 double d = Math.max(1, this.maxHorizontalScrollAmount());
@@ -185,12 +188,12 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             }
             return true;
         } else {
-            return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+            return super.mouseDragged(event, dragX, dragY);
         }
     }
 
     @Override
-    public void onRelease(double mouseX, double mouseY) {
+    public void onRelease(MouseButtonEvent mouseButtonEvent) {
         this.scrollingVertical = false;
         this.scrollingHorizontal = false;
     }
@@ -217,19 +220,22 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
         }
 
         guiGraphics.disableScissor();
-        this.renderScrollbar(guiGraphics);
+        this.renderScrollbar(guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderScrollbar(GuiGraphics guiGraphics) {
+    protected void renderScrollbar(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         // Vertical scrollbar
         if (this.scrollbarVisible()) {
             int adjH = this.height - (this.horizontalScrollbarVisible() ? 6 : 0);
-            int i = this.scrollBarX();
-            int j = this.scrollerHeight(); // Now adjusted in scrollerHeight
-            int k = this.scrollBarY();
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_BACKGROUND_SPRITE, i, this.getY(), 6, adjH);
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, i, k, 6, j);
+            int scrollBarX = this.scrollBarX();
+            int scrollerHeight = this.scrollerHeight();
+            int scrollBarY = this.scrollBarY();
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_BACKGROUND_SPRITE, scrollBarX, this.getY(), 6, adjH);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollBarX, scrollBarY, 6, scrollerHeight);
+            if (this.isOverScrollbar(mouseX, mouseY)) {
+                guiGraphics.requestCursor(((AbstractScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+            }
         }
 
         // Horizontal scrollbar
@@ -243,7 +249,25 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             double fracH = this.maxHorizontalScrollAmount() > 0 ? this.horizontalScrollAmount() / this.maxHorizontalScrollAmount() : 0.0;
             int scrollerX = (int) (hX + fracH * (adjW - scrollerW));
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollerX, hY, scrollerW, 6);
+            if (this.isOverScrollbar(mouseX, mouseY)) {
+                guiGraphics.requestCursor(((AbstractScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+            }
         }
+    }
+
+    @Override
+    protected boolean isOverScrollbar(double d, double e) {
+        boolean overVBar = this.scrollbarVisible() &&
+                d >= this.scrollBarX() &&
+                d < this.scrollBarX() + 6 &&
+                e >= this.getY() &&
+                e < this.getBottom();
+        boolean overHBar = this.horizontalScrollbarVisible() &&
+                e >= this.getBottom() - 6 &&
+                e < this.getBottom() &&
+                d >= this.getX() &&
+                d < this.getRight();
+        return overVBar || overHBar;
     }
 
     @Override

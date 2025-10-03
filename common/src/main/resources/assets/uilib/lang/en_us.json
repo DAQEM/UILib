@@ -1,5 +1,5 @@
 {
-  "key.categories.uilib": "UI Lib",
+  "key.category.uilib.category": "UI Lib",
   "key.uilib.open_test_menu": "Open Test Menu",
   "uilib.widget.validation_errors": "Validation Errors",
   "uilib.widget.validation_error.min_length": "This field must be at least %s characters",
