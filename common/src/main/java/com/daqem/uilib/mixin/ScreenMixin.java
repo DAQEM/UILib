@@ -1,5 +1,6 @@
 package com.daqem.uilib.mixin;
 
+import com.daqem.uilib.api.screen.IScreen;
 import com.daqem.uilib.gui.AbstractScreen;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -32,7 +33,7 @@ public abstract class ScreenMixin {
             )
     )
     private List<NarratableEntry> redirectNarratables(Screen instance) {
-        if ((Screen) (Object) this instanceof AbstractScreen screen) {
+        if ((Screen) (Object) this instanceof IScreen screen) {
             Set<NarratableEntry> widgets = new HashSet<>(narratables);
             for (GuiEventListener widget : screen.children()) {
                 if (widget instanceof NarratableEntry narratableEntry) {
