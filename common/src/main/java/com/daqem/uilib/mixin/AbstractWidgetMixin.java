@@ -2,6 +2,7 @@ package com.daqem.uilib.mixin;
 
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.component.IComponentsParent;
+import com.daqem.uilib.api.screen.IScreen;
 import com.daqem.uilib.api.widget.IWidget;
 import com.daqem.uilib.gui.AbstractScreen;
 import net.minecraft.client.Minecraft;
@@ -52,14 +53,14 @@ public abstract class AbstractWidgetMixin implements Renderable, GuiEventListene
 
     @Inject(method = "getX()I", at = @At("RETURN"), cancellable = true)
     private void uilib$modifyGetX(CallbackInfoReturnable<Integer> cir) {
-        if (Minecraft.getInstance().screen instanceof AbstractScreen) {
+        if (Minecraft.getInstance().screen instanceof IScreen) {
             cir.setReturnValue(this.x + this.uilib$parentX);
         }
     }
 
     @Inject(method = "getY()I", at = @At("RETURN"), cancellable = true)
     private void uilib$modifyGetY(CallbackInfoReturnable<Integer> cir) {
-        if (Minecraft.getInstance().screen instanceof AbstractScreen) {
+        if (Minecraft.getInstance().screen instanceof IScreen) {
             cir.setReturnValue(this.y + this.uilib$parentY);
         }
     }
