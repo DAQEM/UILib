@@ -43,9 +43,6 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
-
-//    modImplementation "curse.maven:supermartijn642s-config-lib-438332:${project.config_library_file_forge}"
-//    modImplementation "curse.maven:ui-933200:${project.ui_library_file_forge}"
 }
 
 processResources {
@@ -66,7 +63,7 @@ processResources {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
 }
@@ -80,8 +77,18 @@ shadowJar {
 remapJar {
     inputFile.set shadowJar.archiveFile
     atAccessWideners.add loom.accessWidenerPath.get().asFile.name
-    archiveClassifier = "neoforge"
+    archiveClassifier = null
 }
+
+task renameJarForPublication(type: Zip, dependsOn: remapJar) {
+    from remapJar.archiveFile.map { zipTree(it) }
+    archiveExtension = "jar"
+    metadataCharset "UTF-8"
+    destinationDirectory = base.libsDirectory
+    archiveClassifier = project.name
+}
+
+assemble.dependsOn renameJarForPublication
 
 sourcesJar {
     def commonSources = project(":common").sourcesJar
@@ -96,6 +103,26 @@ remapSourcesJar {
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
+    }
+}
+
+publishing {
+    publications {
+        mavenNeoForge(MavenPublication) {
+            groupId = rootProject.maven_group
+            artifactId = rootProject.archives_base_name + "-neoforge"
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url = project.version.contains('-PR') ? 'https://maven.daqem.com/snapshots' : 'https://maven.daqem.com/releases'
+            credentials {
+                username = System.getenv("MAVEN_USER")
+                password = System.getenv("MAVEN_PASS")
+            }
+        }
     }
 }
 
@@ -120,7 +147,7 @@ curseforge {
             }
         }
 
-        mainArtifact(remapJar) {
+        mainArtifact(renameJarForPublication) {
             displayName = "$project.mod_name NeoForge $project.minecraft_version - $project.mod_version"
         }
 
@@ -135,7 +162,7 @@ modrinth {
     versionName = "$project.mod_name NeoForge $project.minecraft_version - $project.mod_version"
     versionNumber = "$project.mod_version"
     versionType = "$project.release_type"
-    uploadFile = remapJar
+    uploadFile = renameJarForPublication
     additionalFiles = [remapSourcesJar]
     gameVersions = project.supported_minecraft_versions.split(',').toList()
     loaders = ["neoforge"]
