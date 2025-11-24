@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "ui-test",
+  "version": "${version}",
+  "name": "UI Lib Test",
+  "description": "A test mod for the UI library.",
+  "authors": [
+    "DAQEM"
+  ],
+  "license": "Apache-2.0",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.daqem.uilib.test.TestModFabric"
+    ]
+  }
+}

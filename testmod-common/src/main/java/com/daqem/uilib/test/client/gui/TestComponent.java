@@ -1,9 +1,9 @@
-package com.daqem.uilib.test.component;
+package com.daqem.uilib.test.client.gui;
 
 import com.daqem.uilib.gui.component.AbstractComponent;
 import com.daqem.uilib.gui.component.item.ItemComponent;
 import com.daqem.uilib.gui.component.sprite.SpriteComponent;
-import com.daqem.uilib.test.component.sprite.TestSpriteComponent;
+import com.daqem.uilib.test.client.gui.sprite.TestSpriteComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;

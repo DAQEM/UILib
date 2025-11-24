@@ -17,4 +17,8 @@ include("common")
 include("fabric")
 include("neoforge")
 
+include("testmod-common")
+include("testmod-fabric")
+include("testmod-neoforge")
+
 rootProject.name = "UILib 1.21.9"

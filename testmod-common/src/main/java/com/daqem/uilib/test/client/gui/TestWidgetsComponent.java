@@ -1,10 +1,10 @@
-package com.daqem.uilib.test.component;
+package com.daqem.uilib.test.client.gui;
 
 import com.daqem.uilib.UILib;
 import com.daqem.uilib.gui.component.AbstractComponent;
 import com.daqem.uilib.gui.widget.*;
-import com.daqem.uilib.test.TestScreen;
-import com.daqem.uilib.test.component.sprite.TestSpriteComponent;
+import com.daqem.uilib.test.TestMod;
+import com.daqem.uilib.test.client.gui.sprite.TestSpriteComponent;
 import com.daqem.uilib.util.ValidationErrors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -20,7 +20,7 @@ public class TestWidgetsComponent extends AbstractComponent {
     public TestWidgetsComponent(int number) {
         super(0, 0, 200, 150);
 
-        Component text = UILib.translatable("component.test.number", number);
+        Component text = TestMod.translatable("component.test.number", number);
 
         TestSpriteComponent spriteComponent = new TestSpriteComponent(-10, -10, 220, 170);
 
@@ -63,7 +63,7 @@ public class TestWidgetsComponent extends AbstractComponent {
         };
         multiLineEditBox.setValue("This is a test!\nWith multiple lines!\nLine 3\nLine 4\nLine 5\nLine 6\nLine 7\nLine 8\nLine 9\nLine 10");
 
-        CycleButtonWidget<Boolean> cycleButton = new CycleButtonWidget<>(0, 106, 200, 20, text, 0, true, CycleButton.ValueListSupplier.create(List.of(true, false)), value -> value ? UILib.translatable("component.test.true") : UILib.translatable("component.test.false"));
+        CycleButtonWidget<Boolean> cycleButton = new CycleButtonWidget<>(0, 106, 200, 20, text, 0, true, CycleButton.ValueListSupplier.create(List.of(true, false)), value -> value ? TestMod.translatable("component.test.true") : TestMod.translatable("component.test.false"));
         cycleButton.setTooltip(Tooltip.create(text));
 
         this.addComponent(spriteComponent);

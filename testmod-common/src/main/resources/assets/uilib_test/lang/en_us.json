@@ -1,0 +1,12 @@
+{
+  "key.category.uilib_test.category": "UI Lib",
+  "key.uilib_test.open_test_menu": "Open Test Menu",
+  "uilib_test.screen.test.title": "Test Screen",
+  "uilib_test.component.test.number": "Number: %d",
+  "uilib_test.component.test.long_text": "This is a long text component. It is used to test how text wrapping and overflow are handled in the UI library. The quick brown fox jumps over the lazy dog.",
+  "uilib_test.widget.test.button": "Test Button",
+  "uilib_test.screen.test.button.previous": "Previous",
+  "uilib_test.screen.test.button.next": "Next",
+  "uilib_test.component.test.true": "True",
+  "uilib_test.component.test.false": "False"
+}

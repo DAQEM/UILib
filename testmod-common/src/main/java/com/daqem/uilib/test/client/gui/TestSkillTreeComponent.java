@@ -1,4 +1,4 @@
-package com.daqem.uilib.test.component;
+package com.daqem.uilib.test.client.gui;
 
 import com.daqem.uilib.api.skilltree.ISkillTreeItem;
 import com.daqem.uilib.api.widget.skilltree.ISkillTreeItemWidget;

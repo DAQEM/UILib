@@ -1,8 +1,8 @@
-package com.daqem.uilib.test.component;
+package com.daqem.uilib.test.client.gui;
 
 import com.daqem.uilib.UILib;
 import com.daqem.uilib.gui.widget.ButtonWidget;
-import com.daqem.uilib.test.component.sprite.TestSpriteComponent;
+import com.daqem.uilib.test.client.gui.sprite.TestSpriteComponent;
 import net.minecraft.network.chat.Component;
 
 public class TestScrollContentComponent extends TestSpriteComponent {

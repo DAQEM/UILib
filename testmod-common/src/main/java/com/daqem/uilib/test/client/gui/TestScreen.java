@@ -1,4 +1,4 @@
-package com.daqem.uilib.test;
+package com.daqem.uilib.test.client.gui;
 
 import com.daqem.uilib.UILib;
 import com.daqem.uilib.api.background.IBackground;
@@ -6,7 +6,7 @@ import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.gui.AbstractScreen;
 import com.daqem.uilib.gui.background.DarkenedBackground;
 import com.daqem.uilib.gui.widget.ButtonWidget;
-import com.daqem.uilib.test.component.*;
+import com.daqem.uilib.test.TestMod;
 import net.minecraft.client.input.KeyEvent;
 import org.lwjgl.glfw.GLFW;
 
@@ -19,7 +19,7 @@ public class TestScreen extends AbstractScreen {
     private int activeComponentIndex = 0;
 
     public TestScreen() {
-        super(UILib.translatable("screen.test.title"));
+        super(TestMod.translatable("screen.test.title"));
 
         IBackground background = new DarkenedBackground();
 
@@ -48,8 +48,8 @@ public class TestScreen extends AbstractScreen {
         testComponent4.center();
 
         this.addComponent(components.get(activeComponentIndex));
-        this.addWidget(new ButtonWidget(10, this.height - 30, 50, 20, UILib.translatable("screen.test.button.previous"), button -> previousComponent()));
-        this.addWidget(new ButtonWidget(this.width - 60, this.height - 30, 50, 20, UILib.translatable("screen.test.button.next"), button -> nextComponent()));
+        this.addWidget(new ButtonWidget(10, this.height - 30, 50, 20, TestMod.translatable("screen.test.button.previous"), button -> previousComponent()));
+        this.addWidget(new ButtonWidget(this.width - 60, this.height - 30, 50, 20, TestMod.translatable("screen.test.button.next"), button -> nextComponent()));
 
         super.init();
     }

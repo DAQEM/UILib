@@ -1,0 +1,37 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "com.matthewprenger.cursegradle" version "1.4.0"
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    mods {
+        forge {
+            sourceSet project(":neoforge").sourceSets.main
+        }
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    neoForge {
+        platformPackage = "forge"
+    }
+}
+
+configurations {
+    common
+    forgeLike
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
+
+    implementation(project(path: ":neoforge", configuration: "namedElements")) { transitive false }
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
+}

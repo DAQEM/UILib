@@ -1,4 +1,4 @@
-package com.daqem.uilib.test.component.sprite;
+package com.daqem.uilib.test.client.gui.sprite;
 
 import com.daqem.uilib.gui.component.sprite.AbstractSpriteComponent;
 import net.minecraft.resources.ResourceLocation;

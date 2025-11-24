@@ -1,0 +1,13 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "Apache-2.0"
+
+[[mods]]
+modId = "uilib_test"
+version = "${file.jarVersion}"
+displayName = "UI Lib Test"
+authors = "DAQEM"
+description = '''
+A test mod for the UI library.
+'''
+license = "Apache-2.0"

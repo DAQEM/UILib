@@ -1,8 +1,8 @@
-package com.daqem.uilib.test.component;
+package com.daqem.uilib.test.client.gui;
 
 import com.daqem.uilib.gui.component.AbstractComponent;
 import com.daqem.uilib.gui.widget.ScrollContainerWidget;
-import com.daqem.uilib.test.component.sprite.TestSpriteComponent;
+import com.daqem.uilib.test.client.gui.sprite.TestSpriteComponent;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class TestScrollWidgetComponent extends AbstractComponent {

@@ -18,7 +18,7 @@ public class ValidationErrors {
     }
 
     public static MutableComponent validValues(Object values) {
-        return UILib.translatable("widget.validation_error.valid_values", values);
+        return UILib.translatable("widget.validation_error.valid_values", values.toString());
     }
 
     public static MutableComponent minValue(Number value) {

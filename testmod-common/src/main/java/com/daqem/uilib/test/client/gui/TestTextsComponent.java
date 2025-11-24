@@ -1,4 +1,4 @@
-package com.daqem.uilib.test.component;
+package com.daqem.uilib.test.client.gui;
 
 import com.daqem.uilib.UILib;
 import com.daqem.uilib.gui.component.AbstractComponent;
@@ -8,8 +8,8 @@ import com.daqem.uilib.gui.component.text.TextComponent;
 import com.daqem.uilib.gui.component.text.TruncatedTextComponent;
 import com.daqem.uilib.gui.component.text.multiline.MultiLineTextComponent;
 import com.daqem.uilib.gui.component.text.multiline.TruncatedMultiLineTextComponent;
-import com.daqem.uilib.gui.widget.ButtonWidget;
-import com.daqem.uilib.test.component.sprite.TestSpriteComponent;
+import com.daqem.uilib.test.TestMod;
+import com.daqem.uilib.test.client.gui.sprite.TestSpriteComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
@@ -18,7 +18,7 @@ public class TestTextsComponent extends AbstractComponent {
     public TestTextsComponent(int number) {
         super(0, 0, 200, 224);
 
-        Component text = UILib.translatable("component.test.number", number);
+        Component text = TestMod.translatable("component.test.number", number);
 
         TestSpriteComponent spriteComponent = new TestSpriteComponent(-10, -10, 220, 244);
         TextComponent leftTextComponent = new TextComponent(0, 0, text, 0xFF0000FF);
@@ -33,13 +33,13 @@ public class TestTextsComponent extends AbstractComponent {
         ScrollingTextComponent centerScrollingTextComponent = new ScrollingTextComponent(100, 20, 35, text, 0xFFFF0000);
         ScrollingTextComponent rightScrollingTextComponent = new ScrollingTextComponent(200, 20, 35, text, 0xFFFF0000);
 
-        TruncatedMultiLineTextComponent leftTruncatedMultiLineTextComponent = new TruncatedMultiLineTextComponent(0, 30, 200, 2, UILib.translatable("component.test.long_text"), 0xFFFFFF00);
-        TruncatedMultiLineTextComponent centerTruncatedMultiLineTextComponent = new TruncatedMultiLineTextComponent(100, 50 - 1, 200, 2, UILib.translatable("component.test.long_text"), 0xFFFFFF00);
-        TruncatedMultiLineTextComponent rightTruncatedMultiLineTextComponent = new TruncatedMultiLineTextComponent(200, 70 - 2, 200, 2, UILib.translatable("component.test.long_text"), 0xFFFFFF00);
+        TruncatedMultiLineTextComponent leftTruncatedMultiLineTextComponent = new TruncatedMultiLineTextComponent(0, 30, 200, 2, TestMod.translatable("component.test.long_text"), 0xFFFFFF00);
+        TruncatedMultiLineTextComponent centerTruncatedMultiLineTextComponent = new TruncatedMultiLineTextComponent(100, 50 - 1, 200, 2, TestMod.translatable("component.test.long_text"), 0xFFFFFF00);
+        TruncatedMultiLineTextComponent rightTruncatedMultiLineTextComponent = new TruncatedMultiLineTextComponent(200, 70 - 2, 200, 2, TestMod.translatable("component.test.long_text"), 0xFFFFFF00);
 
-        MultiLineTextComponent leftMultiLineTextComponent = new MultiLineTextComponent(0, 90 - 3, 200, UILib.translatable("component.test.long_text"), 0xFFFFFF00);
-        MultiLineTextComponent centerMultiLineTextComponent = new MultiLineTextComponent(100, 140 - 7, 200, UILib.translatable("component.test.long_text"), 0xFFFFFF00);
-        MultiLineTextComponent rightMultiLineTextComponent = new MultiLineTextComponent(200, 190 - 11, 200, UILib.translatable("component.test.long_text"), 0xFFFFFF00);
+        MultiLineTextComponent leftMultiLineTextComponent = new MultiLineTextComponent(0, 90 - 3, 200, TestMod.translatable("component.test.long_text"), 0xFFFFFF00);
+        MultiLineTextComponent centerMultiLineTextComponent = new MultiLineTextComponent(100, 140 - 7, 200, TestMod.translatable("component.test.long_text"), 0xFFFFFF00);
+        MultiLineTextComponent rightMultiLineTextComponent = new MultiLineTextComponent(200, 190 - 11, 200, TestMod.translatable("component.test.long_text"), 0xFFFFFF00);
 
         leftTextComponent.setTextAlign(TextAlign.LEFT);
         centerTextComponent.setTextAlign(TextAlign.CENTER);
