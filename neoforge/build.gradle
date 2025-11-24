@@ -130,12 +130,6 @@ curseforge {
         addGameVersion "Java 21"
         addGameVersion "NeoForge"
 
-        relations {
-            project.curseforge_dependencies.split(',').each { dep ->
-                requiredDependency dep.trim()
-            }
-        }
-
         mainArtifact(renameJarForPublication) {
             displayName = "$project.mod_name NeoForge $project.minecraft_version - $project.mod_version"
         }
@@ -156,9 +150,4 @@ modrinth {
     gameVersions = project.supported_minecraft_versions.split(',').toList()
     loaders = ["neoforge"]
     changelog = rootProject.file('changelog.md').text
-    dependencies {
-        project.modrinth_dependencies.split(',').each { dep ->
-            required.project dep
-        }
-    }
 }
