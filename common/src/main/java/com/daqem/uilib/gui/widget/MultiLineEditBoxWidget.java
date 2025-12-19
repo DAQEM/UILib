@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.MenuTooltipPositioner;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +89,7 @@ public class MultiLineEditBoxWidget extends MultiLineEditBox implements IWidget,
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
 
         List<Component> components = this.validateInput(getValue());
@@ -129,7 +130,7 @@ public class MultiLineEditBoxWidget extends MultiLineEditBox implements IWidget,
     }
 
     @Override
-    protected void renderBackground(GuiGraphics guiGraphics) {
+    protected void renderBackground(@NotNull GuiGraphics guiGraphics) {
         if (hasInputValidationErrors()) {
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, UILib.getId("widget/text_field_error"), getX(), getY(), getWidth(), getHeight());
         } else {

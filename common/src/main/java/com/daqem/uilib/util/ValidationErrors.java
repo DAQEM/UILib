@@ -37,7 +37,7 @@ public class ValidationErrors {
         return UILib.translatable("widget.validation_error.invalid_date_time", format);
     }
 
-    public static MutableComponent invalidResourceLocation() {
+    public static MutableComponent invalidIdentifier() {
         return UILib.translatable("widget.validation_error.invalid_resource_location");
     }
 

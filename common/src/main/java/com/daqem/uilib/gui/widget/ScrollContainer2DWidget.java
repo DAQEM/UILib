@@ -16,7 +16,7 @@ import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,8 +28,8 @@ import java.util.Optional;
 
 public class ScrollContainer2DWidget extends AbstractContainerWidget implements IWidget, IParent {
 
-    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller");
-    private static final ResourceLocation SCROLLER_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller_background");
+    private static final Identifier SCROLLER_SPRITE = Identifier.withDefaultNamespace("widget/scroller");
+    private static final Identifier SCROLLER_BACKGROUND_SPRITE = Identifier.withDefaultNamespace("widget/scroller_background");
 
     protected final List<IComponent> components = new ArrayList<>();
     private final int contentSpacing;
@@ -119,7 +119,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
+    public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean bl) {
         if (!this.active || !this.visible) {
             return false;
         }
@@ -162,7 +162,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+    public boolean mouseDragged(@NotNull MouseButtonEvent event, double dragX, double dragY) {
         if (this.scrollingVertical) {
             if (event.y() < this.getY()) {
                 this.setScrollAmount(0.0);
@@ -193,7 +193,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public void onRelease(MouseButtonEvent mouseButtonEvent) {
+    public void onRelease(@NotNull MouseButtonEvent mouseButtonEvent) {
         this.scrollingVertical = false;
         this.scrollingHorizontal = false;
     }
@@ -224,7 +224,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    protected void renderScrollbar(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void renderScrollbar(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         // Vertical scrollbar
         if (this.scrollbarVisible()) {
             int adjH = this.height - (this.horizontalScrollbarVisible() ? 6 : 0);
@@ -292,11 +292,11 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
     }
 
     @Override
-    public @NotNull ScreenRectangle getBorderForArrowNavigation(ScreenDirection direction) {
+    public @NotNull ScreenRectangle getBorderForArrowNavigation(@NotNull ScreenDirection direction) {
         return new ScreenRectangle(this.getX(), this.getY(), this.width, this.contentHeight());
     }
 

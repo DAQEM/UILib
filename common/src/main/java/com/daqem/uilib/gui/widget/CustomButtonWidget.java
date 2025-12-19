@@ -1,11 +1,13 @@
 package com.daqem.uilib.gui.widget;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomButtonWidget extends ButtonWidget {
 
@@ -41,10 +43,9 @@ public class CustomButtonWidget extends ButtonWidget {
         this.sprites = sprites;
     }
 
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        Minecraft minecraft = Minecraft.getInstance();
+    @Override
+    protected void renderContents(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.sprites.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight(), ARGB.white(this.alpha));
-        int i = ARGB.color(this.alpha, this.active ? -1 : -6250336);
-        this.renderString(guiGraphics, minecraft.font, i);
+        this.renderDefaultLabel(guiGraphics.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
     }
 }

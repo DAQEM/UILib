@@ -3,13 +3,13 @@ package com.daqem.uilib.gui.component.sprite;
 import com.daqem.uilib.gui.component.AbstractComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public abstract class AbstractSpriteComponent extends AbstractComponent {
 
-    private final ResourceLocation spriteLocation;
+    private final Identifier spriteLocation;
 
-    public AbstractSpriteComponent(int x, int y, int width, int height, ResourceLocation spriteLocation) {
+    public AbstractSpriteComponent(int x, int y, int width, int height, Identifier spriteLocation) {
         super(x, y, width, height);
         this.spriteLocation = spriteLocation;
     }

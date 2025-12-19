@@ -21,4 +21,4 @@ include("testmod-common")
 include("testmod-fabric")
 include("testmod-neoforge")
 
-rootProject.name = "UILib 1.21.9"
+rootProject.name = "UILib 1.21.11"

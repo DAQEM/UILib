@@ -94,7 +94,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    protected void renderScrollbar(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void renderScrollbar(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         // No scrollbars
     }
 
@@ -109,7 +109,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
+    public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean bl) {
         if (!this.active || !this.visible) {
             return false;
         }
@@ -124,7 +124,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+    public boolean mouseDragged(@NotNull MouseButtonEvent event, double dragX, double dragY) {
         if (this.isValidClickButton(event.buttonInfo()) && this.isDragging()) {
             // Check if movement exceeds drag threshold
             double deltaX = Math.abs(event.x() - this.clickStartX);
@@ -168,12 +168,12 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
         // No narration for skill tree widget
     }
 
     @Override
-    public @NotNull ScreenRectangle getBorderForArrowNavigation(ScreenDirection direction) {
+    public @NotNull ScreenRectangle getBorderForArrowNavigation(@NotNull ScreenDirection direction) {
         return new ScreenRectangle(this.getX(), this.getY(), this.contentWidth(), this.contentHeight());
     }
 

@@ -1,8 +1,10 @@
 package com.daqem.uilib.gui.widget;
 
 import com.daqem.uilib.api.widget.IWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public class ButtonWidget extends Button implements IWidget {
 
@@ -30,5 +32,11 @@ public class ButtonWidget extends Button implements IWidget {
 
     public ButtonWidget(int x, int y, int width, int height, Component message, OnPress onPress, CreateNarration createNarration) {
         super(x, y, width, height, message, onPress, createNarration);
+    }
+
+    @Override
+    protected void renderContents(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
+        this.renderDefaultSprite(guiGraphics);
+        this.renderDefaultLabel(guiGraphics.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
     }
 }

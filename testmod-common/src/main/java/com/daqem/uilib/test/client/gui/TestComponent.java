@@ -5,7 +5,7 @@ import com.daqem.uilib.gui.component.item.ItemComponent;
 import com.daqem.uilib.gui.component.sprite.SpriteComponent;
 import com.daqem.uilib.test.client.gui.sprite.TestSpriteComponent;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
 public class TestComponent extends AbstractComponent {
@@ -15,7 +15,7 @@ public class TestComponent extends AbstractComponent {
 
         TestSpriteComponent spriteComponent = new TestSpriteComponent(-10, -10, 220, 220);
 
-        SpriteComponent slotSpriteComponent = new SpriteComponent(0, 0, 18, 18, ResourceLocation.withDefaultNamespace("container/slot"));
+        SpriteComponent slotSpriteComponent = new SpriteComponent(0, 0, 18, 18, Identifier.withDefaultNamespace("container/slot"));
         ItemComponent itemComponent = new ItemComponent(1, 1, Items.BARRIER.getDefaultInstance().copyWithCount(16), true);
 
         this.addComponent(spriteComponent);
