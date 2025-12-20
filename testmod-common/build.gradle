@@ -1,5 +1,5 @@
 loom {
-    accessWidenerPath = project(':common').file("src/main/resources/uilib.accessWidener")
+    accessWidenerPath = project(':common').file("src/main/resources/uilib.accesswidener")
 }
 
 dependencies {
