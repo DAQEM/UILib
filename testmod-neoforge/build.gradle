@@ -1,7 +1,7 @@
 architectury {
     platformSetupLoomIde()
     neoForge {
-        platformPackage = "forge"
+        platformPackage = "neoforge"
     }
 }
 

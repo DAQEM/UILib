@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.daqem.uilib.forge.mixin",
+  "package": "com.daqem.uilib.neoforge.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
