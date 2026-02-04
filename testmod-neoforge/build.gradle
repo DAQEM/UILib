@@ -1,18 +1,3 @@
-plugins {
-    id "com.github.johnrengelman.shadow" version "8.1.1"
-    id "com.matthewprenger.cursegradle" version "1.4.0"
-}
-
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-
-    mods {
-        forge {
-            sourceSet project(":neoforge").sourceSets.main
-        }
-    }
-}
-
 architectury {
     platformSetupLoomIde()
     neoForge {
@@ -20,13 +5,24 @@ architectury {
     }
 }
 
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+    mods {
+        forge {
+            sourceSet project(":neoforge").sourceSets.main
+        }
+    }
+}
+
 configurations {
-    common
     forgeLike
+    common
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
 }
+
+apply from: rootProject.file("gradle/scripts/platform.gradle")
 
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"

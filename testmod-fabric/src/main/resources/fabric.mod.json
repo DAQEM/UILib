@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "ui-test",
-  "version": "${version}",
+  "version": "1.0.0",
   "name": "UI Lib Test",
   "description": "A test mod for the UI library.",
   "authors": [

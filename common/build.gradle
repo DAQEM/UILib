@@ -6,35 +6,9 @@ loom {
     accessWidenerPath = file("src/main/resources/uilib.accesswidener")
 }
 
+apply from: rootProject.file("gradle/scripts/maven-publishing.gradle")
+
 dependencies {
-    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
-    // Do NOT use other classes from fabric loader
+    // Fabric loader for annotations/mixins (Architectury standard)
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${project.j_unit_version}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.j_unit_version}"
-}
-
-publishing {
-    publications {
-        mavenFabric(MavenPublication) {
-            groupId = rootProject.maven_group
-            artifactId = rootProject.archives_base_name + "-common"
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            url = project.version.contains('-PR') ? 'https://maven.daqem.com/snapshots' : 'https://maven.daqem.com/releases'
-            credentials {
-                username = System.getenv("MAVEN_USER")
-                password = System.getenv("MAVEN_PASS")
-            }
-        }
-    }
-}
-
-test {
-    useJUnitPlatform()
 }

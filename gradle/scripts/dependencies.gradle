@@ -1,0 +1,22 @@
+repositories {
+    mavenCentral()
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
+    maven {
+        name = "NeoForged"
+        url = "https://maven.neoforged.net/releases/"
+    }
+
+    maven {
+        url = project.version.contains('-PR') ? 'https://maven.daqem.com/snapshots' : 'https://maven.daqem.com/releases'
+        credentials {
+            username = System.getenv("MAVEN_USER")
+            password = System.getenv("MAVEN_PASS")
+        }
+        content {
+            includeGroup "com.daqem"
+        }
+    }
+}
