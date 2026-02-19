@@ -32,7 +32,8 @@ processResources {
             "mod_website": project.mod_website,
             "mod_repository": project.mod_repository,
             "minecraft_version": project.minecraft_version,
-            "fabric_loader_version": project.fabric_loader_version
+            "fabric_loader_version": project.fabric_loader_version,
+            "neoforge_version": project.neoforge_version
     ]
     inputs.properties replaceProperties
 
