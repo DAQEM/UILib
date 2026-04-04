@@ -55,3 +55,9 @@ sourceSets.configureEach {
         }
     }
 }
+
+tasks.register('printVersionName') {
+    doLast {
+        println version
+    }
+}
