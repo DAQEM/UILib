@@ -4,7 +4,7 @@ import com.daqem.uilib.api.widget.IInputValidatable;
 import com.daqem.uilib.test.client.gui.TestScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.gui.screens.Screen;
 
 public class TestModFabric implements ClientModInitializer {
@@ -13,7 +13,7 @@ public class TestModFabric implements ClientModInitializer {
     public void onInitializeClient() {
         TestMod.init();
 
-        KeyBindingHelper.registerKeyBinding(TestMod.OPEN_TEST_MENU);
+        KeyMappingHelper.registerKeyMapping(TestMod.OPEN_TEST_MENU);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             // consumeClick() returns true if the key was pressed since the last check.

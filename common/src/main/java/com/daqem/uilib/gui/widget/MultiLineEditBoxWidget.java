@@ -5,7 +5,7 @@ import com.daqem.uilib.api.widget.IInputValidatable;
 import com.daqem.uilib.api.widget.IWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.inventory.tooltip.BelowOrAboveWidgetTooltipPositioner;
@@ -89,8 +89,8 @@ public class MultiLineEditBoxWidget extends MultiLineEditBox implements IWidget,
     }
 
     @Override
-    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractWidgetRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractWidgetRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
         List<Component> components = this.validateInput(getValue());
         if (components != null && !components.isEmpty()) {
@@ -130,11 +130,11 @@ public class MultiLineEditBoxWidget extends MultiLineEditBox implements IWidget,
     }
 
     @Override
-    protected void renderBackground(@NotNull GuiGraphics guiGraphics) {
+    protected void extractBackground(@NotNull GuiGraphicsExtractor guiGraphics) {
         if (hasInputValidationErrors()) {
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, UILib.getId("widget/text_field_error"), getX(), getY(), getWidth(), getHeight());
         } else {
-            super.renderBackground(guiGraphics);
+            super.extractBackground(guiGraphics);
         }
     }
 

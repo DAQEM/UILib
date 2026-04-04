@@ -7,7 +7,7 @@ import com.daqem.uilib.gui.component.sprite.SpriteComponent;
 import com.daqem.uilib.gui.widget.CustomButtonWidget;
 import com.daqem.uilib.skilltree.AbstractSkillTree;
 import com.daqem.uilib.skilltree.AbstractSkillTreeItem;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -79,7 +79,7 @@ public class TestSkillTreeComponent extends SpriteComponent {
         }
 
         @Override
-        public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        public void renderTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
             guiGraphics.blitSprite(
                     RenderPipelines.GUI_TEXTURED,
                     Identifier.withDefaultNamespace("advancements/title_box"),

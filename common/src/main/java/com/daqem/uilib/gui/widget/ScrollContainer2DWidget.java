@@ -2,12 +2,14 @@ package com.daqem.uilib.gui.widget;
 
 import com.daqem.uilib.api.IParent;
 import com.daqem.uilib.api.component.IComponent;
+import com.daqem.uilib.api.widget.IScrollAreaAccessor;
 import com.daqem.uilib.api.widget.IWidget;
 import com.daqem.uilib.mixin.AbstractScrollAreaAccessor;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractContainerWidget;
+import net.minecraft.client.gui.components.AbstractScrollArea;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -38,7 +40,15 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     private boolean scrollingVertical;
 
     public ScrollContainer2DWidget(int width, int height, int contentSpacing) {
-        super(0, 0, width, height, Component.empty());
+        this(width, height, contentSpacing, 18);
+    }
+
+    public ScrollContainer2DWidget(int width, int height, int contentSpacing, int scrollRate) {
+        this(width, height, contentSpacing, AbstractScrollArea.defaultSettings(scrollRate));
+    }
+
+    public ScrollContainer2DWidget(int width, int height, int contentSpacing, AbstractScrollArea.ScrollbarSettings scrollbarSettings) {
+        super(0, 0, width, height, Component.empty(), scrollbarSettings);
         this.contentSpacing = contentSpacing;
         this.horizontalScrollAmount = 0.0;
     }
@@ -81,7 +91,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     protected int scrollerWidth() {
-        int adjW = this.width - (this.scrollbarVisible() ? 6 : 0);
+        int adjW = this.width - (this.scrollable() ? 6 : 0);
         int contentW = this.contentWidth();
         if (contentW <= adjW) {
             return 0;
@@ -132,7 +142,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
                     event.x() < this.getRight();
             this.scrollingHorizontal = onHBar;
 
-            boolean onVBar = !onHBar && this.scrollbarVisible() &&
+            boolean onVBar = !onHBar && this.scrollable() &&
                     event.x() >= this.scrollBarX() &&
                     event.x() < this.scrollBarX() + 6 &&
                     event.y() >= this.getY() &&
@@ -199,8 +209,8 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        boolean vBar = this.scrollbarVisible();
+    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        boolean vBar = this.scrollable();
         boolean hBar = this.horizontalScrollbarVisible();
         int availW = this.width - (vBar ? 6 : 0);
         int availH = this.height - (hBar ? 6 : 0);
@@ -220,13 +230,13 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
         }
 
         guiGraphics.disableScissor();
-        this.renderScrollbar(guiGraphics, mouseX, mouseY);
+        this.extractScrollbar(guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderScrollbar(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void extractScrollbar(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         // Vertical scrollbar
-        if (this.scrollbarVisible()) {
+        if (this.scrollable()) {
             int adjH = this.height - (this.horizontalScrollbarVisible() ? 6 : 0);
             int scrollBarX = this.scrollBarX();
             int scrollerHeight = this.scrollerHeight();
@@ -234,13 +244,13 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_BACKGROUND_SPRITE, scrollBarX, this.getY(), 6, adjH);
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollBarX, scrollBarY, 6, scrollerHeight);
             if (this.isOverScrollbar(mouseX, mouseY)) {
-                guiGraphics.requestCursor(((AbstractScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+                guiGraphics.requestCursor(((IScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
             }
         }
 
         // Horizontal scrollbar
         if (this.horizontalScrollbarVisible()) {
-            int adjW = this.width - (this.scrollbarVisible() ? 6 : 0);
+            int adjW = this.width - (this.scrollable() ? 6 : 0);
             int bottom = this.getBottom();
             int hY = bottom - 6;
             int hX = this.getX();
@@ -250,14 +260,14 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             int scrollerX = (int) (hX + fracH * (adjW - scrollerW));
             guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollerX, hY, scrollerW, 6);
             if (this.isOverScrollbar(mouseX, mouseY)) {
-                guiGraphics.requestCursor(((AbstractScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+                guiGraphics.requestCursor(((IScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
             }
         }
     }
 
     @Override
     protected boolean isOverScrollbar(double d, double e) {
-        boolean overVBar = this.scrollbarVisible() &&
+        boolean overVBar = this.scrollable() &&
                 d >= this.scrollBarX() &&
                 d < this.scrollBarX() + 6 &&
                 e >= this.getY() &&
@@ -281,7 +291,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    protected int scrollBarY() {
+    public int scrollBarY() {
         int max = this.maxScrollAmount();
         if (max == 0) {
             return this.getY();

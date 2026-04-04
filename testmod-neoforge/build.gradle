@@ -1,33 +1,89 @@
-architectury {
-    platformSetupLoomIde()
-    neoForge {
-        platformPackage = "neoforge"
-    }
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
 }
 
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+neoForge {
+    version = neoforge_version
+    // Automatically enable neoforge AccessTransformers if the file exists
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at.absolutePath)
+    }
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', "uilib_test")
+            ideName = "NeoForge Test ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+        }
+        client {
+            client()
+            gameDirectory = this.mkdir(this.file("runs/client"))
+        }
+        data {
+            clientData()
+            gameDirectory = this.mkdir(this.file("runs/data"))
+            programArguments.addAll '--mod', "uilib_test", '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+        server {
+            server()
+            this.file("runs/server").createParentDirectories()
+            gameDirectory = this.mkdir(this.file("runs/server"))
+        }
+    }
     mods {
-        forge {
-            sourceSet project(":neoforge").sourceSets.main
+        "uilib_test" {
+            sourceSet sourceSets.main
         }
     }
 }
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+// Create custom configurations to merge testmod-common safely
 configurations {
-    forgeLike
-    common
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentNeoForge.extendsFrom common
+    testCommonJava { canBeResolved = true }
+    testCommonResources { canBeResolved = true }
 }
 
-apply from: rootProject.file("gradle/scripts/platform.gradle")
-
 dependencies {
-    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
+    implementation project(':neoforge')
 
-    implementation(project(path: ":neoforge", configuration: "namedElements")) { transitive false }
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
+    compileOnly(project(':testmod-common')) {
+        def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+        attributes {
+            attribute(loaderAttribute, 'common')
+        }
+    }
+    testCommonJava project(path: ':testmod-common', configuration: 'commonJava')
+    testCommonResources project(path: ':testmod-common', configuration: 'commonResources')
+}
+
+// Inject testmod-common sources into this project's compilation
+tasks.named('compileJava', JavaCompile) {
+    dependsOn(configurations.testCommonJava)
+    source(configurations.testCommonJava)
+}
+
+processResources {
+    dependsOn(configurations.testCommonResources)
+    from(configurations.testCommonResources)
+}
+
+// Implement mcgradleconventions loader attribute
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+['apiElements', 'runtimeElements', 'sourcesElements'].each { variant ->
+    configurations.named("$variant") {
+        attributes {
+            attribute(loaderAttribute, 'neoforge')
+        }
+    }
+}
+sourceSets.configureEach {
+    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName, it.getTaskName(null, 'jarJar')].each { variant ->
+        configurations.named("$variant") {
+            attributes {
+                attribute(loaderAttribute, 'neoforge')
+            }
+        }
+    }
 }

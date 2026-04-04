@@ -4,8 +4,9 @@ import com.daqem.uilib.api.IParent;
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractContainerWidget;
+import net.minecraft.client.gui.components.AbstractScrollArea;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -25,7 +26,15 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
     private final int contentSpacing;
 
     public ScrollContainerWidget(int width, int height, int contentSpacing) {
-        super(0, 0, width, height, Component.empty());
+        this(width, height, contentSpacing, 18);
+    }
+
+    public ScrollContainerWidget(int width, int height, int contentSpacing, int scrollRate) {
+        this(width, height, contentSpacing, AbstractScrollArea.defaultSettings(scrollRate));
+    }
+
+    public ScrollContainerWidget(int width, int height, int contentSpacing, AbstractScrollArea.ScrollbarSettings scrollbarSettings) {
+        super(0, 0, width, height, Component.empty(), scrollbarSettings);
         this.contentSpacing = contentSpacing;
     }
 
@@ -49,7 +58,7 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
     }
 
     @Override
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.enableScissor(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height);
 
         int currentY = this.uilib$getParentY() - this.getY() - (int) this.scrollAmount();
@@ -64,15 +73,15 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
         }
 
         guiGraphics.disableScissor();
-        this.renderScrollbar(guiGraphics, mouseX, mouseY);
+        this.extractScrollbar(guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
     }
 
     @Override
-    public @NotNull ScreenRectangle getBorderForArrowNavigation(ScreenDirection direction) {
+    public @NotNull ScreenRectangle getBorderForArrowNavigation(@NotNull ScreenDirection direction) {
         return new ScreenRectangle(this.getX(), this.getY(), this.width, this.contentHeight());
     }
 

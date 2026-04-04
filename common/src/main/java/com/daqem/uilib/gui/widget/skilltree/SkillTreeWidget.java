@@ -7,7 +7,7 @@ import com.daqem.uilib.api.widget.skilltree.ISkillTreeWidget;
 import com.daqem.uilib.gui.component.skilltree.SkillTreeMovingComponent;
 import com.daqem.uilib.gui.widget.ScrollContainer2DWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -79,7 +79,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.components.isEmpty()) {
             return;
         }
@@ -94,12 +94,12 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    protected void renderScrollbar(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void extractScrollbar(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         // No scrollbars
     }
 
     @Override
-    protected boolean scrollbarVisible() {
+    public boolean scrollable() {
         return false;
     }
 
@@ -142,7 +142,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseReleased(MouseButtonEvent event) {
+    public boolean mouseReleased(@NotNull MouseButtonEvent event) {
         super.mouseReleased(event);
         if (this.isValidClickButton(event.buttonInfo())) {
             this.setDragging(false);
@@ -248,7 +248,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public void renderTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    public void renderTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         if (this.isMouseOver(mouseX, mouseY)) {
             if (!this.components.isEmpty()) {
                 if (this.components.getFirst() instanceof SkillTreeMovingComponent skillTreeMovingComponent) {

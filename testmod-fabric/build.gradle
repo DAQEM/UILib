@@ -1,20 +1,78 @@
-architectury {
-    platformSetupLoomIde()
-    fabric()
+plugins {
+    id 'multiloader-common'
+    id 'net.fabricmc.fabric-loom'
+}
+
+// Create custom configurations to merge testmod-common safely
+configurations {
+    testCommonJava { canBeResolved = true }
+    testCommonResources { canBeResolved = true }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    implementation project(':fabric')
+
+    compileOnly(project(':testmod-common')) {
+        def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+        attributes {
+            attribute(loaderAttribute, 'common')
+        }
+    }
+    testCommonJava project(path: ':testmod-common', configuration: 'commonJava')
+    testCommonResources project(path: ':testmod-common', configuration: 'commonResources')
+}
+
+// Inject testmod-common sources into this project's compilation
+tasks.named('compileJava', JavaCompile) {
+    dependsOn(configurations.testCommonJava)
+    source(configurations.testCommonJava)
+}
+
+processResources {
+    dependsOn(configurations.testCommonResources)
+    from(configurations.testCommonResources)
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-    mixin { useLegacyMixinAp = true }
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Test Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        server {
+            server()
+            setConfigName('Fabric Test Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+    }
 }
 
-apply from: rootProject.file("gradle/scripts/platform.gradle")
-
-dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-
-    implementation project(path: ":fabric", configuration: "namedElements")
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    common(project(path: ":testmod-common", configuration: "namedElements")) { transitive false }
+// Implement mcgradleconventions loader attribute
+def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
+['apiElements', 'runtimeElements', 'sourcesElements', 'includeInternal', 'modCompileClasspath'].each { variant ->
+    configurations.named("$variant") {
+        attributes {
+            attribute(loaderAttribute, 'fabric')
+        }
+    }
+}
+sourceSets.configureEach {
+    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName].each { variant->
+        configurations.named("$variant") {
+            attributes {
+                attribute(loaderAttribute, 'fabric')
+            }
+        }
+    }
 }

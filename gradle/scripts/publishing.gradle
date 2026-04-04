@@ -4,14 +4,14 @@ unifiedPublishing {
     var capitalizedProjectName = project.name == "fabric" ? "Fabric" : "NeoForge"
 
     project {
-        displayName = "${project.mod_name} ${capitalizedProjectName} ${project.minecraft_version} - ${project.mod_version}"
-        version = project.mod_version
+        displayName = "${project.mod_name} ${capitalizedProjectName} ${project.minecraft_version} - ${project.version}"
+        version = project.version
         changelog = rootProject.file("changelog.md").exists() ? rootProject.file("changelog.md").text : "No changelog provided."
         releaseType = project.release_type
         gameVersions = rootProject.supported_minecraft_versions.split(",").toList()
         gameLoaders = [project.name]
 
-        mainPublication tasks.renameJarForPublication
+        mainPublication tasks.jar
 
         var cursetoken = System.getenv("CURSEFORGE_API_KEY")
         if (cursetoken != null) {

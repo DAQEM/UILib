@@ -1,7 +1,7 @@
 package com.daqem.uilib.mixin;
 
 import com.daqem.uilib.api.screen.IScreenAccessor;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -31,10 +31,10 @@ public abstract class ScreenAccessor implements IScreenAccessor {
     protected abstract void removeWidget(GuiEventListener listener);
 
     @Shadow
-    protected abstract void renderBlurredBackground(GuiGraphics guiGraphics);
+    protected abstract void extractBlurredBackground(GuiGraphicsExtractor graphics);
 
     @Shadow
-    protected abstract void renderPanorama(GuiGraphics guiGraphics, float partialTick);
+    protected abstract void extractPanorama(GuiGraphicsExtractor graphics, float a);
 
     @Override
     public List<Renderable> uilib$getRenderables() {
@@ -57,12 +57,12 @@ public abstract class ScreenAccessor implements IScreenAccessor {
     }
 
     @Override
-    public void uilib$renderBlurredBackground(GuiGraphics guiGraphics) {
-        this.renderBlurredBackground(guiGraphics);
+    public void uilib$renderBlurredBackground(GuiGraphicsExtractor guiGraphics) {
+        this.extractBlurredBackground(guiGraphics);
     }
 
     @Override
-    public void uilib$renderPanoramaBackground(GuiGraphics guiGraphics, float partialTicks) {
-        this.renderPanorama(guiGraphics, partialTicks);
+    public void uilib$renderPanoramaBackground(GuiGraphicsExtractor guiGraphics, float partialTicks) {
+        this.extractPanorama(guiGraphics, partialTicks);
     }
 }

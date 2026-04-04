@@ -4,7 +4,6 @@ import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.component.IComponentsParent;
 import com.daqem.uilib.api.screen.IScreen;
 import com.daqem.uilib.api.widget.IWidget;
-import com.daqem.uilib.gui.AbstractScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;

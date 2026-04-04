@@ -3,8 +3,8 @@ package com.daqem.uilib.test.client.gui;
 import com.daqem.uilib.gui.component.AbstractComponent;
 import com.daqem.uilib.gui.component.item.ItemComponent;
 import com.daqem.uilib.gui.component.sprite.SpriteComponent;
-import com.daqem.uilib.test.client.gui.sprite.TestSpriteComponent;
-import net.minecraft.client.gui.GuiGraphics;
+import com.daqem.uilib.test.client.gui.component.sprite.TestSpriteComponent;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 
@@ -24,6 +24,6 @@ public class TestComponent extends AbstractComponent {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
     }
 }

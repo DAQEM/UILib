@@ -1,6 +1,6 @@
 package com.daqem.uilib.gui.component.text;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 public class TextComponent extends AbstractSingleLineTextComponent {
@@ -14,8 +14,8 @@ public class TextComponent extends AbstractSingleLineTextComponent {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
-        guiGraphics.drawString(
+    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+        guiGraphics.text(
                 this.getFont(),
                 this.getText(),
                 this.getTotalX(),

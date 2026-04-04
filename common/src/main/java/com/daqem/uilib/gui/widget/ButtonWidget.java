@@ -1,7 +1,7 @@
 package com.daqem.uilib.gui.widget;
 
 import com.daqem.uilib.api.widget.IWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -35,8 +35,8 @@ public class ButtonWidget extends Button implements IWidget {
     }
 
     @Override
-    protected void renderContents(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
-        this.renderDefaultSprite(guiGraphics);
-        this.renderDefaultLabel(guiGraphics.textRendererForWidget(this, GuiGraphics.HoveredTextEffects.NONE));
+    protected void extractContents(@NotNull GuiGraphicsExtractor guiGraphics, int i, int j, float f) {
+        this.extractDefaultSprite(guiGraphics);
+        this.extractDefaultLabel(guiGraphics.textRendererForWidget(this, GuiGraphicsExtractor.HoveredTextEffects.NONE));
     }
 }

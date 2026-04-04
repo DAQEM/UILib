@@ -2,11 +2,11 @@ package com.daqem.uilib.gui.component;
 
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IWidget;
-import com.daqem.uilib.api.widget.IWidgetsParent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +150,7 @@ public abstract class AbstractComponent implements IComponent {
     }
 
     @Override
-    public void visitWidgets(Consumer<AbstractWidget> consumer) {
+    public void visitWidgets(@NotNull Consumer<AbstractWidget> consumer) {
         this.widgets.stream()
                 .filter(widget -> widget instanceof AbstractWidget)
                 .forEach(widget -> consumer.accept((AbstractWidget) widget));
@@ -295,7 +295,7 @@ public abstract class AbstractComponent implements IComponent {
     }
 
     @Override
-    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void renderBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         for (IComponent component : components.stream().filter(IComponent::isRenderBeforeParent).toList()) {
             component.renderBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
         }
@@ -303,10 +303,10 @@ public abstract class AbstractComponent implements IComponent {
         this.render(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
 
         if (isRenderDebugBorder()) {
-            guiGraphics.hLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY(), 0xAAFF0000);
-            guiGraphics.vLine(getTotalX() + getWidth() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
-            guiGraphics.hLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY() + getHeight() - 1, 0xAAFF0000);
-            guiGraphics.vLine(getTotalX(), getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
+            guiGraphics.horizontalLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY(), 0xAAFF0000);
+            guiGraphics.verticalLine(getTotalX() + getWidth() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
+            guiGraphics.horizontalLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY() + getHeight() - 1, 0xAAFF0000);
+            guiGraphics.verticalLine(getTotalX(), getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
         }
 
         for (IComponent component : components.stream().filter(c -> !c.isRenderBeforeParent()).toList()) {
@@ -314,13 +314,13 @@ public abstract class AbstractComponent implements IComponent {
         }
 
         for (IWidget widget : widgets) {
-            widget.render(guiGraphics, mouseX, mouseY, partialTick);
+            widget.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
         }
 
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void extractRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (Minecraft.getInstance().screen instanceof Screen screen) {
             renderBase(guiGraphics, mouseX, mouseY, partialTick, screen.width, screen.height);
         }

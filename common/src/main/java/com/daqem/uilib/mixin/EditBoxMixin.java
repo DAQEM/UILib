@@ -3,7 +3,7 @@ package com.daqem.uilib.mixin;
 import com.daqem.uilib.UILib;
 import com.daqem.uilib.api.widget.IEditBoxWidget;
 import com.daqem.uilib.gui.widget.EditBoxWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -22,7 +22,7 @@ public abstract class EditBoxMixin extends AbstractWidget implements IEditBoxWid
     @Shadow protected abstract void updateTextPosition();
 
     @Unique
-    private GuiGraphics uilib$guiGraphics;
+    private GuiGraphicsExtractor uilib$guiGraphics;
 
     public EditBoxMixin(int x, int y, int width, int height, Component message) {
         super(x, y, width, height, message);
@@ -33,13 +33,13 @@ public abstract class EditBoxMixin extends AbstractWidget implements IEditBoxWid
         updateTextPosition();
     }
 
-    @Inject(method = "renderWidget", at = @At("HEAD"))
-    private void uilib$captureGuiGraphics(GuiGraphics guiGraphics, int i, int j, float f, CallbackInfo ci) {
+    @Inject(method = "extractWidgetRenderState", at = @At("HEAD"))
+    private void uilib$captureGuiGraphicsExtractor(GuiGraphicsExtractor guiGraphics, int i, int j, float f, CallbackInfo ci) {
         this.uilib$guiGraphics = guiGraphics;
     }
 
     @Redirect(
-            method = "renderWidget(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+            method = "extractWidgetRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/components/EditBox;isBordered()Z"

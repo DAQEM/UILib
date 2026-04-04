@@ -3,7 +3,7 @@ package com.daqem.uilib.gui.component.skilltree;
 import com.daqem.uilib.api.skilltree.ISkillTree;
 import com.daqem.uilib.gui.component.EmptyComponent;
 import com.daqem.uilib.gui.widget.skilltree.SkillTreeWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class SkillTreeComponent extends EmptyComponent {
 
@@ -31,7 +31,7 @@ public class SkillTreeComponent extends EmptyComponent {
     }
 
     @Override
-    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void renderBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         super.renderBase(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
         this.skillTreeWidget.renderTooltips(guiGraphics, mouseX, mouseY);
     }
