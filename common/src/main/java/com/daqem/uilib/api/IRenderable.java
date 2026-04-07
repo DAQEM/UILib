@@ -6,7 +6,7 @@ import net.minecraft.client.gui.layouts.LayoutElement;
 
 public interface IRenderable extends Renderable, LayoutElement {
 
-    void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight);
-    void renderBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight);
+    void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight);
+    void extractRenderStateBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight);
 
 }

@@ -65,7 +65,7 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
         for (int i = 0; i < this.components.size(); i++) {
             IComponent component = this.components.get(i);
             component.setY(currentY);
-            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, this.width, this.height);
+            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, this.width, this.height);
             currentY += component.getHeight();
             if (i < this.components.size() - 1) {
                 currentY += getContentSpacing();

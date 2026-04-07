@@ -10,7 +10,7 @@ public class BlurredBackground extends AbstractBackground {
     @Override
     public void extractRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (Minecraft.getInstance().screen instanceof IScreenAccessor screen) {
-            screen.uilib$renderBlurredBackground(guiGraphics);
+            screen.uilib$extractBlurredBackground(guiGraphics);
         }
     }
 }

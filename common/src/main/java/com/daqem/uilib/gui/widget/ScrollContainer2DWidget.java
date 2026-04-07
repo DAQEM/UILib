@@ -4,7 +4,6 @@ import com.daqem.uilib.api.IParent;
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IScrollAreaAccessor;
 import com.daqem.uilib.api.widget.IWidget;
-import com.daqem.uilib.mixin.AbstractScrollAreaAccessor;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -222,7 +221,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             IComponent component = this.components.get(i);
             component.setX(currentX);
             component.setY(currentY);
-            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, availW, availH);
+            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, availW, availH);
             currentY += component.getHeight();
             if (i < this.components.size() - 1) {
                 currentY += getContentSpacing();

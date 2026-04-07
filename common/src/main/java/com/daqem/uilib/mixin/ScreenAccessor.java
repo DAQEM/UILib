@@ -57,12 +57,12 @@ public abstract class ScreenAccessor implements IScreenAccessor {
     }
 
     @Override
-    public void uilib$renderBlurredBackground(GuiGraphicsExtractor guiGraphics) {
+    public void uilib$extractBlurredBackground(GuiGraphicsExtractor guiGraphics) {
         this.extractBlurredBackground(guiGraphics);
     }
 
     @Override
-    public void uilib$renderPanoramaBackground(GuiGraphicsExtractor guiGraphics, float partialTicks) {
+    public void uilib$extractPanoramaBackground(GuiGraphicsExtractor guiGraphics, float partialTicks) {
         this.extractPanorama(guiGraphics, partialTicks);
     }
 }

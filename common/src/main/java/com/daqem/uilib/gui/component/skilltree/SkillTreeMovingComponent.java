@@ -47,20 +47,20 @@ public class SkillTreeMovingComponent extends EmptyComponent {
     }
 
     @Override
-    public void renderBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
-        this.renderConnections(guiGraphics);
-        super.renderBase(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
+    public void extractRenderStateBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+        this.extractConnections(guiGraphics);
+        super.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
     }
 
-    public void renderTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+    public void extractTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         for (ISkillTreeItemWidget itemWidget : itemWidgets) {
             if (itemWidget.isMouseOver(mouseX, mouseY)) {
-                itemWidget.renderTooltips(guiGraphics, mouseX, mouseY);
+                itemWidget.extractTooltips(guiGraphics, mouseX, mouseY);
             }
         }
     }
 
-    private void renderConnections(GuiGraphicsExtractor guiGraphics) {
+    private void extractConnections(GuiGraphicsExtractor guiGraphics) {
         for (ISkillTreeItemWidget itemWidget : itemWidgets) {
             if (itemWidget.getSkillTreeItem() == this.skillTree.getRoot()) continue;
             ISkillTreeItemWidget parent = this.itemWidgetsMap.get(itemWidget.getSkillTreeItem().getParent());
