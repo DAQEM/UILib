@@ -295,12 +295,12 @@ public abstract class AbstractComponent implements IComponent {
     }
 
     @Override
-    public void renderBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void extractRenderStateBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         for (IComponent component : components.stream().filter(IComponent::isRenderBeforeParent).toList()) {
-            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
+            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
         }
 
-        this.render(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
+        this.extractRenderState(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
 
         if (isRenderDebugBorder()) {
             guiGraphics.horizontalLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY(), 0xAAFF0000);
@@ -310,7 +310,7 @@ public abstract class AbstractComponent implements IComponent {
         }
 
         for (IComponent component : components.stream().filter(c -> !c.isRenderBeforeParent()).toList()) {
-            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
+            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
         }
 
         for (IWidget widget : widgets) {
@@ -322,7 +322,7 @@ public abstract class AbstractComponent implements IComponent {
     @Override
     public void extractRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (Minecraft.getInstance().screen instanceof Screen screen) {
-            renderBase(guiGraphics, mouseX, mouseY, partialTick, screen.width, screen.height);
+            extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, screen.width, screen.height);
         }
     }
 }

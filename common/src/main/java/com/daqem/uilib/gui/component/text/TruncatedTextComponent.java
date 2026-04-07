@@ -26,7 +26,7 @@ public class TruncatedTextComponent extends AbstractSingleLineTextComponent{
     }
 
     @Override
-    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         guiGraphics.text(
                 this.getFont(),
                 this.getText(),

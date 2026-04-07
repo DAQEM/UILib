@@ -89,7 +89,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
         int offsetY = (int) this.scrollAmount();
         component.setX(this.getX() - uilib$getParentX() - offsetX);
         component.setY(this.getY() - uilib$getParentY() - offsetY);
-        component.renderBase(guiGraphics, mouseX, mouseY, partialTick, this.getWidth(), this.getHeight());
+        component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, this.getWidth(), this.getHeight());
         guiGraphics.disableScissor();
     }
 
@@ -248,11 +248,11 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public void renderTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+    public void extractTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         if (this.isMouseOver(mouseX, mouseY)) {
             if (!this.components.isEmpty()) {
                 if (this.components.getFirst() instanceof SkillTreeMovingComponent skillTreeMovingComponent) {
-                    skillTreeMovingComponent.renderTooltips(guiGraphics, mouseX, mouseY);
+                    skillTreeMovingComponent.extractTooltips(guiGraphics, mouseX, mouseY);
                 }
             }
         }

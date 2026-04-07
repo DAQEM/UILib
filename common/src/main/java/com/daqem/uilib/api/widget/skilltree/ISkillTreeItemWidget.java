@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public interface ISkillTreeItemWidget extends IWidget {
 
-    void renderTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY);
+    void extractTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY);
 
     ISkillTreeItem getSkillTreeItem();
 }

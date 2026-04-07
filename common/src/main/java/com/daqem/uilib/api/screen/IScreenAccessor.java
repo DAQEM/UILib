@@ -17,7 +17,7 @@ public interface IScreenAccessor {
 
     void uilib$removeWidget(GuiEventListener widget);
 
-    void uilib$renderBlurredBackground(GuiGraphicsExtractor guiGraphics);
+    void uilib$extractBlurredBackground(GuiGraphicsExtractor guiGraphics);
 
-    void uilib$renderPanoramaBackground(GuiGraphicsExtractor guiGraphics, float partialTicks);
+    void uilib$extractPanoramaBackground(GuiGraphicsExtractor guiGraphics, float partialTicks);
 }

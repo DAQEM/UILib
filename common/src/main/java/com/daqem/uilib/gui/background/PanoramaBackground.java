@@ -9,7 +9,7 @@ public class PanoramaBackground extends  AbstractBackground {
     @Override
     public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (Minecraft.getInstance().screen instanceof IScreenAccessor screen) {
-            screen.uilib$renderPanoramaBackground(guiGraphics, partialTick);
+            screen.uilib$extractPanoramaBackground(guiGraphics, partialTick);
         }
     }
 }

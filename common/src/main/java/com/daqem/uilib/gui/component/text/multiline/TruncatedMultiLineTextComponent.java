@@ -77,7 +77,7 @@ public class TruncatedMultiLineTextComponent extends AbstractMultiLineTextCompon
     }
 
     @Override
-    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         for (int i = 0; i < getLines().size(); i++) {
             guiGraphics.text(
                     getFont(),

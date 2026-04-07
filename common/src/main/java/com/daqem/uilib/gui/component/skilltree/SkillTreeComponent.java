@@ -31,8 +31,8 @@ public class SkillTreeComponent extends EmptyComponent {
     }
 
     @Override
-    public void renderBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
-        super.renderBase(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
-        this.skillTreeWidget.renderTooltips(guiGraphics, mouseX, mouseY);
+    public void extractRenderStateBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+        super.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
+        this.skillTreeWidget.extractTooltips(guiGraphics, mouseX, mouseY);
     }
 }

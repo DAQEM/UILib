@@ -79,7 +79,7 @@ public class TestSkillTreeComponent extends SpriteComponent {
         }
 
         @Override
-        public void renderTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        public void extractTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
             guiGraphics.blitSprite(
                     RenderPipelines.GUI_TEXTURED,
                     Identifier.withDefaultNamespace("advancements/title_box"),
