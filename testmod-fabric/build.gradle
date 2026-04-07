@@ -33,8 +33,18 @@ tasks.named('compileJava', JavaCompile) {
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     dependsOn(configurations.testCommonResources)
     from(configurations.testCommonResources)
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir project(':common').file('src/main/resources')
+        }
+    }
 }
 
 loom {

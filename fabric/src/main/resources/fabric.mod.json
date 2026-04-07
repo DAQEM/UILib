@@ -22,6 +22,7 @@
   "mixins": [
     "uilib-common.mixins.json"
   ],
+  "accessWidener": "uilib.accesswidener",
   "depends": {
     "fabric-api": "*",
     "minecraft": ">=${minecraft_version}"
