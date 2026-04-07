@@ -28,6 +28,8 @@ tasks.named('compileJava', JavaCompile) {
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     dependsOn(configurations.commonResources)
     from(configurations.commonResources)
 }
