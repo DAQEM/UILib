@@ -4,20 +4,15 @@ import com.daqem.uilib.api.IParent;
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IScrollAreaAccessor;
 import com.daqem.uilib.api.widget.IWidget;
-import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractContainerWidget;
-import net.minecraft.client.gui.components.AbstractScrollArea;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,14 +24,18 @@ import java.util.Optional;
 
 public class ScrollContainer2DWidget extends AbstractContainerWidget implements IWidget, IParent {
 
-    private static final Identifier SCROLLER_SPRITE = Identifier.withDefaultNamespace("widget/scroller");
-    private static final Identifier SCROLLER_BACKGROUND_SPRITE = Identifier.withDefaultNamespace("widget/scroller_background");
+    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller");
+    private static final ResourceLocation SCROLLER_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("widget/scroller_background");
 
     protected final List<IComponent> components = new ArrayList<>();
     private final int contentSpacing;
     private double horizontalScrollAmount;
     private boolean scrollingHorizontal;
     private boolean scrollingVertical;
+
+    public ScrollContainer2DWidget(int width, int height) {
+        this(width, height, 0);
+    }
 
     public ScrollContainer2DWidget(int width, int height, int contentSpacing) {
         this(width, height, contentSpacing, 18);
@@ -50,10 +49,6 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
         super(0, 0, width, height, Component.empty(), scrollbarSettings);
         this.contentSpacing = contentSpacing;
         this.horizontalScrollAmount = 0.0;
-    }
-
-    public ScrollContainer2DWidget(int width, int height) {
-        this(width, height, 0);
     }
 
     @Override
@@ -128,41 +123,41 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean bl) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (!this.active || !this.visible) {
             return false;
         }
         boolean handled = false;
-        if (this.isValidClickButton(event.buttonInfo())) {
+        if (this.isValidClickButton(button)) {
             boolean onHBar = this.horizontalScrollbarVisible() &&
-                    event.y() >= this.getBottom() - 6 &&
-                    event.y() < this.getBottom() &&
-                    event.x() >= this.getX() &&
-                    event.x() < this.getRight();
+                    mouseY >= this.getBottom() - 6 &&
+                    mouseY < this.getBottom() &&
+                    mouseX >= this.getX() &&
+                    mouseX < this.getRight();
             this.scrollingHorizontal = onHBar;
 
             boolean onVBar = !onHBar && this.scrollable() &&
-                    event.x() >= this.scrollBarX() &&
-                    event.x() < this.scrollBarX() + 6 &&
-                    event.y() >= this.getY() &&
-                    event.y() < this.getBottom();
+                    mouseX >= this.scrollBarX() &&
+                    mouseX < this.scrollBarX() + 6 &&
+                    mouseY >= this.getY() &&
+                    mouseY < this.getBottom();
             this.scrollingVertical = onVBar;
 
             if (onHBar || onVBar) {
                 handled = true;
             } else {
-                Optional<GuiEventListener> optional = this.getChildAt(event.x(), event.y());
+                Optional<GuiEventListener> optional = this.getChildAt(mouseX, mouseY);
                 if (optional.isPresent()) {
                     GuiEventListener guiEventListener = optional.get();
-                    if (guiEventListener.mouseClicked(event, bl)) {
+                    if (guiEventListener.mouseClicked(mouseX, mouseY, button)) {
                         this.setFocused(guiEventListener);
-                        if (event.button() == 0) {
+                        if (button == 0) {
                             this.setDragging(true);
                         }
                         handled = true;
                     }
                 } else {
-                    this.onClick(event, bl);
+                    this.onClick(mouseX, mouseY);
                     handled = true;
                 }
             }
@@ -171,11 +166,11 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public boolean mouseDragged(@NotNull MouseButtonEvent event, double dragX, double dragY) {
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (this.scrollingVertical) {
-            if (event.y() < this.getY()) {
+            if (mouseY < this.getY()) {
                 this.setScrollAmount(0.0);
-            } else if (event.y() > this.getBottom()) {
+            } else if (mouseY > this.getBottom()) {
                 this.setScrollAmount(this.maxScrollAmount());
             } else {
                 double d = Math.max(1, this.maxScrollAmount());
@@ -185,9 +180,9 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             }
             return true;
         } else if (this.scrollingHorizontal) {
-            if (event.x() < this.getX()) {
+            if (mouseX < this.getX()) {
                 this.setHorizontalScrollAmount(0.0);
-            } else if (event.x() > this.getRight()) {
+            } else if (mouseX > this.getRight()) {
                 this.setHorizontalScrollAmount(this.maxHorizontalScrollAmount());
             } else {
                 double d = Math.max(1, this.maxHorizontalScrollAmount());
@@ -197,18 +192,18 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             }
             return true;
         } else {
-            return super.mouseDragged(event, dragX, dragY);
+            return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
         }
     }
 
     @Override
-    public void onRelease(@NotNull MouseButtonEvent mouseButtonEvent) {
+    public void onRelease(double mouseX, double mouseY) {
         this.scrollingVertical = false;
         this.scrollingHorizontal = false;
     }
 
     @Override
-    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         boolean vBar = this.scrollable();
         boolean hBar = this.horizontalScrollbarVisible();
         int availW = this.width - (vBar ? 6 : 0);
@@ -221,7 +216,7 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             IComponent component = this.components.get(i);
             component.setX(currentX);
             component.setY(currentY);
-            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, availW, availH);
+            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, availW, availH);
             currentY += component.getHeight();
             if (i < this.components.size() - 1) {
                 currentY += getContentSpacing();
@@ -233,18 +228,15 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    protected void extractScrollbar(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+    protected void extractScrollbar(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         // Vertical scrollbar
         if (this.scrollable()) {
             int adjH = this.height - (this.horizontalScrollbarVisible() ? 6 : 0);
             int scrollBarX = this.scrollBarX();
             int scrollerHeight = this.scrollerHeight();
             int scrollBarY = this.scrollBarY();
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_BACKGROUND_SPRITE, scrollBarX, this.getY(), 6, adjH);
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollBarX, scrollBarY, 6, scrollerHeight);
-            if (this.isOverScrollbar(mouseX, mouseY)) {
-                guiGraphics.requestCursor(((IScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
-            }
+            guiGraphics.blitSprite(SCROLLER_BACKGROUND_SPRITE, scrollBarX, this.getY(), 6, adjH);
+            guiGraphics.blitSprite(SCROLLER_SPRITE, scrollBarX, scrollBarY, 6, scrollerHeight);
         }
 
         // Horizontal scrollbar
@@ -253,14 +245,11 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
             int bottom = this.getBottom();
             int hY = bottom - 6;
             int hX = this.getX();
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_BACKGROUND_SPRITE, hX, hY, adjW, 6);
+            guiGraphics.blitSprite(SCROLLER_BACKGROUND_SPRITE, hX, hY, adjW, 6);
             int scrollerW = this.scrollerWidth();
             double fracH = this.maxHorizontalScrollAmount() > 0 ? this.horizontalScrollAmount() / this.maxHorizontalScrollAmount() : 0.0;
             int scrollerX = (int) (hX + fracH * (adjW - scrollerW));
-            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SCROLLER_SPRITE, scrollerX, hY, scrollerW, 6);
-            if (this.isOverScrollbar(mouseX, mouseY)) {
-                guiGraphics.requestCursor(((IScrollAreaAccessor) this).uilib$isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
-            }
+            guiGraphics.blitSprite(SCROLLER_SPRITE, scrollerX, hY, scrollerW, 6);
         }
     }
 
@@ -305,11 +294,6 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
     }
 
     @Override
-    public @NotNull ScreenRectangle getBorderForArrowNavigation(@NotNull ScreenDirection direction) {
-        return new ScreenRectangle(this.getX(), this.getY(), this.width, this.contentHeight());
-    }
-
-    @Override
     public void setFocused(@Nullable GuiEventListener focused) {
         super.setFocused(focused);
         if (focused != null && Minecraft.getInstance().getLastInputType().isKeyboard()) {
@@ -327,11 +311,6 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
 
     @Override
     public @NotNull List<? extends GuiEventListener> children() {
-        return getWidgets();
-    }
-
-    @Override
-    public @NotNull Collection<? extends NarratableEntry> getNarratables() {
         return getWidgets();
     }
 

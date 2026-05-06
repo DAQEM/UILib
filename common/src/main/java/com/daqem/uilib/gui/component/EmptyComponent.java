@@ -1,6 +1,6 @@
 package com.daqem.uilib.gui.component;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class EmptyComponent extends AbstractComponent{
 
@@ -9,6 +9,6 @@ public class EmptyComponent extends AbstractComponent{
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
     }
 }

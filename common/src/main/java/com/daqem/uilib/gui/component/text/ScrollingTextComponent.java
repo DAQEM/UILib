@@ -1,7 +1,7 @@
 package com.daqem.uilib.gui.component.text;
 
-import net.minecraft.util.Util;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.Util;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
@@ -20,7 +20,7 @@ public class ScrollingTextComponent extends AbstractSingleLineTextComponent {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         if (getWidth() > maxWidth) {
             guiGraphics.enableScissor(
                     getTotalX() + getXOffset(),
@@ -40,10 +40,10 @@ public class ScrollingTextComponent extends AbstractSingleLineTextComponent {
         }
 
         if (isRenderDebugBorder()) {
-            guiGraphics.horizontalLine(getTotalX() + getXOffset(), getTotalX() + maxWidth + getXOffset() - 1, getTotalY(), 0xFF0000FF);
-            guiGraphics.verticalLine(getTotalX() + maxWidth + getXOffset() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.horizontalLine(getTotalX() + getXOffset(), getTotalX() + maxWidth + getXOffset() - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.verticalLine(getTotalX() + getXOffset(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getXOffset(), getTotalX() + maxWidth + getXOffset() - 1, getTotalY(), 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + maxWidth + getXOffset() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getXOffset(), getTotalX() + maxWidth + getXOffset() - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + getXOffset(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
         }
     }
 
@@ -69,8 +69,8 @@ public class ScrollingTextComponent extends AbstractSingleLineTextComponent {
         this.maxWidth = maxWidth;
     }
 
-    private void drawText(GuiGraphicsExtractor guiGraphics, int scrollOffset) {
-        guiGraphics.text(
+    private void drawText(GuiGraphics guiGraphics, int scrollOffset) {
+        guiGraphics.drawString(
                 this.getFont(),
                 this.getText(),
                 this.getTotalX() - scrollOffset,

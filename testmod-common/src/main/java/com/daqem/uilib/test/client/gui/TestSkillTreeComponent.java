@@ -7,11 +7,11 @@ import com.daqem.uilib.gui.component.sprite.SpriteComponent;
 import com.daqem.uilib.gui.widget.CustomButtonWidget;
 import com.daqem.uilib.skilltree.AbstractSkillTree;
 import com.daqem.uilib.skilltree.AbstractSkillTreeItem;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class TestSkillTreeComponent extends SpriteComponent {
 
     public TestSkillTreeComponent() {
-        super(0, 0, 200, 200, Identifier.withDefaultNamespace("recipe_book/overlay_recipe"));
+        super(0, 0, 200, 200, ResourceLocation.withDefaultNamespace("recipe_book/overlay_recipe"));
 
         TestSkillTreeItem rootItem = new TestSkillTreeItem(true, new ArrayList<>());
         TestSkillTreeItem childItem1 = new TestSkillTreeItem(false, new ArrayList<>());
@@ -72,17 +72,17 @@ public class TestSkillTreeComponent extends SpriteComponent {
 
         public TestSkillTreeItemWidget(ISkillTreeItem skillTreeItem) {
             super(0, 0, 32, 32, Component.empty(), new WidgetSprites(
-                    Identifier.withDefaultNamespace("advancements/task_frame_obtained"),
-                    Identifier.withDefaultNamespace("advancements/task_frame_unobtained")
+                    ResourceLocation.withDefaultNamespace("advancements/task_frame_obtained"),
+                    ResourceLocation.withDefaultNamespace("advancements/task_frame_unobtained")
             ));
             this.skillTreeItem = skillTreeItem;
         }
 
         @Override
-        public void extractTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+        public void extractTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY) {
             guiGraphics.blitSprite(
                     RenderPipelines.GUI_TEXTURED,
-                    Identifier.withDefaultNamespace("advancements/title_box"),
+                    ResourceLocation.withDefaultNamespace("advancements/title_box"),
                     getX() - 5,
                     getY() + 5,
                     getWidth() + 100,
@@ -90,7 +90,7 @@ public class TestSkillTreeComponent extends SpriteComponent {
             );
             guiGraphics.blitSprite(
                     RenderPipelines.GUI_TEXTURED,
-                    Identifier.withDefaultNamespace("advancements/task_frame_obtained"),
+                    ResourceLocation.withDefaultNamespace("advancements/task_frame_obtained"),
                     getX(),
                     getY(),
                     getWidth(),

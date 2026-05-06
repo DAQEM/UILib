@@ -4,7 +4,7 @@ import com.daqem.uilib.api.skilltree.ISkillTree;
 import com.daqem.uilib.api.skilltree.ISkillTreeItem;
 import com.daqem.uilib.api.widget.skilltree.ISkillTreeItemWidget;
 import com.daqem.uilib.gui.component.EmptyComponent;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.List;
 import java.util.Map;
@@ -47,12 +47,12 @@ public class SkillTreeMovingComponent extends EmptyComponent {
     }
 
     @Override
-    public void extractRenderStateBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         this.extractConnections(guiGraphics);
-        super.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
+        super.renderBase(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
     }
 
-    public void extractTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+    public void extractTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         for (ISkillTreeItemWidget itemWidget : itemWidgets) {
             if (itemWidget.isMouseOver(mouseX, mouseY)) {
                 itemWidget.extractTooltips(guiGraphics, mouseX, mouseY);
@@ -60,7 +60,7 @@ public class SkillTreeMovingComponent extends EmptyComponent {
         }
     }
 
-    private void extractConnections(GuiGraphicsExtractor guiGraphics) {
+    private void extractConnections(GuiGraphics guiGraphics) {
         for (ISkillTreeItemWidget itemWidget : itemWidgets) {
             if (itemWidget.getSkillTreeItem() == this.skillTree.getRoot()) continue;
             ISkillTreeItemWidget parent = this.itemWidgetsMap.get(itemWidget.getSkillTreeItem().getParent());
@@ -69,17 +69,17 @@ public class SkillTreeMovingComponent extends EmptyComponent {
             int childX = itemWidget.getX() + itemWidget.getWidth() / 2;
             int childY = itemWidget.getY() + itemWidget.getHeight() / 2;
             if (parentY == childY) {
-                guiGraphics.horizontalLine(parentX, childX, parentY - 1, 0xFF000000);
-                guiGraphics.horizontalLine(parentX, childX, parentY + 1, 0xFF000000);
-                guiGraphics.horizontalLine(parentX, childX, parentY, 0xFFFFFFFF);
+                guiGraphics.hLine(parentX, childX, parentY - 1, 0xFF000000);
+                guiGraphics.hLine(parentX, childX, parentY + 1, 0xFF000000);
+                guiGraphics.hLine(parentX, childX, parentY, 0xFFFFFFFF);
             } else {
                 int midX = (parentX + childX) / 2;
                 guiGraphics.fill(parentX, parentY - 1, midX, parentY + 2, 0xFF000000);
                 guiGraphics.fill(midX - 1, parentY, midX + 2, childY, 0xFF000000);
                 guiGraphics.fill(midX - 1, childY - 1, childX + 1, childY + 2, 0xFF000000);
-                guiGraphics.horizontalLine(parentX, midX, parentY, 0xFFFFFFFF);
-                guiGraphics.verticalLine(midX, parentY, childY, 0xFFFFFFFF);
-                guiGraphics.horizontalLine(midX, childX, childY, 0xFFFFFFFF);
+                guiGraphics.hLine(parentX, midX, parentY, 0xFFFFFFFF);
+                guiGraphics.vLine(midX, parentY, childY, 0xFFFFFFFF);
+                guiGraphics.hLine(midX, childX, childY, 0xFFFFFFFF);
             }
         }
     }

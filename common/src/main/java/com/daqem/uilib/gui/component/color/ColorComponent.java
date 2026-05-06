@@ -1,7 +1,7 @@
 package com.daqem.uilib.gui.component.color;
 
 import com.daqem.uilib.gui.component.AbstractComponent;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ColorComponent extends AbstractComponent {
 
@@ -13,7 +13,7 @@ public class ColorComponent extends AbstractComponent {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         guiGraphics.fill(
                 this.getTotalX(),
                 this.getTotalY(),

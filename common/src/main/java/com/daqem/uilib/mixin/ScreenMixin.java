@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import java.lang.classfile.Opcode;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

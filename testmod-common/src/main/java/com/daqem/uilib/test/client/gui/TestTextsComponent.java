@@ -9,7 +9,7 @@ import com.daqem.uilib.gui.component.text.multiline.MultiLineTextComponent;
 import com.daqem.uilib.gui.component.text.multiline.TruncatedMultiLineTextComponent;
 import com.daqem.uilib.test.TestMod;
 import com.daqem.uilib.test.client.gui.component.sprite.TestSpriteComponent;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 public class TestTextsComponent extends AbstractComponent {
@@ -99,6 +99,6 @@ public class TestTextsComponent extends AbstractComponent {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
     }
 }

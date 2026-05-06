@@ -1,18 +1,15 @@
 package com.daqem.uilib.gui.widget;
 
-import com.daqem.uilib.UILib;
-import com.daqem.uilib.api.widget.IEditBoxWidget;
 import com.daqem.uilib.api.widget.IInputValidatable;
 import com.daqem.uilib.api.widget.IWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.inventory.tooltip.BelowOrAboveWidgetTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.MenuTooltipPositioner;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -38,12 +35,7 @@ public class EditBoxWidget extends EditBox implements IWidget, IInputValidatable
     }
 
     @Override
-    public void extractWidgetRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // Had to add this because the text position wasn't updating correctly when set with an initial value
-        if (this instanceof IEditBoxWidget editBoxWidget) {
-            editBoxWidget.uilib$updateTextPosition();
-        }
-
+    public void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         List<Component> components = this.validateInput(getValue());
         if (components != null && !components.isEmpty()) {
             setInputValidationErrors(components);
@@ -51,18 +43,17 @@ public class EditBoxWidget extends EditBox implements IWidget, IInputValidatable
             clearInputValidationErrors();
         }
 
-        super.extractWidgetRenderState(guiGraphics, mouseX, mouseY, partialTick);
+        super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
 
         List<Component> tooltip = getInputValidationErrorsTooltip();
         Minecraft minecraft = Minecraft.getInstance();
         if (tooltip != null && (isHovered() || isFocused() && minecraft.getLastInputType().isKeyboard())) {
-            guiGraphics.setTooltipForNextFrame(
+            guiGraphics.renderTooltip(
                     minecraft.font,
                     Language.getInstance().getVisualOrder(new ArrayList<>(tooltip)),
                     this.createTooltipPositioner(getRectangle(), isHovered(), isFocused()),
                     mouseX,
-                    mouseY,
-                    isFocused()
+                    mouseY
             );
         }
     }

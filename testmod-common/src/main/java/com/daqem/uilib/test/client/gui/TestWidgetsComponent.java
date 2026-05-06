@@ -6,7 +6,7 @@ import com.daqem.uilib.test.TestMod;
 import com.daqem.uilib.test.client.gui.component.sprite.TestSpriteComponent;
 import com.daqem.uilib.util.ValidationErrors;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
@@ -73,6 +73,6 @@ public class TestWidgetsComponent extends AbstractComponent {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
     }
 }

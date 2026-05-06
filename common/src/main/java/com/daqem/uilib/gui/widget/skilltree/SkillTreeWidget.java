@@ -7,13 +7,12 @@ import com.daqem.uilib.api.widget.skilltree.ISkillTreeWidget;
 import com.daqem.uilib.gui.component.skilltree.SkillTreeMovingComponent;
 import com.daqem.uilib.gui.widget.ScrollContainer2DWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.input.MouseButtonEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,7 +78,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.components.isEmpty()) {
             return;
         }
@@ -89,18 +88,13 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
         int offsetY = (int) this.scrollAmount();
         component.setX(this.getX() - uilib$getParentX() - offsetX);
         component.setY(this.getY() - uilib$getParentY() - offsetY);
-        component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, this.getWidth(), this.getHeight());
+        component.renderBase(guiGraphics, mouseX, mouseY, partialTick, this.getWidth(), this.getHeight());
         guiGraphics.disableScissor();
     }
 
     @Override
-    protected void extractScrollbar(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+    protected void extractScrollbar(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         // No scrollbars
-    }
-
-    @Override
-    public boolean scrollable() {
-        return false;
     }
 
     @Override
@@ -109,14 +103,14 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean bl) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (!this.active || !this.visible) {
             return false;
         }
-        if (this.isValidClickButton(event.buttonInfo())) {
+        if (this.isValidClickButton(button)) {
             this.hasDragged = false; // Reset drag state
-            this.clickStartX = event.x(); // Store click start position
-            this.clickStartY = event.y();
+            this.clickStartX = mouseX; // Store click start position
+            this.clickStartY = mouseY;
             this.setDragging(true); // Enable dragging
             return true;
         }
@@ -124,11 +118,11 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseDragged(@NotNull MouseButtonEvent event, double dragX, double dragY) {
-        if (this.isValidClickButton(event.buttonInfo()) && this.isDragging()) {
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (this.isValidClickButton(button) && this.isDragging()) {
             // Check if movement exceeds drag threshold
-            double deltaX = Math.abs(event.x() - this.clickStartX);
-            double deltaY = Math.abs(event.y() - this.clickStartY);
+            double deltaX = Math.abs(mouseX - this.clickStartX);
+            double deltaY = Math.abs(mouseY - this.clickStartY);
             if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
                 this.hasDragged = true;
             }
@@ -142,26 +136,26 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public boolean mouseReleased(@NotNull MouseButtonEvent event) {
-        super.mouseReleased(event);
-        if (this.isValidClickButton(event.buttonInfo())) {
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        super.mouseReleased(mouseX, mouseY, button);
+        if (this.isValidClickButton(button)) {
             this.setDragging(false);
             if (!this.hasDragged) {
                 // Only process click if no drag occurred
-                Optional<GuiEventListener> optional = this.getChildAt(event.x(), event.y());
+                Optional<GuiEventListener> optional = this.getChildAt(mouseX, mouseY);
                 if (optional.isPresent()) {
                     GuiEventListener guiEventListener = optional.get();
-                    boolean handled = guiEventListener.mouseClicked(event, false);
+                    boolean handled = guiEventListener.mouseClicked(mouseX, mouseY, button);
                     if (handled) {
                         this.setFocused(guiEventListener);
                         return true;
                     }
                 }
-                this.onClick(event, false);
+                this.onClick(mouseX, mouseY);
                 return true;
             }
             if (this.getFocused() != null) {
-                return this.getFocused().mouseReleased(event);
+                return this.getFocused().mouseReleased(mouseX, mouseY, button);
             }
         }
         return false;
@@ -170,11 +164,6 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     @Override
     protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
         // No narration for skill tree widget
-    }
-
-    @Override
-    public @NotNull ScreenRectangle getBorderForArrowNavigation(@NotNull ScreenDirection direction) {
-        return new ScreenRectangle(this.getX(), this.getY(), this.contentWidth(), this.contentHeight());
     }
 
     @Override
@@ -195,11 +184,6 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
 
     @Override
     public @NotNull List<? extends GuiEventListener> children() {
-        return this.components.isEmpty() ? List.of() : this.components.getFirst().getAllWidgets();
-    }
-
-    @Override
-    public @NotNull Collection<? extends NarratableEntry> getNarratables() {
         return this.components.isEmpty() ? List.of() : this.components.getFirst().getAllWidgets();
     }
 
@@ -248,7 +232,7 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
     }
 
     @Override
-    public void extractTooltips(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+    public void extractTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (this.isMouseOver(mouseX, mouseY)) {
             if (!this.components.isEmpty()) {
                 if (this.components.getFirst() instanceof SkillTreeMovingComponent skillTreeMovingComponent) {

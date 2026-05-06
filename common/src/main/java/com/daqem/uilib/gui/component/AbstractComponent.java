@@ -3,7 +3,7 @@ package com.daqem.uilib.gui.component;
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.NotNull;
@@ -295,34 +295,34 @@ public abstract class AbstractComponent implements IComponent {
     }
 
     @Override
-    public void extractRenderStateBase(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void renderBase(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
         for (IComponent component : components.stream().filter(IComponent::isRenderBeforeParent).toList()) {
-            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
+            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
         }
 
-        this.extractRenderState(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
+        this.render(guiGraphics, mouseX, mouseY, partialTick, parentWidth, parentHeight);
 
         if (isRenderDebugBorder()) {
-            guiGraphics.horizontalLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY(), 0xAAFF0000);
-            guiGraphics.verticalLine(getTotalX() + getWidth() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
-            guiGraphics.horizontalLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY() + getHeight() - 1, 0xAAFF0000);
-            guiGraphics.verticalLine(getTotalX(), getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
+            guiGraphics.hLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY(), 0xAAFF0000);
+            guiGraphics.vLine(getTotalX() + getWidth() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
+            guiGraphics.hLine(getTotalX(), getTotalX() + getWidth() - 1, getTotalY() + getHeight() - 1, 0xAAFF0000);
+            guiGraphics.vLine(getTotalX(), getTotalY(), getTotalY() + getHeight() - 1, 0xAAFF0000);
         }
 
         for (IComponent component : components.stream().filter(c -> !c.isRenderBeforeParent()).toList()) {
-            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
+            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, width, height);
         }
 
         for (IWidget widget : widgets) {
-            widget.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
+            widget.render(guiGraphics, mouseX, mouseY, partialTick);
         }
 
     }
 
     @Override
-    public void extractRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (Minecraft.getInstance().screen instanceof Screen screen) {
-            extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, screen.width, screen.height);
+            renderBase(guiGraphics, mouseX, mouseY, partialTick, screen.width, screen.height);
         }
     }
 }

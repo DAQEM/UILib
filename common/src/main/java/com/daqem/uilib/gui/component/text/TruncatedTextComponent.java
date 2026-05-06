@@ -1,7 +1,7 @@
 package com.daqem.uilib.gui.component.text;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 public class TruncatedTextComponent extends AbstractSingleLineTextComponent{
@@ -26,8 +26,8 @@ public class TruncatedTextComponent extends AbstractSingleLineTextComponent{
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
-        guiGraphics.text(
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+        guiGraphics.drawString(
                 this.getFont(),
                 this.getText(),
                 this.getTotalX(),
@@ -37,10 +37,10 @@ public class TruncatedTextComponent extends AbstractSingleLineTextComponent{
         );
 
         if (isRenderDebugBorder()) {
-            guiGraphics.horizontalLine(getTotalX() + getUnusedSpaceX(), getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY(), 0xFF0000FF);
-            guiGraphics.verticalLine(getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.horizontalLine(getTotalX() + getUnusedSpaceX(), getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
-            guiGraphics.verticalLine(getTotalX() + getUnusedSpaceX(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getUnusedSpaceX(), getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY(), 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.hLine(getTotalX() + getUnusedSpaceX(), getTotalX() + maxWidth + getUnusedSpaceX() - 1, getTotalY() + getHeight() - 1, 0xFF0000FF);
+            guiGraphics.vLine(getTotalX() + getUnusedSpaceX(), getTotalY(), getTotalY() + getHeight() - 1, 0xFF0000FF);
         }
     }
 

@@ -2,7 +2,7 @@ package com.daqem.uilib.gui.component.item;
 
 import com.daqem.uilib.gui.component.AbstractComponent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemComponent extends AbstractComponent {
@@ -46,14 +46,14 @@ public class ItemComponent extends AbstractComponent {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
-        guiGraphics.fakeItem(
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+        guiGraphics.renderFakeItem(
                 getItemStack(),
                 getTotalX(),
                 getTotalY()
         );
         if (isDecorated()) {
-            guiGraphics.itemDecorations(
+            guiGraphics.renderItemDecorations(
                     Minecraft.getInstance().font,
                     getItemStack(),
                     getTotalX(),

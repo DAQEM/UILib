@@ -3,7 +3,7 @@ package com.daqem.uilib.test.client.gui;
 import com.daqem.uilib.gui.component.AbstractComponent;
 import com.daqem.uilib.gui.widget.ScrollContainerWidget;
 import com.daqem.uilib.test.client.gui.component.sprite.TestSpriteComponent;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class TestScrollWidgetComponent extends AbstractComponent {
 
@@ -31,6 +31,6 @@ public class TestScrollWidgetComponent extends AbstractComponent {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
     }
 }

@@ -5,7 +5,7 @@ import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.screen.IScreen;
 import com.daqem.uilib.api.screen.IScreenAccessor;
 import com.daqem.uilib.api.widget.IWidget;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
@@ -44,11 +44,11 @@ public class AbstractContainerScreen<T extends AbstractContainerMenu> extends ne
     }
 
     @Override
-    public void extractBackground(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         if (this.background != null) {
-            this.background.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
+            this.background.render(guiGraphics, mouseX, mouseY, partialTick);
         } else {
-            super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
+            super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         }
     }
 

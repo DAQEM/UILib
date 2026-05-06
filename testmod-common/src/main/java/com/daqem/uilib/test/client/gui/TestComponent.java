@@ -4,8 +4,8 @@ import com.daqem.uilib.gui.component.AbstractComponent;
 import com.daqem.uilib.gui.component.item.ItemComponent;
 import com.daqem.uilib.gui.component.sprite.SpriteComponent;
 import com.daqem.uilib.test.client.gui.component.sprite.TestSpriteComponent;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
 public class TestComponent extends AbstractComponent {
@@ -15,7 +15,7 @@ public class TestComponent extends AbstractComponent {
 
         TestSpriteComponent spriteComponent = new TestSpriteComponent(-10, -10, 220, 220);
 
-        SpriteComponent slotSpriteComponent = new SpriteComponent(0, 0, 18, 18, Identifier.withDefaultNamespace("container/slot"));
+        SpriteComponent slotSpriteComponent = new SpriteComponent(0, 0, 18, 18, ResourceLocation.withDefaultNamespace("container/slot"));
         ItemComponent itemComponent = new ItemComponent(1, 1, Items.BARRIER.getDefaultInstance().copyWithCount(16), true);
 
         this.addComponent(spriteComponent);
@@ -24,6 +24,6 @@ public class TestComponent extends AbstractComponent {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, int parentWidth, int parentHeight) {
     }
 }

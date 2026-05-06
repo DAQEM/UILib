@@ -4,7 +4,7 @@ package com.daqem.uilib;
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 public class UILib {
@@ -20,7 +20,7 @@ public class UILib {
         return Component.translatable(MOD_ID + "." + resourceKey, args);
     }
 
-    public static Identifier getId(String location) {
-        return Identifier.fromNamespaceAndPath(MOD_ID, location);
+    public static ResourceLocation getId(String location) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, location);
     }
 }

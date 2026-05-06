@@ -1,7 +1,7 @@
 package com.daqem.uilib.gui.background;
 
 import com.daqem.uilib.api.background.IBackground;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
 public class CombinedBackground extends AbstractBackground {
@@ -13,9 +13,9 @@ public class CombinedBackground extends AbstractBackground {
     }
 
     @Override
-    public void extractRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         for (IBackground background : backgrounds) {
-            background.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
+            background.render(guiGraphics, mouseX, mouseY, partialTick);
         }
     }
 }

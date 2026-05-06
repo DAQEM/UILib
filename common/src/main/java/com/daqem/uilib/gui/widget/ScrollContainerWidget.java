@@ -4,9 +4,7 @@ import com.daqem.uilib.api.IParent;
 import com.daqem.uilib.api.component.IComponent;
 import com.daqem.uilib.api.widget.IWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractContainerWidget;
-import net.minecraft.client.gui.components.AbstractScrollArea;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -58,14 +56,14 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
     }
 
     @Override
-    protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.enableScissor(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height);
 
         int currentY = this.uilib$getParentY() - this.getY() - (int) this.scrollAmount();
         for (int i = 0; i < this.components.size(); i++) {
             IComponent component = this.components.get(i);
             component.setY(currentY);
-            component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, this.width, this.height);
+            component.renderBase(guiGraphics, mouseX, mouseY, partialTick, this.width, this.height);
             currentY += component.getHeight();
             if (i < this.components.size() - 1) {
                 currentY += getContentSpacing();
@@ -78,11 +76,6 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
 
     @Override
     protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput) {
-    }
-
-    @Override
-    public @NotNull ScreenRectangle getBorderForArrowNavigation(@NotNull ScreenDirection direction) {
-        return new ScreenRectangle(this.getX(), this.getY(), this.width, this.contentHeight());
     }
 
     @Override
@@ -103,11 +96,6 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
 
     @Override
     public @NotNull List<? extends GuiEventListener> children() {
-        return getWidgets();
-    }
-
-    @Override
-    public @NotNull Collection<? extends NarratableEntry> getNarratables() {
         return getWidgets();
     }
 
