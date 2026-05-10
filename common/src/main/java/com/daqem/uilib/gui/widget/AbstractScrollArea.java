@@ -5,10 +5,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractScrollArea extends AbstractWidget {
     public static final int SCROLLBAR_WIDTH = 6;
@@ -128,7 +125,6 @@ public abstract class AbstractScrollArea extends AbstractWidget {
         return new ScrollbarSettings(SCROLLER_SPRITE, null, SCROLLER_BACKGROUND_SPRITE, SCROLLBAR_WIDTH, SCROLLBAR_MIN_HEIGHT, scrollRate, true);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public record ScrollbarSettings(ResourceLocation scrollerSprite, @Nullable ResourceLocation disabledScrollerSprite, ResourceLocation backgroundSprite, int scrollbarWidth, int scrollbarMinHeight, int scrollRate, boolean resizingScrollbar) {
     }
 }

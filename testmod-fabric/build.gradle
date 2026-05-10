@@ -20,7 +20,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    implementation(project(':fabric')) {
+    modImplementation(project(':fabric')) {
         capabilities {
             requireCapability "$group:$mod_id-fabric"
         }
@@ -29,6 +29,12 @@ dependencies {
     compileOnly(project(':testmod-common')) {
         capabilities {
             requireCapability "$group:$mod_id-testmod-common"
+        }
+    }
+
+    compileOnly(project(':common')) {
+        capabilities {
+            requireCapability "$group:$mod_id-common"
         }
     }
 }
