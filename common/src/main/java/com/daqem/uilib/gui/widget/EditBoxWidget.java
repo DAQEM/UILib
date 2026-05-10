@@ -48,13 +48,13 @@ public class EditBoxWidget extends EditBox implements IWidget, IInputValidatable
         List<Component> tooltip = getInputValidationErrorsTooltip();
         Minecraft minecraft = Minecraft.getInstance();
         if (tooltip != null && (isHovered() || isFocused() && minecraft.getLastInputType().isKeyboard())) {
-            guiGraphics.renderTooltip(
-                    minecraft.font,
-                    Language.getInstance().getVisualOrder(new ArrayList<>(tooltip)),
-                    this.createTooltipPositioner(getRectangle(), isHovered(), isFocused()),
-                    mouseX,
-                    mouseY
-            );
+            if (minecraft.screen != null) {
+                minecraft.screen.setTooltipForNextRenderPass(
+                        Language.getInstance().getVisualOrder(new ArrayList<>(tooltip)),
+                        this.createTooltipPositioner(getRectangle(), isHovered(), isFocused()),
+                        isFocused()
+                );
+            }
         }
     }
 
