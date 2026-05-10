@@ -9,7 +9,6 @@ import com.daqem.uilib.skilltree.AbstractSkillTree;
 import com.daqem.uilib.skilltree.AbstractSkillTreeItem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -81,7 +80,6 @@ public class TestSkillTreeComponent extends SpriteComponent {
         @Override
         public void extractTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY) {
             guiGraphics.blitSprite(
-                    RenderPipelines.GUI_TEXTURED,
                     ResourceLocation.withDefaultNamespace("advancements/title_box"),
                     getX() - 5,
                     getY() + 5,
@@ -89,7 +87,6 @@ public class TestSkillTreeComponent extends SpriteComponent {
                     getHeight() + 30
             );
             guiGraphics.blitSprite(
-                    RenderPipelines.GUI_TEXTURED,
                     ResourceLocation.withDefaultNamespace("advancements/task_frame_obtained"),
                     getX(),
                     getY(),

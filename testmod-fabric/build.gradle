@@ -1,40 +1,6 @@
 plugins {
     id 'multiloader-common'
-    id 'net.fabricmc.fabric-loom'
-}
-
-// Create custom configurations to merge testmod-common safely
-configurations {
-    testCommonJava { canBeResolved = true }
-    testCommonResources { canBeResolved = true }
-}
-
-dependencies {
-    minecraft "com.mojang:minecraft:${minecraft_version}"
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-
-    modImplementation project(':fabric')
-
-    compileOnly(project(':testmod-common')) {
-        def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-        attributes {
-            attribute(loaderAttribute, 'common')
-        }
-    }
-    testCommonJava project(path: ':testmod-common', configuration: 'commonJava')
-    testCommonResources project(path: ':testmod-common', configuration: 'commonResources')
-}
-
-// Inject testmod-common sources into this project's compilation
-tasks.named('compileJava', JavaCompile) {
-    dependsOn(configurations.testCommonJava)
-    source(configurations.testCommonJava)
-}
-
-processResources {
-    dependsOn(configurations.testCommonResources)
-    from(configurations.testCommonResources)
+    id 'fabric-loom'
 }
 
 sourceSets {
@@ -45,42 +11,69 @@ sourceSets {
     }
 }
 
-loom {
-    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
-    if (aw.exists()) {
-        accessWidenerPath.set(aw)
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
     }
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    implementation(project(':fabric')) {
+        capabilities {
+            requireCapability "$group:$mod_id-fabric"
+        }
+    }
+
+    compileOnly(project(':testmod-common')) {
+        capabilities {
+            requireCapability "$group:$mod_id-testmod-common"
+        }
+    }
+}
+
+// Pull in the testmod-common sources
+configurations {
+    testmodCommonJava { canBeResolved = true }
+    testmodCommonResources { canBeResolved = true }
+}
+
+dependencies {
+    testmodCommonJava project(path: ':testmod-common', configuration: 'testmodCommonJava')
+    testmodCommonResources project(path: ':testmod-common', configuration: 'testmodCommonResources')
+}
+
+tasks.named('compileJava', JavaCompile) {
+    dependsOn(configurations.testmodCommonJava)
+    source(configurations.testmodCommonJava)
+}
+
+processResources {
+    dependsOn(configurations.testmodCommonResources)
+    from(configurations.testmodCommonResources)
+}
+
+tasks.named('sourcesJar', Jar) {
+    dependsOn(configurations.testmodCommonJava)
+    from(configurations.testmodCommonJava)
+    dependsOn(configurations.testmodCommonResources)
+    from(configurations.testmodCommonResources)
+}
+
+loom {
     runs {
         client {
             client()
-            setConfigName('Fabric Test Client')
+            setConfigName('Fabric Client (Testmod)')
             ideConfigGenerated(true)
             runDir('runs/client')
         }
         server {
             server()
-            setConfigName('Fabric Test Server')
+            setConfigName('Fabric Server (Testmod)')
             ideConfigGenerated(true)
             runDir('runs/server')
-        }
-    }
-}
-
-// Implement mcgradleconventions loader attribute
-def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-['apiElements', 'runtimeElements', 'sourcesElements', 'includeInternal', 'modCompileClasspath'].each { variant ->
-    configurations.named("$variant") {
-        attributes {
-            attribute(loaderAttribute, 'fabric')
-        }
-    }
-}
-sourceSets.configureEach {
-    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName].each { variant->
-        configurations.named("$variant") {
-            attributes {
-                attribute(loaderAttribute, 'fabric')
-            }
         }
     }
 }

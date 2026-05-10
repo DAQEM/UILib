@@ -7,7 +7,6 @@ import com.daqem.uilib.gui.AbstractScreen;
 import com.daqem.uilib.gui.background.DarkenedBackground;
 import com.daqem.uilib.gui.widget.ButtonWidget;
 import com.daqem.uilib.test.TestMod;
-import net.minecraft.client.input.KeyEvent;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -55,15 +54,15 @@ public class TestScreen extends AbstractScreen {
     }
 
     @Override
-    public boolean keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.key() == GLFW.GLFW_KEY_LEFT) {
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode == GLFW.GLFW_KEY_LEFT) {
             previousComponent();
             return true;
-        } else if (keyEvent.key() == GLFW.GLFW_KEY_RIGHT) {
+        } else if (keyCode == GLFW.GLFW_KEY_RIGHT) {
             nextComponent();
             return true;
         }
-        return super.keyPressed(keyEvent);
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     private void nextComponent() {

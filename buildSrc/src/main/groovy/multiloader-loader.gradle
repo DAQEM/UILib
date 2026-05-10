@@ -14,7 +14,7 @@ configurations {
 dependencies {
     compileOnly(project(':common')) {
         capabilities {
-            requireCapability "$group:$mod_id"
+            requireCapability "$group:$mod_id-common"
         }
     }
     commonJava project(path: ':common', configuration: 'commonJava')

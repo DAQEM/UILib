@@ -16,6 +16,14 @@ dependencies {
 apply from: rootProject.file("gradle/scripts/publishing.gradle")
 apply from: rootProject.file("gradle/scripts/maven-publishing.gradle")
 
+sourceSets {
+    main {
+        resources {
+            srcDir project(':common').file('src/main/resources')
+        }
+    }
+}
+
 loom {
     accessWidenerPath = project(":common").file("src/main/resources/uilib.accesswidener")
 

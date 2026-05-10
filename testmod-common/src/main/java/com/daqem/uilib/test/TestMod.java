@@ -13,8 +13,7 @@ public class TestMod {
     public static final String MOD_ID = "uilib_test";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    private static final KeyMapping.Category UI_LIB_CATEGORY = new KeyMapping.Category(getId("category"));
-    public static final KeyMapping OPEN_TEST_MENU = new KeyMapping("key.uilib_test.open_test_menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, UI_LIB_CATEGORY);
+    public static final KeyMapping OPEN_TEST_MENU = new KeyMapping("key.uilib_test.open_test_menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category");
 
     public static void init() {
 

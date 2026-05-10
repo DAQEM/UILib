@@ -26,7 +26,7 @@ public class TestModNeoForge {
         // Check if the action is a Press (1)
         if (event.getAction() == GLFW.GLFW_PRESS) {
             // Check if the key matches the configured KeyMapping
-            if (TestMod.OPEN_TEST_MENU.matches(event.getKeyEvent())) {
+            if (TestMod.OPEN_TEST_MENU.matches(event.getKey(), event.getScanCode())) {
                 Minecraft client = Minecraft.getInstance();
                 Screen screen = client.screen;
 

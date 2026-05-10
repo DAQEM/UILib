@@ -23,7 +23,7 @@ public class TestWidgetsComponent extends AbstractComponent {
 
         TestSpriteComponent spriteComponent = new TestSpriteComponent(-10, -10, 220, 170);
 
-        ButtonWidget button = new ButtonWidget(0, 0, 200, 20, text, _ -> {
+        ButtonWidget button = new ButtonWidget(0, 0, 200, 20, text, button1 -> {
             if (Minecraft.getInstance().screen instanceof TestScreen screen) {
                 screen.onClose();
             }
@@ -62,7 +62,7 @@ public class TestWidgetsComponent extends AbstractComponent {
         };
         multiLineEditBox.setValue("This is a test!\nWith multiple lines!\nLine 3\nLine 4\nLine 5\nLine 6\nLine 7\nLine 8\nLine 9\nLine 10");
 
-        CycleButtonWidget<Boolean> cycleButton = new CycleButtonWidget<>(0, 106, 200, 20, text, text, 0, true, () -> true, CycleButton.ValueListSupplier.create(List.of(true, false)), value -> value ? TestMod.translatable("component.test.true") : TestMod.translatable("component.test.false"));
+        CycleButtonWidget<Boolean> cycleButton = new CycleButtonWidget<>(0, 106, 200, 20, text, text, 0, true, CycleButton.ValueListSupplier.create(List.of(true, false)), value -> value ? TestMod.translatable("component.test.true") : TestMod.translatable("component.test.false"));
         cycleButton.setTooltip(Tooltip.create(text));
 
         this.addComponent(spriteComponent);

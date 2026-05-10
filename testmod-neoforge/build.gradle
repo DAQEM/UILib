@@ -5,85 +5,73 @@ plugins {
 
 neoForge {
     version = neoforge_version
-    // Automatically enable neoforge AccessTransformers if the file exists
+
     def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
         accessTransformers.from(at.absolutePath)
     }
+
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
     runs {
         configureEach {
-            systemProperty('neoforge.enabledGameTestNamespaces', "uilib_test")
-            ideName = "NeoForge Test ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+            systemProperty('neoforge.enabledGameTestNamespaces', "${mod_id}_testmod")
+            ideName = "NeoForge ${it.name.capitalize()} (Testmod) (${project.path})"
         }
         client {
             client()
-            gameDirectory = this.mkdir(this.file("runs/client"))
-        }
-        data {
-            clientData()
-            gameDirectory = this.mkdir(this.file("runs/data"))
-            programArguments.addAll '--mod', "uilib_test", '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
         server {
             server()
-            this.file("runs/server").createParentDirectories()
-            gameDirectory = this.mkdir(this.file("runs/server"))
         }
     }
     mods {
-        "uilib_test" {
+        "${mod_id}_testmod" {
             sourceSet sourceSets.main
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+dependencies {
+    implementation(project(':neoforge')) {
+        capabilities {
+            requireCapability "$group:$mod_id-neoforge"
+        }
+    }
 
-// Create custom configurations to merge testmod-common safely
+    compileOnly(project(':testmod-common')) {
+        capabilities {
+            requireCapability "$group:$mod_id-testmod-common"
+        }
+    }
+}
+
+// Pull in the testmod-common sources
 configurations {
-    testCommonJava { canBeResolved = true }
-    testCommonResources { canBeResolved = true }
+    testmodCommonJava { canBeResolved = true }
+    testmodCommonResources { canBeResolved = true }
 }
 
 dependencies {
-    implementation project(':neoforge')
-
-    compileOnly(project(':testmod-common')) {
-        def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-        attributes {
-            attribute(loaderAttribute, 'common')
-        }
-    }
-    testCommonJava project(path: ':testmod-common', configuration: 'commonJava')
-    testCommonResources project(path: ':testmod-common', configuration: 'commonResources')
+    testmodCommonJava project(path: ':testmod-common', configuration: 'testmodCommonJava')
+    testmodCommonResources project(path: ':testmod-common', configuration: 'testmodCommonResources')
 }
 
-// Inject testmod-common sources into this project's compilation
 tasks.named('compileJava', JavaCompile) {
-    dependsOn(configurations.testCommonJava)
-    source(configurations.testCommonJava)
+    dependsOn(configurations.testmodCommonJava)
+    source(configurations.testmodCommonJava)
 }
 
 processResources {
-    dependsOn(configurations.testCommonResources)
-    from(configurations.testCommonResources)
+    dependsOn(configurations.testmodCommonResources)
+    from(configurations.testmodCommonResources)
 }
 
-// Implement mcgradleconventions loader attribute
-def loaderAttribute = Attribute.of('io.github.mcgradleconventions.loader', String)
-['apiElements', 'runtimeElements', 'sourcesElements'].each { variant ->
-    configurations.named("$variant") {
-        attributes {
-            attribute(loaderAttribute, 'neoforge')
-        }
-    }
-}
-sourceSets.configureEach {
-    [it.compileClasspathConfigurationName, it.runtimeClasspathConfigurationName, it.getTaskName(null, 'jarJar')].each { variant ->
-        configurations.named("$variant") {
-            attributes {
-                attribute(loaderAttribute, 'neoforge')
-            }
-        }
-    }
+tasks.named('sourcesJar', Jar) {
+    dependsOn(configurations.testmodCommonJava)
+    from(configurations.testmodCommonJava)
+    dependsOn(configurations.testmodCommonResources)
+    from(configurations.testmodCommonResources)
 }
