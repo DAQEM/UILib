@@ -47,6 +47,9 @@ jobs:
         if: steps.checkTag.outputs.exists == 'true'
         run: exit 1
 
+      - name: Publish to DAQEM Maven
+        run: ./gradlew publish
+
       - name: Publish to Modrinth
         run: ./gradlew modrinth
 
