@@ -99,6 +99,26 @@ components.java {
     }
 }
 
+publishing {
+    publications {
+        mavenNeoForge(MavenPublication) {
+            groupId = rootProject.maven_group
+            artifactId = rootProject.archives_base_name + "-neoforge"
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url = project.version.contains('-PR') ? 'https://maven.daqem.com/snapshots' : 'https://maven.daqem.com/releases'
+            credentials {
+                username = System.getenv("MAVEN_USER")
+                password = System.getenv("MAVEN_PASS")
+            }
+        }
+    }
+}
+
 curseforge {
     apiKey = System.getenv("CURSEFORGE_API_KEY")
     project {
