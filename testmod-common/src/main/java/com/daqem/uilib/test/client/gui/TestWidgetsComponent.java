@@ -24,7 +24,7 @@ public class TestWidgetsComponent extends AbstractComponent {
         TestSpriteComponent spriteComponent = new TestSpriteComponent(-10, -10, 220, 170);
 
         ButtonWidget button = new ButtonWidget(0, 0, 200, 20, text, _ -> {
-            if (Minecraft.getInstance().screen instanceof TestScreen screen) {
+            if (Minecraft.getInstance().gui.screen() instanceof TestScreen screen) {
                 screen.onClose();
             }
         });

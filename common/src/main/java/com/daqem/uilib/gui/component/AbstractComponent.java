@@ -321,7 +321,7 @@ public abstract class AbstractComponent implements IComponent {
 
     @Override
     public void extractRenderState(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if (Minecraft.getInstance().screen instanceof Screen screen) {
+        if (Minecraft.getInstance().gui.screen() instanceof Screen screen) {
             extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, screen.width, screen.height);
         }
     }

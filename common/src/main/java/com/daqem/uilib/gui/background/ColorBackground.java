@@ -14,7 +14,7 @@ public class ColorBackground extends AbstractBackground {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if (Minecraft.getInstance().screen instanceof Screen screen) {
+        if (Minecraft.getInstance().gui.screen() instanceof Screen screen) {
             guiGraphics.fill(0, 0, screen.width, screen.height, color);
         }
     }

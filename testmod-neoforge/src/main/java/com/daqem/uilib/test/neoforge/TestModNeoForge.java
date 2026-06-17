@@ -28,16 +28,16 @@ public class TestModNeoForge {
             // Check if the key matches the configured KeyMapping
             if (TestMod.OPEN_TEST_MENU.matches(event.getKeyEvent())) {
                 Minecraft client = Minecraft.getInstance();
-                Screen screen = client.screen;
+                Screen screen = client.gui.screen();
 
                 if (screen instanceof TestScreen testScreen) {
                     // If focusing a validatable widget (like a text box), ignore the toggle to allow typing
                     if (testScreen.getFocused() instanceof IInputValidatable) {
                         return;
                     }
-                    client.setScreen(null);
+                    client.gui.setScreen(null);
                 } else if (screen == null) {
-                    client.setScreen(new TestScreen());
+                    client.gui.setScreen(new TestScreen());
                 }
             }
         }

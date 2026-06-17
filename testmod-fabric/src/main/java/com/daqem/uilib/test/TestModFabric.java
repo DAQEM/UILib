@@ -19,16 +19,16 @@ public class TestModFabric implements ClientModInitializer {
             // consumeClick() returns true if the key was pressed since the last check.
             // This effectively replaces "matches()" and "keyCode == 1".
             while (TestMod.OPEN_TEST_MENU.consumeClick()) {
-                Screen screen = client.screen;
+                Screen screen = client.gui.screen();
 
                 if (screen instanceof TestScreen testScreen) {
                     // If focusing a validatable widget (like a text box), ignore the toggle to allow typing
                     if (testScreen.getFocused() instanceof IInputValidatable) {
                         return; // Continue without closing the screen
                     }
-                    client.setScreen(null);
+                    client.gui.setScreen(null);
                 } else if (screen == null) {
-                    client.setScreen(new TestScreen());
+                    client.gui.setScreen(new TestScreen());
                 }
             }
         });

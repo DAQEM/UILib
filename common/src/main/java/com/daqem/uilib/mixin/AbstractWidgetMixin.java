@@ -52,14 +52,14 @@ public abstract class AbstractWidgetMixin implements Renderable, GuiEventListene
 
     @Inject(method = "getX()I", at = @At("RETURN"), cancellable = true)
     private void uilib$modifyGetX(CallbackInfoReturnable<Integer> cir) {
-        if (Minecraft.getInstance().screen instanceof IScreen) {
+        if (Minecraft.getInstance().gui.screen() instanceof IScreen) {
             cir.setReturnValue(this.x + this.uilib$parentX);
         }
     }
 
     @Inject(method = "getY()I", at = @At("RETURN"), cancellable = true)
     private void uilib$modifyGetY(CallbackInfoReturnable<Integer> cir) {
-        if (Minecraft.getInstance().screen instanceof IScreen) {
+        if (Minecraft.getInstance().gui.screen() instanceof IScreen) {
             cir.setReturnValue(this.y + this.uilib$parentY);
         }
     }
