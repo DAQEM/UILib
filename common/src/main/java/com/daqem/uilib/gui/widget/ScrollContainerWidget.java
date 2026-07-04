@@ -61,7 +61,7 @@ public class ScrollContainerWidget extends AbstractContainerWidget implements IW
     protected void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.enableScissor(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height);
 
-        int currentY = this.uilib$getParentY() - this.getY() - (int) this.scrollAmount();
+        int currentY = -(int) this.scrollAmount();
         for (int i = 0; i < this.components.size(); i++) {
             IComponent component = this.components.get(i);
             component.setY(currentY);
