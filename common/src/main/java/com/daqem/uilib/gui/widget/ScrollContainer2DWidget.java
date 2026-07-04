@@ -215,8 +215,8 @@ public class ScrollContainer2DWidget extends AbstractContainerWidget implements 
         int availH = this.height - (hBar ? 6 : 0);
         guiGraphics.enableScissor(this.getX(), this.getY(), this.getX() + availW, this.getY() + availH);
 
-        int currentX = this.uilib$getParentX() - this.getX() - (int) this.horizontalScrollAmount();
-        int currentY = this.uilib$getParentY() - this.getY() - (int) this.scrollAmount();
+        int currentX = -(int) this.horizontalScrollAmount();
+        int currentY = -(int) this.scrollAmount();
         for (int i = 0; i < this.components.size(); i++) {
             IComponent component = this.components.get(i);
             component.setX(currentX);

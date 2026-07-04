@@ -87,8 +87,8 @@ public class SkillTreeWidget extends ScrollContainer2DWidget implements IWidget,
         IComponent component = this.components.getFirst();
         int offsetX = (int) this.horizontalScrollAmount();
         int offsetY = (int) this.scrollAmount();
-        component.setX(this.getX() - uilib$getParentX() - offsetX);
-        component.setY(this.getY() - uilib$getParentY() - offsetY);
+        component.setX(-offsetX);
+        component.setY(-offsetY);
         component.extractRenderStateBase(guiGraphics, mouseX, mouseY, partialTick, this.getWidth(), this.getHeight());
         guiGraphics.disableScissor();
     }

@@ -10,10 +10,10 @@ public class TestScrollContentComponent extends TestSpriteComponent {
     public TestScrollContentComponent(int x, int y, int width, int height) {
         super(x, y, width, height);
 
-        ButtonWidget buttonWidget1 = new ButtonWidget(10, 10, 160, 20, Component.literal("Test1"), button -> {
+        ButtonWidget buttonWidget1 = new ButtonWidget(10, 10, width - 20, 20, Component.literal("Test1"), button -> {
             UILib.LOGGER.info("Test1");
         });
-        ButtonWidget buttonWidget2 = new ButtonWidget(10, 40, 160, 20, Component.literal("Test2"), button -> {
+        ButtonWidget buttonWidget2 = new ButtonWidget(10, 40, width - 20, 20, Component.literal("Test2"), button -> {
             UILib.LOGGER.info("Test2");
         });
 
