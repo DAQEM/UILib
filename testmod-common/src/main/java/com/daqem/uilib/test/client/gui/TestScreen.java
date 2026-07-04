@@ -33,6 +33,7 @@ public class TestScreen extends AbstractScreen {
         IComponent testComponent2 = new TestWidgetsComponent(2);
         IComponent testComponent3 = new TestComponent(3);
         TestScrollWidgetComponent testComponent4 = new TestScrollWidgetComponent(3);
+        TestOffsetScrollWidgetComponent testComponent5 = new TestOffsetScrollWidgetComponent(4);
 
         components.clear();
         components.add(testComponent0);
@@ -40,12 +41,14 @@ public class TestScreen extends AbstractScreen {
         components.add(testComponent2);
         components.add(testComponent3);
         components.add(testComponent4);
+        components.add(testComponent5);
 
         testComponent0.center();
         testComponent1.center();
         testComponent2.center();
         testComponent3.center();
         testComponent4.center();
+        testComponent5.center();
 
         this.addComponent(components.get(activeComponentIndex));
         this.addWidget(new ButtonWidget(10, this.height - 30, 50, 20, TestMod.translatable("screen.test.button.previous"), button -> previousComponent()));
