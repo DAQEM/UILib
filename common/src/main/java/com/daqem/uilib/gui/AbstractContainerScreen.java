@@ -22,8 +22,12 @@ public class AbstractContainerScreen<T extends AbstractContainerMenu> extends ne
     private @Nullable IBackground background;
     private final IScreenAccessor screenAccessor = this instanceof IScreenAccessor ? (IScreenAccessor) this : null;
 
-    public AbstractContainerScreen(T menu, Inventory playerInventory, Component title) {
-        super(menu, playerInventory, title);
+    public AbstractContainerScreen(T menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
+    }
+
+    public AbstractContainerScreen(T menu, Inventory inventory, Component title, int imageWidth, int imageHeight) {
+        super(menu, inventory, title, imageWidth, imageHeight);
     }
 
     @Override
