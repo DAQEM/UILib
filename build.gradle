@@ -3,6 +3,6 @@ plugins {
     id 'net.fabricmc.fabric-loom' version '1.15.5' apply false
     // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
     id 'net.neoforged.moddev' version '2.0.141' apply false
-    // see https://maven.shedaniel.me/me/shedaniel/unified-publishing/ for new versions
-    id "me.shedaniel.unified-publishing" version "0.1.+" apply false
+    // see https://modmuss50.github.io/mod-publish-plugin/ for new versions
+    id "me.modmuss50.mod-publish-plugin" version "2.1.1"
 }
