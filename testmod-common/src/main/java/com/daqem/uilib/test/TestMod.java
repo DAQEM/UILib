@@ -6,7 +6,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 
 public class TestMod {
@@ -14,7 +13,7 @@ public class TestMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     private static final KeyMapping.Category UI_LIB_CATEGORY = new KeyMapping.Category(getId("category"));
-    public static final KeyMapping OPEN_TEST_MENU = new KeyMapping("key.uilib_test.open_test_menu", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, UI_LIB_CATEGORY);
+    public static final KeyMapping OPEN_TEST_MENU = new KeyMapping("key.uilib_test.open_test_menu", InputConstants.Type.KEYBOARD, InputConstants.UNKNOWN.getValue(), UI_LIB_CATEGORY);
 
     public static void init() {
 

@@ -7,8 +7,8 @@ import com.daqem.uilib.gui.AbstractScreen;
 import com.daqem.uilib.gui.background.DarkenedBackground;
 import com.daqem.uilib.gui.widget.ButtonWidget;
 import com.daqem.uilib.test.TestMod;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.input.KeyEvent;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +59,10 @@ public class TestScreen extends AbstractScreen {
 
     @Override
     public boolean keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.key() == GLFW.GLFW_KEY_LEFT) {
+        if (keyEvent.key() == InputConstants.KEY_LEFT) {
             previousComponent();
             return true;
-        } else if (keyEvent.key() == GLFW.GLFW_KEY_RIGHT) {
+        } else if (keyEvent.key() == InputConstants.KEY_RIGHT) {
             nextComponent();
             return true;
         }

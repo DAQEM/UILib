@@ -3,6 +3,7 @@ package com.daqem.uilib.test.neoforge;
 import com.daqem.uilib.api.widget.IInputValidatable;
 import com.daqem.uilib.test.TestMod;
 import com.daqem.uilib.test.client.gui.TestScreen;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.api.distmarker.Dist;
@@ -11,7 +12,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import org.lwjgl.glfw.GLFW;
 
 @Mod(value = TestMod.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = TestMod.MOD_ID, value = Dist.CLIENT)
@@ -24,7 +24,7 @@ public class TestModNeoForge {
     @SubscribeEvent
     public static void onKeyInput(InputEvent.Key event) {
         // Check if the action is a Press (1)
-        if (event.getAction() == GLFW.GLFW_PRESS) {
+        if (event.getAction() == InputConstants.PRESS) {
             // Check if the key matches the configured KeyMapping
             if (TestMod.OPEN_TEST_MENU.matches(event.getKeyEvent())) {
                 Minecraft client = Minecraft.getInstance();
